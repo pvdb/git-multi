@@ -23,9 +23,9 @@ module Git
           nil
         end
         if login
-          puts "SUCCESS: github user: %s ; github login: %s" % [Git::Meta::USER, login]
+          puts "#{'SUCCESS'.bold}: github user: %s ; github login: %s" % [Git::Meta::USER, login]
         else
-          puts "ERROR: 401 - Bad credentials"
+          puts "#{'ERROR'.bold}: 401 - Bad credentials"
         end
       end
 

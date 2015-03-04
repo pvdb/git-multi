@@ -1,6 +1,8 @@
 require "git/meta/version"
 require "git/meta/commands"
 
+require 'ext/string'
+
 require 'octokit'
 
 module Git
