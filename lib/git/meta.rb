@@ -3,6 +3,6 @@ require "git/meta/commands"
 
 module Git
   module Meta
-    # Your code goes here...
+    USER = `git config --global github.user`.chomp.freeze
   end
 end

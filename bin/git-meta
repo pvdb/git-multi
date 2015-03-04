@@ -9,6 +9,9 @@ options = Slop.parse do |o|
   o.on '-V', '--version', 'print the version of git-meta' do
     Git::Meta::Commands.version
   end
+  o.on '-u', '--user', 'print the github user name' do
+    Git::Meta::Commands.user
+  end
 end
 
 # That's all, Folks
