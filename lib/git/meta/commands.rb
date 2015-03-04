@@ -12,6 +12,10 @@ module Git
         puts Git::Meta::USER
       end
 
+      def token
+        puts Git::Meta::TOKEN
+      end
+
     end
   end
 end

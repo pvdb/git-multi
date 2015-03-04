@@ -12,6 +12,9 @@ options = Slop.parse do |o|
   o.on '-u', '--user', 'print the github user name' do
     Git::Meta::Commands.user
   end
+  o.on '-t', '--token', 'print the github OAuth token' do
+    Git::Meta::Commands.token
+  end
 end
 
 # That's all, Folks
