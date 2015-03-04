@@ -12,6 +12,11 @@ module Git
         puts Git::Meta::USER
       end
 
+      def files
+        puts Git::Meta::JSON_CACHE
+        puts Git::Meta::YAML_CACHE
+      end
+
       def token
         puts Git::Meta::TOKEN
       end

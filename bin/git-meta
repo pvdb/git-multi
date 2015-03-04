@@ -18,6 +18,9 @@ options = Slop.parse do |o|
   o.on '-c', '--check', 'checks that the OAuth token works' do
     Git::Meta::Commands.check
   end
+  o.on '-f', '--files', 'prints the git-meta cache files' do
+    Git::Meta::Commands.files
+  end
 end
 
 # That's all, Folks

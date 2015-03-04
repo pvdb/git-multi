@@ -11,6 +11,9 @@ module Git
     USER  = `git config --global github.user`.chomp.freeze
     TOKEN = `git config --global github.token`.chomp.freeze
 
+    JSON_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.json')
+    YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yml')
+
     module_function
 
     def client
