@@ -34,6 +34,10 @@ module Git
         end
       end
 
+      def refresh
+        Git::Meta.refresh_repositories
+      end
+
     end
   end
 end
