@@ -16,6 +16,19 @@ module Git
         puts Git::Meta::TOKEN
       end
 
+      def check
+        login = begin
+          Git::Meta.client.user.login
+        rescue Octokit::Unauthorized
+          nil
+        end
+        if login
+          puts "SUCCESS: github user: %s ; github login: %s" % [Git::Meta::USER, login]
+        else
+          puts "ERROR: 401 - Bad credentials"
+        end
+      end
+
     end
   end
 end

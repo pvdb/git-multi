@@ -15,6 +15,9 @@ options = Slop.parse do |o|
   o.on '-t', '--token', 'print the github OAuth token' do
     Git::Meta::Commands.token
   end
+  o.on '-c', '--check', 'checks that the OAuth token works' do
+    Git::Meta::Commands.check
+  end
 end
 
 # That's all, Folks
