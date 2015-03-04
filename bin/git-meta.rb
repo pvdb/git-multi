@@ -7,8 +7,7 @@ require 'slop'
 
 options = Slop.parse do |o|
   o.on '-V', '--version', 'print the version of git-meta' do
-    puts Git::Meta::VERSION
-    exit
+    Git::Meta::Commands.version
   end
 end
 
