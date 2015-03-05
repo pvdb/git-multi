@@ -15,7 +15,7 @@ options = Slop.parse do |o|
   o.on '-t', '--token', 'print the github OAuth token' do
     Git::Meta::Commands.token
   end
-  o.on '-c', '--check', 'checks that the OAuth token works' do
+  o.on '-C', '--check', 'checks that the OAuth token works' do
     Git::Meta::Commands.check
   end
   o.on '-f', '--files', 'prints the git-meta cache files' do
@@ -26,6 +26,9 @@ options = Slop.parse do |o|
   end
   o.on '-m', '--missing', 'prints the list of missing local repos' do
     Git::Meta::Commands.missing
+  end
+  o.on '-c', '--clone', 'clones all missing repos from github' do
+    Git::Meta::Commands.clone
   end
   o.on '-r', '--refresh', 'refresh the local repo cache from github' do
     Git::Meta::Commands.refresh

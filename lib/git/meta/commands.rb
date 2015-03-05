@@ -46,6 +46,21 @@ module Git
         Git::Meta.refresh_repositories
       end
 
+      def clone
+        Git::Meta.missing_repositories.each do |project|
+          project_ssh_url = project.rels[:ssh].href
+          project.just_do_it(
+            ->(project) {
+              Kernel.system "git clone #{project_ssh_url.shellescape}"
+            },
+            ->(project) {
+              Kernel.system "git clone -q #{project_ssh_url.shellescape}"
+            },
+            :in_dir => :parent_dir
+          )
+        end
+      end
+
     end
   end
 end

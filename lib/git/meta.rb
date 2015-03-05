@@ -1,5 +1,6 @@
 require "git/meta/version"
 require "git/meta/commands"
+require "git/meta/nike"
 
 require 'ext/string'
 require 'ext/sawyer/resource'
@@ -7,6 +8,7 @@ require 'ext/sawyer/resource'
 require 'octokit'
 
 require 'yaml'
+require 'shellwords'
 
 module Git
   module Meta
@@ -20,6 +22,10 @@ module Git
     PROJECTS_HOME = File.join(ENV['HOME'].to_s, 'Workarea')
 
     module_function
+
+    def interactive?
+      STDOUT.tty? && STDERR.tty?
+    end
 
     def client
       @client ||= Octokit::Client.new(
@@ -54,13 +60,15 @@ module Git
         else
           @user_repositories ||= YAML.load(yaml_cache).tap do |projects|
             projects.each_with_index do |project, index|
-              # adorn 'project', which is a Sawyer::Resource
+              # ensure #method_missing works for Sawyer::Resource instances
               project.instance_eval("@_metaclass = (class << self; self ; end)")
-              project.parent_dir = PROJECTS_HOME
+              project.owner.instance_eval("@_metaclass = (class << self; self ; end)")
+              # adorn 'project', which is a Sawyer::Resource
+              project.parent_dir = File.join(PROJECTS_HOME, project.owner.login)
               project.local_path = File.join(PROJECTS_HOME, project.full_name)
               project.fractional_index = "#{index + 1}/#{projects.count}"
               # extend 'project' with 'just do it' capabilities
-              # project.extend Nike
+              project.extend Nike
               # extend 'project' with some cheeky knowledge
               # project.extend Prometheus
             end
