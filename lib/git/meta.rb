@@ -12,7 +12,7 @@ module Git
   module Meta
 
     USER  = `git config --global github.user`.chomp.freeze
-    TOKEN = `git config --global github.token`.chomp.freeze
+    TOKEN = `git config --global gitmeta.token`.chomp.freeze
 
     YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yml')
     JSON_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.json')
