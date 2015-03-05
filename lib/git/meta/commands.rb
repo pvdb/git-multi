@@ -17,6 +17,10 @@ module Git
         puts Git::Meta::YAML_CACHE
       end
 
+      def list
+        puts Git::Meta.user_repositories.map(&:full_name)
+      end
+
       def token
         puts Git::Meta::TOKEN
       end

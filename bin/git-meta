@@ -21,6 +21,9 @@ options = Slop.parse do |o|
   o.on '-f', '--files', 'prints the git-meta cache files' do
     Git::Meta::Commands.files
   end
+  o.on '-l', '--list', 'prints the list of github repos' do
+    Git::Meta::Commands.list
+  end
   o.on '-r', '--refresh', 'refresh the local repo cache from github' do
     Git::Meta::Commands.refresh
   end
