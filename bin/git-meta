@@ -3,36 +3,35 @@
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'git/meta'
-require 'slop'
 
-options = Slop.parse do |o|
-  o.on '-V', '--version', 'print the version of git-meta' do
-    Git::Meta::Commands.version
+case (command = ARGV.shift)
+  when /\A--/
+    case command
+      when '--help'    then Git::Meta::Commands.help
+      when '--check'   then Git::Meta::Commands.check
+      when '--files'   then Git::Meta::Commands.files
+      when '--user'    then Git::Meta::Commands.user
+      when '--token'   then Git::Meta::Commands.token
+      when '--version' then Git::Meta::Commands.version
+      when '--refresh' then Git::Meta::Commands.refresh
+      when '--list'    then Git::Meta::Commands.list
+      when '--stale'   then Git::Meta::Commands.stale
+      when '--graph'   then Git::Meta::Commands.graph
+      when '--count'   then Git::Meta::Commands.count
+      when '--missing' then Git::Meta::Commands.missing
+      when '--clone'   then Git::Meta::Commands.clone
+      when '--query'   then Git::Meta::Commands.query(ARGV)
+      when '--eval'    then Git::Meta::Commands.eval(*ARGV)
+      when '--raw'     then Git::Meta::Commands.raw(ARGV)
+    else
+      abort "Unknown '#{NAME}' option: #{command}\n(use -h to get list of options)"
+    end
+  when *[nil, '', '-h'] then Git::Meta::Commands.help
+else
+  if missing_repositories.any?
+    notify("Missing #{GITHUB_ORGANIZATION} repos:\n#{missing_repositories.map(&:name)}")
   end
-  o.on '-u', '--user', 'print the github user name' do
-    Git::Meta::Commands.user
-  end
-  o.on '-t', '--token', 'print the github OAuth token' do
-    Git::Meta::Commands.token
-  end
-  o.on '-C', '--check', 'checks that the OAuth token works' do
-    Git::Meta::Commands.check
-  end
-  o.on '-f', '--files', 'prints the git-meta cache files' do
-    Git::Meta::Commands.files
-  end
-  o.on '-l', '--list', 'prints the list of github repos' do
-    Git::Meta::Commands.list
-  end
-  o.on '-m', '--missing', 'prints the list of missing local repos' do
-    Git::Meta::Commands.missing
-  end
-  o.on '-c', '--clone', 'clones all missing repos from github' do
-    Git::Meta::Commands.clone
-  end
-  o.on '-r', '--refresh', 'refresh the local repo cache from github' do
-    Git::Meta::Commands.refresh
-  end
+  Git::Meta::Commands.exec command, ARGV
 end
 
 # That's all, Folks
