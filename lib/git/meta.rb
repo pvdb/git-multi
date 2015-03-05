@@ -88,7 +88,15 @@ module Git
     end
 
     def excess_repositories
-      local_repositories.map(&:full_name) - user_repositories.map(&:full_name)
+      local_repositories.reject { |project|
+        user_repositories.map(&:full_name).include? project.full_name
+      }
+    end
+
+    def stale_repositories
+      user_repositories.reject { |project|
+        github_repositories.map(&:full_name).include? project.full_name
+      }
     end
 
     def missing_repositories

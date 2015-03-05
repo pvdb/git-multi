@@ -30,7 +30,7 @@ module Git
       end
 
       def stale
-        puts Git::Meta.user_repositories.map(&:full_name) - Git::Meta.github_repositories.map(&:full_name)
+        puts Git::Meta.stale_repositories.map(&:full_name)
       end
 
       def token
