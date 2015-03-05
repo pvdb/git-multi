@@ -25,6 +25,10 @@ module Git
         puts Git::Meta.missing_repositories.map(&:full_name)
       end
 
+      def excess
+        puts Git::Meta.excess_repositories.map(&:full_name)
+      end
+
       def stale
         puts Git::Meta.user_repositories.map(&:full_name) - Git::Meta.github_repositories.map(&:full_name)
       end

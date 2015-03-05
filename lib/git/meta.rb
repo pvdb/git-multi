@@ -79,6 +79,18 @@ module Git
       end
     end
 
+    def local_repositories
+      Dir.glob(File.join(Git::Meta::PROJECTS_HOME, Git::Meta::USER, '*')).map { |path|
+        full_name = path[/#{Git::Meta::USER}\/.*\z/] # e.g. "pvdb/git-meta"
+        def full_name.full_name() self ; end         # awesome duck-typing!
+        full_name
+      }
+    end
+
+    def excess_repositories
+      local_repositories.map(&:full_name) - user_repositories.map(&:full_name)
+    end
+
     def missing_repositories
       user_repositories.find_all { |project|
         !File.directory? project.local_path
