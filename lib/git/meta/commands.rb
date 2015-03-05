@@ -69,6 +69,22 @@ module Git
         end
       end
 
+      def query args = []
+        Git::Meta.user_repositories.each do |project|
+          project.just_do_it(
+            ->(project) {
+              args.each do |attribute|
+                puts "#{attribute}: #{project[attribute]}"
+              end
+            },
+            ->(project) {
+              print "#{project.full_name}: "
+              puts args.map { |attribute| project[attribute] }.join(' ')
+            },
+          )
+        end
+      end
+
       def system args = []
         args.map!(&:shellescape)
         Git::Meta.cloned_repositories.each do |project|
