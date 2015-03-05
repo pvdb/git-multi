@@ -61,6 +61,39 @@ module Git
         end
       end
 
+      def system args = []
+        args.map!(&:shellescape)
+        Git::Meta.cloned_repositories.each do |project|
+          project.just_do_it(
+            ->(project) {
+              Kernel.system "#{args.join(' ')}"
+            },
+            ->(project) {
+              Kernel.system "#{args.join(' ')} 2>&1 | sed -e 's#^##{project.full_name.shellescape}: #'"
+            },
+            :in_dir => :local_path
+          )
+        end
+      end
+
+      def raw args
+        args.unshift ['sh', '-c']
+        system args.flatten
+      end
+
+      def exec command, args = []
+        args.unshift ['git', command]
+        system args.flatten
+      end
+
+      def eval command
+        Git::Meta.cloned_repositories.each do |project|
+          Dir.chdir(project.local_path) do
+            project.instance_eval(command)
+          end
+        end
+      end
+
     end
   end
 end
