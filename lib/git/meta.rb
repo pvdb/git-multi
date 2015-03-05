@@ -57,7 +57,7 @@ module Git
               # adorn 'project', which is a Sawyer::Resource
               project.instance_eval("@_metaclass = (class << self; self ; end)")
               project.parent_dir = PROJECTS_HOME
-              project.local_path = File.join(PROJECTS_HOME, project.name)
+              project.local_path = File.join(PROJECTS_HOME, project.full_name)
               project.fractional_index = "#{index + 1}/#{projects.count}"
               # extend 'project' with 'just do it' capabilities
               # project.extend Nike

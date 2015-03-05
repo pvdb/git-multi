@@ -21,6 +21,10 @@ module Git
         puts Git::Meta.user_repositories.map(&:full_name)
       end
 
+      def missing
+        puts Git::Meta.missing_repositories.map(&:full_name)
+      end
+
       def token
         puts Git::Meta::TOKEN
       end

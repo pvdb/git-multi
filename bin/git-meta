@@ -24,6 +24,9 @@ options = Slop.parse do |o|
   o.on '-l', '--list', 'prints the list of github repos' do
     Git::Meta::Commands.list
   end
+  o.on '-m', '--missing', 'prints the list of missing local repos' do
+    Git::Meta::Commands.missing
+  end
   o.on '-r', '--refresh', 'refresh the local repo cache from github' do
     Git::Meta::Commands.refresh
   end
