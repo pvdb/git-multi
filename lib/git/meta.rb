@@ -1,6 +1,7 @@
 require "git/meta/version"
 require "git/meta/commands"
 require "git/meta/nike"
+require "git/meta/notify"
 
 require 'ext/string'
 require 'ext/sawyer/resource'

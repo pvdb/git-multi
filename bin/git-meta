@@ -30,8 +30,8 @@ when /\A--/
 when *[nil, '', '-h']
   Git::Meta::Commands.help
 else
-  if missing_repositories.any?
-    notify("Missing #{GITHUB_ORGANIZATION} repos:\n#{missing_repositories.map(&:name)}")
+  if (missing_repos = Git::Meta::missing_repositories).any?
+    Git::Meta::notify(missing_repos.map(&:full_name), :subtitle => "#{missing_repos.count} missing repos")
   end
   Git::Meta::Commands.exec command, ARGV
 end
