@@ -17,6 +17,12 @@ module Git
         puts Git::Meta::YAML_CACHE
       end
 
+      def report
+        if (missing_repos = Git::Meta::missing_repositories).any?
+          Git::Meta::notify(missing_repos.map(&:full_name), :subtitle => "#{missing_repos.count} missing repos")
+        end
+      end
+
       def list
         puts Git::Meta.user_repositories.map(&:full_name)
       end

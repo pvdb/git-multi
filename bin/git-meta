@@ -19,6 +19,7 @@ when /\A--/
     when '--graph'   then Git::Meta::Commands.graph
     when '--count'   then Git::Meta::Commands.count
     when '--missing' then Git::Meta::Commands.missing
+    when '--report'  then Git::Meta::Commands.report
     when '--excess'  then Git::Meta::Commands.excess
     when '--clone'   then Git::Meta::Commands.clone
     when '--query'   then Git::Meta::Commands.query(ARGV)
@@ -30,9 +31,7 @@ when /\A--/
 when *[nil, '', '-h']
   Git::Meta::Commands.help
 else
-  if (missing_repos = Git::Meta::missing_repositories).any?
-    Git::Meta::notify(missing_repos.map(&:full_name), :subtitle => "#{missing_repos.count} missing repos")
-  end
+  Git::Meta::Commands.report
   Git::Meta::Commands.exec command, ARGV
 end
 
