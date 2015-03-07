@@ -26,7 +26,8 @@ when /\A--/
     when '--eval'    then Git::Meta::Commands.eval(*ARGV)
     when '--raw'     then Git::Meta::Commands.raw(ARGV)
   else
-    abort "Unknown '#{NAME}' option: #{command}\n(use -h to get list of options)"
+    abort "Unknown 'git-meta' sub-command: #{command}\n"\
+          "(use --help/-h to list all available commands)"
   end
 when *[nil, '', '-h']
   Git::Meta::Commands.help
