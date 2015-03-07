@@ -50,6 +50,18 @@ module Git
         end
       end
 
+      def count
+        #
+        # From: https://developer.github.com/v3/repos/#list-user-repositories
+        #
+        # `type` - can be one of `all`, `owner`, `member`
+        #          (default: `owner`)
+        #
+        %w{ all owner member }.each { |type|
+          puts [type, Git::Meta.github_repositories(type).count].join("\t")
+        }
+      end
+
       def refresh
         Git::Meta.refresh_repositories
       end

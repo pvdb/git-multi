@@ -34,12 +34,15 @@ module Git
       )
     end
 
-    def github_repositories(type = :all)
-      @github_repositories ||= begin
-        client.repositories(
-          :type => type,
-        ).sort_by { |repo| repo[:name].downcase }
+    @github_repositories = Hash.new { |hash, type|
+      hash[type] = begin
+        client.repositories(:type => type).
+        sort_by { |repo| repo[:name].downcase }
       end
+    }
+
+    def github_repositories(type = :owner)
+      type ? @github_repositories[type] : @github_repositories
     end
 
     def refresh_repositories
