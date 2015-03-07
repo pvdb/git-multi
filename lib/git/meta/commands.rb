@@ -17,6 +17,19 @@ module Git
         puts Git::Meta::YAML_CACHE
       end
 
+      def help
+        # instead of maintaining a list of valid query args in the help-
+        # file, we determine it at runtime... less is more, and all that
+        # TODO remove attributes we 'adorned' the repos with on line 95?
+        query_args = Git::Meta::github_repositories.sample.fields.sort.each_slice(3).map {
+          |foo, bar, qux| '%-20s  %-20s %-20s' % [foo, bar, qux]
+        }
+        puts File.read(Git::Meta::MAN_PAGE) % {
+          :version => Git::Meta::VERSION,
+          :query_args => query_args.join("\n    "),
+        }
+      end
+
       def report
         if (missing_repos = Git::Meta::missing_repositories).any?
           Git::Meta::notify(missing_repos.map(&:full_name), :subtitle => "#{missing_repos.count} missing repos")

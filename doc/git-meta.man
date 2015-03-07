@@ -1,0 +1,119 @@
+GIT-META(1)                     Git Extensions                     GIT-META(1)
+
+NAME
+  git-meta -- execute the same git command in multiple repositories
+
+
+SYNOPSIS
+  git meta <some_git_command_with_relevant_arguments>
+
+DESCRIPTION
+  Convenient way to execute the same git command in a set of related repos,
+  currently the list of an organization's repositories on Github.
+
+  Said list is determined via a Github API v3 call, and cached locally for
+  performance.
+
+OPTIONS
+
+  git meta --help         # you're looking at it
+  git meta --version      # print out this script's version number
+  git meta --refresh      # refresh the list of organization repos
+  git meta --list         # print out names of all organization repos
+  git meta --stale        # list repos that have been deleted on github.com
+  git meta --graph        # create a dependency graph of all organization repos
+  git meta --count        # print out the count of organization repos (per type)
+  git meta --missing      # print out names of repos that haven't been cloned
+  git meta --clone        # clones missing repositories into ${PROJECTS_HOME}
+  git meta --query (args) # query Github repo metadata for each repository
+  git meta --eval <ruby>  # execute the given Ruby code in the context of each repo
+  get meta --raw <cmd>    # execute <cmd> inside each git repository
+
+EXAMPLES
+
+  # count the number of organization repos
+  git meta --list | wc -l
+
+  # disk usage of each locally cloned organization repo
+  git meta --list | xargs -I{} du -hs ${PROJECTS_HOME}/{}
+
+  # ... or by using the `--raw` option
+  git meta --raw 'du -hs .'
+
+  # group and count the repos by Github-determined language
+  git meta --query language | cut -f 2 -d : | sort | uniq -c | sort -n -r
+
+  # find out the most-used Ruby versions
+  git meta --raw '[ -f .ruby-version ] && cat .ruby-version' | cut -f 2 -d : | sort | uniq -c | sort -n -r
+
+  # find Github repos without a description
+  git meta --query description | egrep ': *$'
+
+  # fetch remote branches for all organization repos
+  git meta fetch -p
+
+  # print out the local branch for each repo
+  git meta rev-parse --abbrev-ref=strict HEAD
+
+  # find all repos for which the 'origin' remote isn't github.com
+  git meta config --get remote.origin.url | fgrep -v git@github.com:
+
+  # for each repo, list all remote branches, sorted by the "age" of the last commit on each branch
+  git meta for-each-ref --sort="-authordate" --format="%%(refname)%%09%%(authordate:relative)%%09%%(authorname)" refs/remotes/origin
+
+  # same as above, but columnize the generated output (NOTE: replace '^I' with CTRL-V/CTRL-I in your terminal)
+  git meta for-each-ref --sort="-authordate" --format="%%(refname)%%09%%(authordate:relative)%%09%%(authorname)" refs/remotes/origin | column -t -s "^I"
+
+  # same as above, but refresh the list of remote branches first
+  git meta fetch -p ; git meta for-each-ref --sort="-authordate" --format="%%(refname)%%09%%(authordate:relative)%%09%%(authorname)" refs/remotes/origin
+
+  # find all organization repositories that depend on a given org repo, e.g. 'business_rules'
+  git meta --graph | fgrep business_rules
+
+  # find all Rails projects
+  git meta --raw '[ -f Gemfile ] && fgrep -q -l rails Gemfile && echo uses Rails' | cat
+
+  # generate a dependency graph of all organization repositories using yuml.me
+  DEPENDENCIES=$( git meta --graph | ruby -n -e 'parent, children = $_.split(": ") ; puts children.split(" ").map { |child| "[#{parent}]->[#{child}]" }' | tr '\n' ',' ) ; open "http://yuml.me/diagram/scruffy/class/${DEPENDENCIES}"
+
+  # generate a dependency graph of all organization repositories using Graphviz
+  git meta --graph | ruby -n -e 'parent, children = $_.split(": ") ; puts children.split(" ").map { |child| "\"#{parent}\"->\"#{child}\";" }' | awk 'BEGIN { print "digraph {\nrankdir=\"LR\";\n" } ; { print ; } END { print "}\n" } ; ' | dot -Tpng > /tmp.gitmeta.png ; open -a Preview /tmp.gitmeta.png
+
+QUERY ARGUMENTS
+
+  The following is a list of valid arguments for the 'git meta --query' option
+
+    %{query_args}
+
+USE `jq` TO QUERY THE `git meta` CACHE
+
+  `jq` is like `sed` for JSON data... all of the above query arguments can be
+  used in conjunction with `jq` to query, filter, map and transform the github
+  repository attributes stored in `${HOME}/.gitmeta.json`
+
+EXAMPLES
+
+  # print out each repository's name and its description
+  jq '.name + ": " + .description' ~/.gitmeta.json
+
+  # print out the name of all "forked" repositories
+  jq 'select(.fork == true) | .name' ~/.gitmeta.json
+
+FILES
+
+  ${HOME}/.gitmeta.yaml    # local cache of the Github metadata for each repository (in YAML format)
+  ${HOME}/.gitmeta.json    # local cache of the Github metadata for each repository (in JSON format)
+
+ENVIRONMENT VARIABLES
+
+  ${PROJECTS_HOME} # root directory where organization repos have been cloned
+
+REFERENCES
+
+  # the Github API call used to refresh the list of organization repos
+  http://developer.github.com/v3/orgs/teams/#list-team-repos
+
+  # the `jq` command-line utility
+  http://stedolan.github.io/jq/
+
+git-meta %{version}                  1 March 2015                       GIT-META(1)

@@ -22,6 +22,8 @@ module Git
 
     PROJECTS_HOME = File.join(ENV['HOME'].to_s, 'Workarea')
 
+    MAN_PAGE = File.expand_path('../../../doc/git-meta.man', __FILE__)
+
     module_function
 
     def interactive?
