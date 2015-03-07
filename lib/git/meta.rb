@@ -17,7 +17,7 @@ module Git
     USER  = `git config --global github.user`.chomp.freeze
     TOKEN = `git config --global gitmeta.token`.chomp.freeze
 
-    YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yml')
+    YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yaml')
     JSON_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.json')
 
     PROJECTS_HOME = File.join(ENV['HOME'].to_s, 'Workarea')

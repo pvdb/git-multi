@@ -101,8 +101,8 @@ EXAMPLES
 
 FILES
 
-  ${HOME}/.gitmeta.yaml    # local cache of the Github metadata for each repository (in YAML format)
-  ${HOME}/.gitmeta.json    # local cache of the Github metadata for each repository (in JSON format)
+  ${HOME}/.gitmeta.yaml    # local YAML cache of the Github data for each repo
+  ${HOME}/.gitmeta.json    # local JSON cache of the Github data for each repo
 
 ENVIRONMENT VARIABLES
 
