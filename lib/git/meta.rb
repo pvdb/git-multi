@@ -37,8 +37,8 @@ module Git
       )
     end
 
-    @github_repositories = Hash.new { |hash, type|
-      hash[type] = begin
+    @github_repositories = Hash.new { |repos, type|
+      repos[type] = begin
         client.repositories(:type => type).
         sort_by { |repo| repo[:name].downcase }
       end
