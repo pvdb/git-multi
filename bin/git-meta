@@ -11,6 +11,7 @@ when /\A--/
     when '--check'   then Git::Meta::Commands.check
     when '--files'   then Git::Meta::Commands.files
     when '--user'    then Git::Meta::Commands.user
+    when '--orgs'    then Git::Meta::Commands.orgs
     when '--token'   then Git::Meta::Commands.token
     when '--version' then Git::Meta::Commands.version
     when '--refresh' then Git::Meta::Commands.refresh

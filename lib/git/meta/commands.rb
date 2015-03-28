@@ -36,6 +36,10 @@ module Git
         end
       end
 
+      def orgs
+        puts Git::Meta.github_organizations.map(&:login)
+      end
+
       def list
         puts Git::Meta.user_repositories.map(&:full_name)
       end

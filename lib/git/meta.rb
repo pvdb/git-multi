@@ -48,6 +48,10 @@ module Git
       type ? @github_repositories[type] : @github_repositories
     end
 
+    def github_organizations
+      @github_organizations || client.organizations
+    end
+
     def refresh_repositories
       File.open(YAML_CACHE, 'w') do |file|
         file.write(github_repositories.to_yaml)
