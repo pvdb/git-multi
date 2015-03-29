@@ -8,6 +8,7 @@ require 'ext/sawyer/resource'
 
 require 'octokit'
 
+require 'etc'
 require 'yaml'
 require 'shellwords'
 
