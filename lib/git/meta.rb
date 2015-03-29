@@ -18,7 +18,7 @@ module Git
     TOKEN         = `git config --global gitmeta.token`.chomp.freeze
     ORGANIZATION  = `git config --global gitmeta.organization`.chomp.freeze
 
-    PROJECTS_HOME = File.join(ENV['HOME'].to_s, 'Workarea')
+    WORKAREA      = `git config --global gitmeta.workarea`.chomp.freeze
 
     YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yaml')
     JSON_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.json')
@@ -102,8 +102,8 @@ module Git
               project.instance_eval("@_metaclass = (class << self; self ; end)")
               project.owner.instance_eval("@_metaclass = (class << self; self ; end)")
               # adorn 'project', which is a Sawyer::Resource
-              project.parent_dir = File.join(PROJECTS_HOME, project.owner.login)
-              project.local_path = File.join(PROJECTS_HOME, project.full_name)
+              project.parent_dir = File.join(WORKAREA, project.owner.login)
+              project.local_path = File.join(WORKAREA, project.full_name)
               project.fractional_index = "#{index + 1}/#{projects.count}"
               # extend 'project' with 'just do it' capabilities
               project.extend Nike
@@ -119,7 +119,7 @@ module Git
 
     def local_repositories
       # TODO support org repositories...
-      Dir.glob(File.join(Git::Meta::PROJECTS_HOME, Git::Meta::USER, '*')).map { |path|
+      Dir.glob(File.join(Git::Meta::WORKAREA, Git::Meta::USER, '*')).map { |path|
         full_name = path[/#{Git::Meta::USER}\/.*\z/] # e.g. "pvdb/git-meta"
         def full_name.full_name() self ; end         # awesome duck-typing!
         full_name

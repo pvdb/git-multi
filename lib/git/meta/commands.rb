@@ -12,6 +12,7 @@ module Git
         puts 'User: ' + Git::Meta::USER
         puts 'Token: ' + Git::Meta::TOKEN
         puts 'Version: ' + Git::Meta::VERSION
+        puts 'Workarea: ' + Git::Meta::WORKAREA
         puts 'Organization: ' + Git::Meta::ORGANIZATION
         puts 'JSON cache: ' + Git::Meta::JSON_CACHE
         puts 'YAML cache: ' + Git::Meta::YAML_CACHE
