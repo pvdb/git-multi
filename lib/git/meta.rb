@@ -19,13 +19,9 @@ module Git
 
     module_function
 
-    def interactive?
-      STDOUT.tty? && STDERR.tty?
-    end
-
     def client
       @client ||= Octokit::Client.new(
-        :access_token => Git::Meta::TOKEN,
+        :access_token => TOKEN,
         :auto_paginate => true,
       )
     end
@@ -111,8 +107,8 @@ module Git
 
     def local_repositories
       # TODO support org repositories...
-      Dir.glob(File.join(Git::Meta::WORKAREA, Git::Meta::USER, '*')).map { |path|
-        full_name = path[/#{Git::Meta::USER}\/.*\z/] # e.g. "pvdb/git-meta"
+      Dir.glob(File.join(WORKAREA, USER, '*')).map { |path|
+        full_name = path[/#{USER}\/.*\z/] # e.g. "pvdb/git-meta"
         def full_name.full_name() self ; end         # awesome duck-typing!
         full_name
       }
