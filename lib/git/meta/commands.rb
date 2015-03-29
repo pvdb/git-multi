@@ -41,7 +41,7 @@ module Git
       end
 
       def list
-        puts Git::Meta.user_repositories.map(&:full_name)
+        puts Git::Meta.repositories.map(&:full_name)
       end
 
       def missing
@@ -105,7 +105,7 @@ module Git
       end
 
       def query args = []
-        Git::Meta.user_repositories.each do |project|
+        Git::Meta.repositories.each do |project|
           project.just_do_it(
             ->(project) {
               args.each do |attribute|

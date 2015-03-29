@@ -63,12 +63,12 @@ module Git
       end
     end
 
-    def user_repositories
+    def repositories
       if File.exists? YAML_CACHE
         if (yaml_cache = File.read(YAML_CACHE)).empty?
-          refresh_repositories and user_repositories
+          refresh_repositories and repositories
         else
-          @user_repositories ||= YAML.load(yaml_cache).tap do |projects|
+          @repositories ||= YAML.load(yaml_cache).tap do |projects|
             projects.each_with_index do |project, index|
               # ensure #method_missing works for Sawyer::Resource instances
               project.instance_eval("@_metaclass = (class << self; self ; end)")
@@ -85,7 +85,7 @@ module Git
           end
         end
       else
-        refresh_repositories and user_repositories
+        refresh_repositories and repositories
       end
     end
 
@@ -99,24 +99,24 @@ module Git
 
     def excess_repositories
       local_repositories.reject { |project|
-        user_repositories.map(&:full_name).include? project.full_name
+        repositories.map(&:full_name).include? project.full_name
       }
     end
 
     def stale_repositories
-      user_repositories.reject { |project|
+      repositories.reject { |project|
         github_repositories.map(&:full_name).include? project.full_name
       }
     end
 
     def missing_repositories
-      user_repositories.find_all { |project|
+      repositories.find_all { |project|
         !File.directory? project.local_path
       }
     end
 
     def cloned_repositories
-      user_repositories.find_all { |project|
+      repositories.find_all { |project|
         File.directory? project.local_path
       }
     end
