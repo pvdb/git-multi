@@ -7,20 +7,21 @@ require 'git/meta'
 module Git::Meta
 
   def git_option name, default = nil
-    value = `git config --global #{name}`.chomp.freeze
+    value = `git config #{name}`.chomp.freeze
     value.empty? && default ? default : value
   end
 
   def env_var name, default = nil
-    value = ENV[name].dup.to_s.freeze
+    value = ENV[name].to_s.freeze
     value.empty? && default ? default : value
   end
 
   module_function :git_option, :env_var
 
   USER          = git_option 'github.user'
+  ORGANIZATION  = git_option 'github.organization'
+
   TOKEN         = git_option 'gitmeta.token'
-  ORGANIZATION  = git_option 'gitmeta.organization'
 
   HOME          = env_var 'HOME', Etc.getpwuid.dir
 

@@ -10,8 +10,8 @@ module Git
 
       def info
         puts 'User: '         + Git::Meta::USER
-        puts 'Token: '        + Git::Meta::TOKEN
         puts 'Organization: ' + Git::Meta::ORGANIZATION
+        puts 'Token: '        + Git::Meta::TOKEN
         puts 'Home: '         + Git::Meta::HOME
         puts 'Workarea: '     + Git::Meta::WORKAREA
         puts 'YAML cache: '   + Git::Meta::YAML_CACHE
