@@ -4,6 +4,24 @@ $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib
 
 require 'git/meta'
 
+module Git::Meta
+
+  def git_option name, default = nil
+    `git config --global #{name}`.chomp.freeze
+  end
+
+  module_function :git_option
+
+  USER          = git_option 'github.user'
+  TOKEN         = git_option 'gitmeta.token'
+  ORGANIZATION  = git_option 'gitmeta.organization'
+  WORKAREA      = git_option 'gitmeta.workarea'
+
+  YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yaml')
+  JSON_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.json')
+
+end
+
 case (command = ARGV.shift)
 when /\A--/
   case command
