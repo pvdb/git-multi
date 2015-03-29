@@ -18,15 +18,15 @@ module Git::Meta
 
   module_function :git_option, :env_var
 
-  HOME          = env_var 'HOME', Etc.getpwuid.dir
-
   USER          = git_option 'github.user'
   TOKEN         = git_option 'gitmeta.token'
   ORGANIZATION  = git_option 'gitmeta.organization'
-  WORKAREA      = git_option 'gitmeta.workarea'
 
-  YAML_CACHE = File.join(HOME, '.gitmeta.yaml')
-  JSON_CACHE = File.join(HOME, '.gitmeta.json')
+  HOME          = env_var 'HOME', Etc.getpwuid.dir
+
+  WORKAREA      = git_option 'gitmeta.workarea',  File.join(HOME, 'Workarea')
+  YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
+  JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
 
 end
 
