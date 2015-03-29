@@ -74,14 +74,13 @@ module Git
       end
 
       def count
-        #
-        # From: https://developer.github.com/v3/repos/#list-user-repositories
-        #
-        # `type` - can be one of `all`, `owner`, `member`
-        #          (default: `owner`)
-        #
+        # https://developer.github.com/v3/repos/#list-user-repositories
         %w{ all owner member }.each { |type|
           puts [type, Git::Meta.user_repositories(Git::Meta::USER, type).count].join("\t")
+        }
+        # https://developer.github.com/v3/repos/#list-organization-repositories
+        %w{ all public private forks sources member }.each { |type|
+          puts [type, Git::Meta.org_repositories(Git::Meta::ORGANIZATION, type).count].join("\t")
         }
       end
 
