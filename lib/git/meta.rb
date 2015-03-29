@@ -17,6 +17,8 @@ module Git
     USER  = `git config --global github.user`.chomp.freeze
     TOKEN = `git config --global gitmeta.token`.chomp.freeze
 
+    ORGANIZATION = 'simplybusiness'
+
     YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yaml')
     JSON_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.json')
 
@@ -48,12 +50,31 @@ module Git
       end
     }
 
-    def user_repositories(user, type = :owner) # :all, :owner, :member
+    def user_repositories(user, type = :owner) # all, owner, member
       @user_repositories[[user, type]]
     end
 
+    #
+    # https://developer.github.com/v3/repos/#list-organization-repositories
+    #
+
+    @org_repositories = Hash.new { |repos, (org, type)|
+      repos[[org, type]] = begin
+        client.org_repositories(org, :type => type).
+        sort_by { |repo| repo[:name].downcase }
+      end
+    }
+
+    def org_repositories(org, type = :owner) # all, public, private, forks, sources, member
+      @org_repositories[[org, type]]
+    end
+
+    #
+    # all together now ...
+    #
+
     def github_repositories
-      @github_repositories ||= user_repositories(USER)
+      @github_repositories ||= (user_repositories(USER) + org_repositories(ORGANIZATION))
     end
 
     def github_organizations
@@ -98,6 +119,7 @@ module Git
     end
 
     def local_repositories
+      # TODO support org repositories...
       Dir.glob(File.join(Git::Meta::PROJECTS_HOME, Git::Meta::USER, '*')).map { |path|
         full_name = path[/#{Git::Meta::USER}\/.*\z/] # e.g. "pvdb/git-meta"
         def full_name.full_name() self ; end         # awesome duck-typing!
