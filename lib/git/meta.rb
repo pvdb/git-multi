@@ -14,15 +14,14 @@ require 'shellwords'
 module Git
   module Meta
 
-    USER  = `git config --global github.user`.chomp.freeze
-    TOKEN = `git config --global gitmeta.token`.chomp.freeze
+    USER          = `git config --global github.user`.chomp.freeze
+    TOKEN         = `git config --global gitmeta.token`.chomp.freeze
+    ORGANIZATION  = `git config --global gitmeta.organization`.chomp.freeze
 
-    ORGANIZATION = 'simplybusiness'
+    PROJECTS_HOME = File.join(ENV['HOME'].to_s, 'Workarea')
 
     YAML_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.yaml')
     JSON_CACHE = File.join(ENV['HOME'].to_s, '.gitmeta.json')
-
-    PROJECTS_HOME = File.join(ENV['HOME'].to_s, 'Workarea')
 
     MAN_PAGE = File.expand_path('../../../doc/git-meta.man', __FILE__)
 
