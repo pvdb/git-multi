@@ -81,7 +81,7 @@ module Git
         #          (default: `owner`)
         #
         %w{ all owner member }.each { |type|
-          puts [type, Git::Meta.user_repositories(type).count].join("\t")
+          puts [type, Git::Meta.user_repositories(Git::Meta::USER, type).count].join("\t")
         }
       end
 

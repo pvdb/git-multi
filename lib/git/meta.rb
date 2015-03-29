@@ -37,19 +37,23 @@ module Git
       )
     end
 
-    @user_repositories = Hash.new { |repos, type|
-      repos[type] = begin
-        client.repositories(:type => type).
+    #
+    # https://developer.github.com/v3/repos/#list-user-repositories
+    #
+
+    @user_repositories = Hash.new { |repos, (user, type)|
+      repos[[user, type]] = begin
+        client.repositories(user, :type => type).
         sort_by { |repo| repo[:name].downcase }
       end
     }
 
-    def user_repositories(type = :owner)
-      type ? @user_repositories[type] : @user_repositories
+    def user_repositories(user, type = :owner) # :all, :owner, :member
+      @user_repositories[[user, type]]
     end
 
     def github_repositories
-      @github_repositories ||= user_repositories
+      @github_repositories ||= user_repositories(USER)
     end
 
     def github_organizations
