@@ -8,13 +8,13 @@ module Git
         puts Git::Meta::VERSION
       end
 
-      def user
-        puts Git::Meta::USER
-      end
-
-      def files
-        puts Git::Meta::JSON_CACHE
-        puts Git::Meta::YAML_CACHE
+      def info
+        puts 'User: ' + Git::Meta::USER
+        puts 'Token: ' + Git::Meta::TOKEN
+        puts 'Version: ' + Git::Meta::VERSION
+        puts 'Organization: ' + Git::Meta::ORGANIZATION
+        puts 'JSON cache: ' + Git::Meta::JSON_CACHE
+        puts 'YAML cache: ' + Git::Meta::YAML_CACHE
       end
 
       def help
@@ -54,10 +54,6 @@ module Git
 
       def stale
         puts Git::Meta.stale_repositories.map(&:full_name)
-      end
-
-      def token
-        puts Git::Meta::TOKEN
       end
 
       def check
