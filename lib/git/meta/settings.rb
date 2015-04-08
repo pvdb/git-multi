@@ -59,6 +59,14 @@ module Git
         setting_status("Workarea", workarea, workarea && !workarea.empty? && File.directory?(workarea))
       end
 
+      def user_workarea_status user_workarea
+        setting_status("User workarea", user_workarea, user_workarea && !user_workarea.empty? && File.directory?(user_workarea))
+      end
+
+      def organization_workarea_status organization_workarea
+        setting_status("User workarea", organization_workarea, organization_workarea && !organization_workarea.empty? && File.directory?(organization_workarea))
+      end
+
       def yaml_cache_status yaml_cache
         setting_status("YAML cache", yaml_cache, yaml_cache && !yaml_cache.empty? && File.file?(yaml_cache), true)
       end

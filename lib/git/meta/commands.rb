@@ -14,6 +14,8 @@ module Git
         puts Settings.token_status(Git::Meta::TOKEN)
         puts Settings.home_status(Git::Meta::HOME)
         puts Settings.workarea_status(Git::Meta::WORKAREA)
+        puts Settings.user_workarea_status(File.join(Git::Meta::WORKAREA, Git::Meta::USER))
+        puts Settings.organization_workarea_status(File.join(Git::Meta::WORKAREA, Git::Meta::ORGANIZATION))
         puts Settings.yaml_cache_status(Git::Meta::YAML_CACHE)
         puts Settings.json_cache_status(Git::Meta::JSON_CACHE)
       end
