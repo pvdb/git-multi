@@ -12,10 +12,10 @@ module Git
         puts Settings.user_status(Git::Meta::USER)
         puts Settings.organizations_status(Git::Meta::ORGANIZATIONS.join(', '))
         puts Settings.token_status(Git::Meta::TOKEN)
-        puts 'Home: '         + Git::Meta::HOME
-        puts 'Workarea: '     + Git::Meta::WORKAREA
-        puts 'YAML cache: '   + Git::Meta::YAML_CACHE
-        puts 'JSON cache: '   + Git::Meta::JSON_CACHE
+        puts Settings.home_status(Git::Meta::HOME)
+        puts Settings.workarea_status(Git::Meta::WORKAREA)
+        puts Settings.yaml_cache_status(Git::Meta::YAML_CACHE)
+        puts Settings.json_cache_status(Git::Meta::JSON_CACHE)
       end
 
       def check_xxx

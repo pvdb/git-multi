@@ -51,6 +51,22 @@ module Git
         setting_status("Token", token, token && !token.empty?)
       end
 
+      def home_status home
+        setting_status("Home", home, home && !home.empty? && File.directory?(home))
+      end
+
+      def workarea_status workarea
+        setting_status("Workarea", workarea, workarea && !workarea.empty? && File.directory?(workarea))
+      end
+
+      def yaml_cache_status yaml_cache
+        setting_status("YAML cache", yaml_cache, yaml_cache && !yaml_cache.empty? && File.file?(yaml_cache), true)
+      end
+
+      def json_cache_status json_cache
+        setting_status("JSON cache", json_cache, json_cache && !json_cache.empty? && File.directory?(json_cache), true)
+      end
+
     end
   end
 end
