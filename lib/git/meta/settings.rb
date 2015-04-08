@@ -32,11 +32,9 @@ module Git
       module_function
 
       def setting_status setting, value, valid, optional = false
-        "%s\t%s: %s" % [
-          valid ? TICK : optional ? ARROW : CROSS,
-          setting,
-          value
-        ]
+        print "   %s: %s\x0d" % [setting, value]
+        sleep 0.75
+        puts "%s" % (valid ? TICK : optional ? ARROW : CROSS)
       end
 
       def user_status user
