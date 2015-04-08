@@ -1,18 +1,19 @@
-require "git/meta/version"
-require "git/meta/commands"
-require "git/meta/nike"
-require "git/meta/notify"
+require 'etc'
+require 'yaml'
+require 'fileutils'
+require 'shellwords'
+
+require 'octokit'
 
 require 'ext/dir'
 require 'ext/string'
 require 'ext/sawyer/resource'
 
-require 'octokit'
-
-require 'etc'
-require 'yaml'
-require 'fileutils'
-require 'shellwords'
+require "git/meta/version"
+require "git/meta/settings"
+require "git/meta/commands"
+require "git/meta/nike"
+require "git/meta/notify"
 
 module Git
   module Meta

@@ -6,33 +6,6 @@ require 'git/meta'
 
 module Git::Meta
 
-  def git_option name, default = nil
-    value = `git config #{name}`.chomp.freeze
-    value.empty? && default ? default : value
-  end
-
-  def env_var name, default = nil
-    value = ENV[name].to_s.freeze
-    value.empty? && default ? default : value
-  end
-
-  module_function :git_option, :env_var
-
-  USER          = git_option 'github.user'
-  ORGANIZATION  = git_option 'github.organization'
-
-  TOKEN         = git_option 'gitmeta.token'
-
-  HOME          = env_var 'HOME', Etc.getpwuid.dir
-
-  WORKAREA      = git_option 'gitmeta.workarea',  File.join(HOME, 'Workarea')
-  YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
-  JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
-
-end
-
-module Git::Meta
-
   # FIXME update organizations as part of `--refresh`
 
   def github_organizations
