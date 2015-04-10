@@ -20,19 +20,6 @@ module Git
         Settings.json_cache_status(Git::Meta::JSON_CACHE)
       end
 
-      def check_xxx
-        login = begin
-          Git::Meta.client.user.login
-        rescue Octokit::Unauthorized
-          nil
-        end
-        if login
-          puts "#{'SUCCESS'.bold}: github user: %s ; github login: %s" % [Git::Meta::USER, login]
-        else
-          puts "#{'ERROR'.bold}: 401 - Bad credentials"
-        end
-      end
-
       def help
         # instead of maintaining a list of valid query args in the help-
         # file, we determine it at runtime... less is more, and all that

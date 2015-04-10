@@ -54,6 +54,12 @@ module Git
           false
         end
         setting_status("Token", "valid?", token && !token.empty? && token_valid)
+        token_owner = begin
+          Git::Meta.client.user.login
+        rescue Octokit::Unauthorized
+          nil
+        end
+        setting_status("Token", "owned by #{Git::Meta::USER}?", token_owner == Git::Meta::USER)
       end
 
       def home_status home
