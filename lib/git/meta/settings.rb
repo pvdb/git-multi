@@ -47,6 +47,13 @@ module Git
 
       def token_status token
         setting_status("Token", token, token && !token.empty?)
+        token_valid = begin
+          Git::Meta.client.user.login
+          true
+        rescue Octokit::Unauthorized
+          false
+        end
+        setting_status("Token", "valid?", token && !token.empty? && token_valid)
       end
 
       def home_status home
