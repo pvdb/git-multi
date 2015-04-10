@@ -18,8 +18,11 @@ module Git
         setting_status("User", user, user && !user.empty?)
       end
 
-      def organizations_status orgs
-        setting_status("Organizations", orgs, orgs && !orgs.empty?, true)
+      def organization_status orgs
+        for org in orgs
+          setting_status("Organization", org, org && !org.empty?, true)
+          setting_status("Organization", "member?", Git::Meta::ORGS.include?(org))
+        end
       end
 
       def token_status token

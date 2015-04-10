@@ -10,7 +10,7 @@ module Git
 
       def check
         Settings.user_status(Git::Meta::USER)
-        Settings.organizations_status(Git::Meta::ORGANIZATIONS.join(', '))
+        Settings.organization_status(Git::Meta::ORGANIZATIONS)
         Settings.token_status(Git::Meta::TOKEN)
         Settings.home_status(Git::Meta::HOME)
         Settings.workarea_status(Git::Meta::WORKAREA)

@@ -37,6 +37,14 @@ module Git
       end
     end
 
+    def orgs
+      @orgs ||= begin
+        client.organizations.map(&:login)
+      rescue Octokit::Unauthorized
+        []
+      end
+    end
+
     def git_option name, default = nil
       value = `git config #{name}`.chomp.freeze
       value.empty? && default ? default : value
@@ -56,6 +64,7 @@ module Git
 
     TOKEN         = git_option 'gitmeta.token'
     LOGIN         = login # AFTER setting TOKEN!
+    ORGS          = orgs  # AFTER setting TOKEN!
 
     HOME          = env_var 'HOME', Etc.getpwuid.dir
 
