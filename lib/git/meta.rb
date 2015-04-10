@@ -29,6 +29,40 @@ module Git
       )
     end
 
+    def login
+      @login ||= begin
+        client.user.login
+      rescue Octokit::Unauthorized
+        nil
+      end
+    end
+
+    def git_option name, default = nil
+      value = `git config #{name}`.chomp.freeze
+      value.empty? && default ? default : value
+    end
+
+    def env_var name, default = nil
+      value = ENV[name].to_s.freeze
+      value.empty? && default ? default : value
+    end
+
+    class << self
+      private :client, :login, :git_option, :env_var
+    end
+
+    USER          = git_option 'github.user'
+    ORGANIZATIONS = git_option 'github.organizations'
+
+    TOKEN         = git_option 'gitmeta.token'
+    LOGIN         = login # AFTER setting TOKEN!
+
+    HOME          = env_var 'HOME', Etc.getpwuid.dir
+
+    WORKAREA      = git_option 'gitmeta.workarea',  File.join(HOME, 'Workarea')
+    YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
+    JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
+
     #
     # https://developer.github.com/v3/repos/#list-user-repositories
     #
