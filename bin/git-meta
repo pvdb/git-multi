@@ -25,7 +25,6 @@ if __FILE__ == $0
   when /\A--/
     case command
       when '--help'    then Git::Meta::Commands.help
-      when '--info'    then Git::Meta::Commands.info
       when '--check'   then Git::Meta::Commands.check
       when '--version' then Git::Meta::Commands.version
       when '--refresh' then Git::Meta::Commands.refresh
