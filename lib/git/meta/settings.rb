@@ -44,7 +44,7 @@ module Git
       end
 
       def organization_workarea_status organization_workarea
-        setting_status("User workarea", organization_workarea, organization_workarea && !organization_workarea.empty? && File.directory?(organization_workarea))
+        setting_status("Organization workarea", organization_workarea, organization_workarea && !organization_workarea.empty? && File.directory?(organization_workarea))
       end
 
       def yaml_cache_status yaml_cache
