@@ -52,7 +52,7 @@ module Git
       end
 
       def json_cache_status json_cache
-        setting_status("JSON cache", json_cache, json_cache && !json_cache.empty? && File.directory?(json_cache), true)
+        setting_status("JSON cache", json_cache, json_cache && !json_cache.empty? && File.file?(json_cache), true)
       end
 
     end
