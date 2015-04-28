@@ -32,7 +32,7 @@ module Git
     def login
       @login ||= begin
         client.user.login
-      rescue Octokit::Unauthorized
+      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
         nil
       end
     end
@@ -40,7 +40,7 @@ module Git
     def orgs
       @orgs ||= begin
         client.organizations.map(&:login)
-      rescue Octokit::Unauthorized
+      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
         []
       end
     end
@@ -57,6 +57,13 @@ module Git
 
     class << self
       private :client, :login, :git_option, :env_var
+    end
+
+    def connected?
+      client.validate_credentials
+      true
+    rescue Faraday::ConnectionFailed
+      false
     end
 
     USER          = git_option 'github.user'
