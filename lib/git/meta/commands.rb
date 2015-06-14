@@ -144,7 +144,12 @@ module Git
       def eval command
         Git::Meta.cloned_repositories.each do |project|
           Dir.chdir(project.local_path) do
-            project.instance_eval(command)
+            begin
+              project.instance_eval(command)
+            rescue Octokit::NotFound
+              # project no longer exists on github.com
+              # consider running "git meta --stale"...
+            end
           end
         end
       end
