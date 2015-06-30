@@ -30,30 +30,30 @@ module Git
     # https://developer.github.com/v3/repos/#list-user-repositories
     #
 
-    @user_repositories = Hash.new { |repos, (user, type)|
+    @github_user_repositories = Hash.new { |repos, (user, type)|
       repos[[user, type]] = begin
         client.repositories(user, :type => type).
         sort_by { |repo| repo[:name].downcase }
       end
     }
 
-    def user_repositories(user, type = :owner) # all, owner, member
-      @user_repositories[[user, type]]
+    def github_user_repositories(user, type = :owner) # all, owner, member
+      @github_user_repositories[[user, type]]
     end
 
     #
     # https://developer.github.com/v3/repos/#list-organization-repositories
     #
 
-    @org_repositories = Hash.new { |repos, (org, type)|
+    @github_org_repositories = Hash.new { |repos, (org, type)|
       repos[[org, type]] = begin
         client.org_repositories(org, :type => type).
         sort_by { |repo| repo[:name].downcase }
       end
     }
 
-    def org_repositories(org, type = :owner) # all, public, private, forks, sources, member
-      @org_repositories[[org, type]]
+    def github_org_repositories(org, type = :owner) # all, public, private, forks, sources, member
+      @github_org_repositories[[org, type]]
     end
 
     #
@@ -62,8 +62,8 @@ module Git
 
     def github_repositories
       @github_repositories ||= (
-        user_repositories(USER) +
-        ORGANIZATIONS.map { |org| org_repositories(org) }
+        github_user_repositories(USER) +
+        ORGANIZATIONS.map { |org| github_org_repositories(org) }
       ).flatten
     end
 
