@@ -77,10 +77,11 @@ module Git
           puts ["#{user}/#{type}", Git::Meta.user_repositories(user, type).count].join("\t")
         }
         # https://developer.github.com/v3/repos/#list-organization-repositories
-        org = Git::Meta::ORGANIZATION
-        %w{ all public private forks sources member }.each { |type|
-          puts ["#{org}/#{type}", Git::Meta.org_repositories(org, type).count].join("\t")
-        }
+        for org in Git::Meta.github_organizations.map(&:login)
+          %w{ all public private forks sources member }.each { |type|
+            puts ["#{org}/#{type}", Git::Meta.org_repositories(org, type).count].join("\t")
+          }
+        end
       end
 
       def refresh
