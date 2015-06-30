@@ -9,13 +9,13 @@ module Git
       end
 
       def info
-        puts 'User: '         + Git::Meta::USER
-        puts 'Organization: ' + Git::Meta::ORGANIZATION
-        puts 'Token: '        + Git::Meta::TOKEN
-        puts 'Home: '         + Git::Meta::HOME
-        puts 'Workarea: '     + Git::Meta::WORKAREA
-        puts 'YAML cache: '   + Git::Meta::YAML_CACHE
-        puts 'JSON cache: '   + Git::Meta::JSON_CACHE
+        puts 'User: '          + Git::Meta::USER
+        puts 'Organizations: ' + Git::Meta::ORGANIZATIONS.join(', ')
+        puts 'Token: '         + Git::Meta::TOKEN
+        puts 'Home: '          + Git::Meta::HOME
+        puts 'Workarea: '      + Git::Meta::WORKAREA
+        puts 'YAML cache: '    + Git::Meta::YAML_CACHE
+        puts 'JSON cache: '    + Git::Meta::JSON_CACHE
       end
 
       def help
