@@ -64,10 +64,6 @@ module Git
       @github_repositories ||= (user_repositories(USER) + org_repositories(ORGANIZATION))
     end
 
-    def github_organizations
-      @github_organizations || client.organizations
-    end
-
     def refresh_repositories
       File.open(YAML_CACHE, 'w') do |file|
         file.write(github_repositories.to_yaml)
