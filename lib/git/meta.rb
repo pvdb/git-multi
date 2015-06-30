@@ -61,7 +61,10 @@ module Git
     #
 
     def github_repositories
-      @github_repositories ||= (user_repositories(USER) + org_repositories(ORGANIZATION))
+      @github_repositories ||= (
+        user_repositories(USER) +
+        ORGANIZATIONS.map { |org| org_repositories(org) }
+      ).flatten
     end
 
     def refresh_repositories
