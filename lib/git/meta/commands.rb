@@ -72,12 +72,14 @@ module Git
 
       def count
         # https://developer.github.com/v3/repos/#list-user-repositories
+        user = Git::Meta::USER
         %w{ all owner member }.each { |type|
-          puts [type, Git::Meta.user_repositories(Git::Meta::USER, type).count].join("\t")
+          puts ["#{user}/#{type}", Git::Meta.user_repositories(user, type).count].join("\t")
         }
         # https://developer.github.com/v3/repos/#list-organization-repositories
+        org = Git::Meta::ORGANIZATION
         %w{ all public private forks sources member }.each { |type|
-          puts [type, Git::Meta.org_repositories(Git::Meta::ORGANIZATION, type).count].join("\t")
+          puts ["#{org}/#{type}", Git::Meta.org_repositories(org, type).count].join("\t")
         }
       end
 
