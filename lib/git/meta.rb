@@ -41,6 +41,18 @@ module Git
       @github_user_repositories[[user, type]]
     end
 
+    @local_user_repositories = Hash.new { |repos, user|
+      repos[user] = Dir.glob(File.join(WORKAREA, user, '*')).map { |path|
+        full_name = path[/#{user}\/.*\z/]    # e.g. "pvdb/git-meta"
+        def full_name.full_name() self ; end # awesome duck-typing!
+        full_name
+      }
+    }
+
+    def local_user_repositories(user)
+      @local_user_repositories[user]
+    end
+
     #
     # https://developer.github.com/v3/repos/#list-organization-repositories
     #
@@ -56,6 +68,18 @@ module Git
       @github_org_repositories[[org, type]]
     end
 
+    @local_org_repositories = Hash.new { |repos, org|
+      repos[org] = Dir.glob(File.join(WORKAREA, org, '*')).map { |path|
+        full_name = path[/#{org}\/.*\z/]    # e.g. "pvdb/git-meta"
+        def full_name.full_name() self ; end # awesome duck-typing!
+        full_name
+      }
+    }
+
+    def local_org_repositories(org)
+      @local_org_repositories[org]
+    end
+
     #
     # all together now ...
     #
@@ -64,6 +88,13 @@ module Git
       @github_repositories ||= (
         github_user_repositories(USER) +
         ORGANIZATIONS.map { |org| github_org_repositories(org) }
+      ).flatten
+    end
+
+    def local_repositories
+      (
+        local_user_repositories(USER) +
+        ORGANIZATIONS.map { |org| local_org_repositories(org) }
       ).flatten
     end
 
@@ -102,15 +133,6 @@ module Git
       else
         refresh_repositories and repositories
       end
-    end
-
-    def local_repositories
-      # TODO support org repositories...
-      Dir.glob(File.join(WORKAREA, USER, '*')).map { |path|
-        full_name = path[/#{USER}\/.*\z/] # e.g. "pvdb/git-meta"
-        def full_name.full_name() self ; end         # awesome duck-typing!
-        full_name
-      }
     end
 
     def excess_repositories

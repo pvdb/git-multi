@@ -42,7 +42,7 @@ module Git::Meta
   module_function :github_organizations
 
   ORGANIZATIONS = git_option('github.organizations').split(/\s*,\s*/)
-  XXX_ORGANIZATIONS = Git::Meta.github_organizations.map(&:login)
+  # XXX_ORGANIZATIONS = Git::Meta.github_organizations.map(&:login)
 
 end
 
