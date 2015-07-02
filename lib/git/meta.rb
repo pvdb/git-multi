@@ -3,6 +3,7 @@ require "git/meta/commands"
 require "git/meta/nike"
 require "git/meta/notify"
 
+require 'ext/dir'
 require 'ext/string'
 require 'ext/sawyer/resource'
 
@@ -42,11 +43,7 @@ module Git
     end
 
     @local_user_repositories = Hash.new { |repos, user|
-      repos[user] = Dir.glob(File.join(WORKAREA, user, '*')).map { |path|
-        full_name = path[/#{user}\/.*\z/]    # e.g. "pvdb/git-meta"
-        def full_name.full_name() self ; end # awesome duck-typing!
-        full_name
-      }
+      repos[user] = Dir.new(WORKAREA).git_repos(user)
     }
 
     def local_user_repositories(user)
@@ -69,11 +66,7 @@ module Git
     end
 
     @local_org_repositories = Hash.new { |repos, org|
-      repos[org] = Dir.glob(File.join(WORKAREA, org, '*')).map { |path|
-        full_name = path[/#{org}\/.*\z/]    # e.g. "pvdb/git-meta"
-        def full_name.full_name() self ; end # awesome duck-typing!
-        full_name
-      }
+      repos[org] = Dir.new(WORKAREA).git_repos(org)
     }
 
     def local_org_repositories(org)
