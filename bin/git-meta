@@ -4,21 +4,6 @@ $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib
 
 require 'git/meta'
 
-module Git::Meta
-
-  # FIXME update organizations as part of `--refresh`
-
-  def github_organizations
-    @github_organizations || client.organizations
-  end
-
-  module_function :github_organizations
-
-  ORGANIZATIONS = git_option('github.organizations').split(/\s*,\s*/)
-  # XXX_ORGANIZATIONS = Git::Meta.github_organizations.map(&:login)
-
-end
-
 if __FILE__ == $0
 
   case (command = ARGV.shift)

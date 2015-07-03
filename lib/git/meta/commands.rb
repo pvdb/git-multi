@@ -14,8 +14,8 @@ module Git
         Settings.token_status(Git::Meta::TOKEN)
         Settings.home_status(Git::Meta::HOME)
         Settings.workarea_status(Git::Meta::WORKAREA)
-        Settings.user_workarea_status(File.join(Git::Meta::WORKAREA, Git::Meta::USER))
-        Settings.organization_workarea_status(File.join(Git::Meta::WORKAREA, Git::Meta::ORGANIZATION))
+        Settings.user_workarea_status(Git::Meta::USER)
+        Settings.organization_workarea_status(Git::Meta::ORGANIZATIONS)
         Settings.yaml_cache_status(Git::Meta::YAML_CACHE)
         Settings.json_cache_status(Git::Meta::JSON_CACHE)
       end

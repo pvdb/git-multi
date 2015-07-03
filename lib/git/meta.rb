@@ -37,9 +37,11 @@ module Git
       end
     end
 
-    def orgs
-      @orgs ||= begin
-        client.organizations.map(&:login)
+    # FIXME update organizations as part of `--refresh`
+
+    def github_organizations
+      @github_organizations ||= begin
+        client.organizations
       rescue Octokit::Unauthorized, Faraday::ConnectionFailed
         []
       end
@@ -67,11 +69,11 @@ module Git
     end
 
     USER          = git_option 'github.user'
-    ORGANIZATIONS = git_option 'github.organizations'
+    ORGANIZATIONS = git_option('github.organizations').split(/\s*,\s*/)
 
     TOKEN         = git_option 'gitmeta.token'
     LOGIN         = login # AFTER setting TOKEN!
-    ORGS          = orgs  # AFTER setting TOKEN!
+    ORGS          = github_organizations.map(&:login)
 
     HOME          = env_var 'HOME', Etc.getpwuid.dir
 
