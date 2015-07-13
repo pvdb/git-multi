@@ -7,6 +7,7 @@ require 'octokit'
 
 require 'ext/dir'
 require 'ext/string'
+require 'ext/commify'
 require 'ext/sawyer/resource'
 
 require "git/meta/version"

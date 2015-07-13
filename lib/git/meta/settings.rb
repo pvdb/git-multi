@@ -54,7 +54,7 @@ module Git
       def yaml_cache_status yaml_cache
         setting_status(
           "YAML cache",
-          "%s (%d bytes)" % [yaml_cache, File.size(yaml_cache)],
+          "%s (%s bytes)" % [yaml_cache, File.size(yaml_cache).commify],
           yaml_cache && !yaml_cache.empty? && File.file?(yaml_cache),
           true
         )
@@ -63,7 +63,7 @@ module Git
       def json_cache_status json_cache
         setting_status(
           "JSON cache",
-          "%s (%d bytes)" % [json_cache, File.size(json_cache)],
+          "%s (%s bytes)" % [json_cache, File.size(json_cache).commify],
           json_cache && !json_cache.empty? && File.file?(json_cache),
           true
         )
