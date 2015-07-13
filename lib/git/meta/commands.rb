@@ -13,7 +13,7 @@ module Git
         Settings.organization_status(Git::Meta::ORGANIZATIONS)
         Settings.token_status(Git::Meta::TOKEN)
         Settings.home_status(Git::Meta::HOME)
-        Settings.workarea_status(Git::Meta::WORKAREA)
+        Settings.main_workarea_status(Git::Meta::WORKAREA)
         Settings.user_workarea_status(Git::Meta::USER)
         Settings.organization_workarea_status(Git::Meta::ORGANIZATIONS)
         Settings.yaml_cache_status(Git::Meta::YAML_CACHE)

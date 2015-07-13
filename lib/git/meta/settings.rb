@@ -23,12 +23,20 @@ module Git
         )
       end
 
-      def directory_status setting, directory
+      def directory_status setting, directory, message = directory
         setting_status(
           setting,
-          directory,
+          message,
           directory && !directory.empty? && File.directory?(directory),
           false
+        )
+      end
+
+      def workarea_status setting, workarea
+        directory_status(
+          setting,
+          workarea,
+          "%s (%s repos)" % [workarea, Dir.new(workarea).git_repos.count.commify]
         )
       end
 
@@ -53,17 +61,17 @@ module Git
         setting_status("Home", home, home && !home.empty? && File.directory?(home))
       end
 
-      def workarea_status workarea
-        directory_status("Workarea", workarea)
+      def main_workarea_status workarea
+        directory_status("Workarea (main)", workarea)
       end
 
       def user_workarea_status user
-        directory_status("Workarea (user: #{user})", File.join(Git::Meta::WORKAREA, user))
+        workarea_status("Workarea (user: #{user})", File.join(Git::Meta::WORKAREA, user))
       end
 
       def organization_workarea_status orgs
         for org in orgs
-          directory_status("Workarea (org: #{org})", File.join(Git::Meta::WORKAREA, org))
+          workarea_status("Workarea (org: #{org})", File.join(Git::Meta::WORKAREA, org))
         end
       end
 

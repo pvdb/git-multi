@@ -1,5 +1,5 @@
 class Dir
-  def git_repos(subdir)
+  def git_repos(subdir = '.')
     Dir.glob(File.join(self.path, subdir, '*', '.git')).map { |path_to_git_dir|
       path_to_git_repo = File.dirname(path_to_git_dir)    # without "/.git"
       repo_name = path_to_git_repo[/#{subdir}\/[^\/]+\z/] # e.g. "pvdb/git-meta"
