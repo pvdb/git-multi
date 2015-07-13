@@ -23,6 +23,15 @@ module Git
         )
       end
 
+      def directory_status setting, directory
+        setting_status(
+          setting,
+          directory,
+          directory && !directory.empty? && File.directory?(directory),
+          false
+        )
+      end
+
       def user_status user
         setting_status("User", user, user && !user.empty?)
       end
@@ -45,18 +54,16 @@ module Git
       end
 
       def workarea_status workarea
-        setting_status("Workarea", workarea, workarea && !workarea.empty? && File.directory?(workarea))
+        directory_status("Workarea", workarea)
       end
 
       def user_workarea_status user
-        user_workarea = File.join(Git::Meta::WORKAREA, user)
-        setting_status("User workarea", user_workarea, user_workarea && !user_workarea.empty? && File.directory?(user_workarea))
+        directory_status("Workarea (user: #{user})", File.join(Git::Meta::WORKAREA, user))
       end
 
       def organization_workarea_status orgs
         for org in orgs
-          org_workarea = File.join(Git::Meta::WORKAREA, org)
-          setting_status("Organization workarea", org_workarea, org_workarea && !org_workarea.empty? && File.directory?(org_workarea))
+          directory_status("Workarea (org: #{org})", File.join(Git::Meta::WORKAREA, org))
         end
       end
 
