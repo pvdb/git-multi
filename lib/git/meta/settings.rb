@@ -14,6 +14,15 @@ module Git
         puts "%s" % (valid ? TICK : optional ? ARROW : CROSS)
       end
 
+      def file_status setting, file
+        setting_status(
+          setting,
+          "%s (%s bytes)" % [file, File.size(file).commify],
+          file && !file.empty? && File.file?(file),
+          true
+        )
+      end
+
       def user_status user
         setting_status("User", user, user && !user.empty?)
       end
@@ -52,21 +61,11 @@ module Git
       end
 
       def yaml_cache_status yaml_cache
-        setting_status(
-          "YAML cache",
-          "%s (%s bytes)" % [yaml_cache, File.size(yaml_cache).commify],
-          yaml_cache && !yaml_cache.empty? && File.file?(yaml_cache),
-          true
-        )
+        file_status("YAML cache", yaml_cache)
       end
 
       def json_cache_status json_cache
-        setting_status(
-          "JSON cache",
-          "%s (%s bytes)" % [json_cache, File.size(json_cache).commify],
-          json_cache && !json_cache.empty? && File.file?(json_cache),
-          true
-        )
+        file_status("JSON cache", json_cache)
       end
 
     end
