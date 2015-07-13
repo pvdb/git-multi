@@ -11,6 +11,7 @@ require 'octokit'
 
 require 'etc'
 require 'yaml'
+require 'fileutils'
 require 'shellwords'
 
 module Git

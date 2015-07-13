@@ -86,6 +86,7 @@ module Git
 
       def clone
         Git::Meta.missing_repositories.each do |project|
+          FileUtils.mkdir_p project.parent_dir
           project_ssh_url = project.rels[:ssh].href
           project.just_do_it(
             ->(project) {
