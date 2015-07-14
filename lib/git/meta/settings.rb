@@ -10,7 +10,7 @@ module Git
 
       def setting_status setting, value, valid, optional = false
         print "   %s: %s\x0d" % [setting, value]
-        sleep 0.75
+        sleep 0.75 if Nike.interactive?
         puts "%s" % (valid ? TICK : optional ? ARROW : CROSS)
       end
 
