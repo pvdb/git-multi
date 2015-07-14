@@ -17,16 +17,19 @@ module Git
       def file_status setting, file
         setting_status(
           setting,
-          "%s (%s bytes)" % [file, File.size(file).commify],
+          "%s (%s bytes)" % [
+            Git::Meta.abbreviate(file),
+            File.size(file).commify
+          ],
           file && !file.empty? && File.file?(file),
           true
         )
       end
 
-      def directory_status setting, directory, message = directory
+      def directory_status setting, value, directory
         setting_status(
           setting,
-          message,
+          value,
           directory && !directory.empty? && File.directory?(directory),
           false
         )
@@ -35,8 +38,11 @@ module Git
       def workarea_status setting, workarea
         directory_status(
           setting,
-          workarea,
-          "%s (%s repos)" % [workarea, Dir.new(workarea).git_repos.count.commify]
+          "%s (%s repos)" % [
+            Git::Meta.abbreviate(workarea, :workarea),
+            Dir.new(workarea).git_repos.count.commify
+          ],
+          workarea
         )
       end
 
@@ -58,11 +64,11 @@ module Git
       end
 
       def home_status home
-        setting_status("Home", home, home && !home.empty? && File.directory?(home))
+        directory_status("Home", home, home)
       end
 
       def main_workarea_status workarea
-        directory_status("Workarea (main)", workarea)
+        directory_status("Workarea (main)", Git::Meta.abbreviate(workarea, :home), workarea)
       end
 
       def user_workarea_status user

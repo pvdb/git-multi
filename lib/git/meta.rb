@@ -82,6 +82,15 @@ module Git
     YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
     JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
 
+    def abbreviate directory, root_dir = nil
+      case root_dir
+      when :home     then directory.gsub Regexp.escape(Git::Meta::HOME),     '${HOME}'
+      when :workarea then directory.gsub Regexp.escape(Git::Meta::WORKAREA), '${WORKAREA}'
+      else
+        abbreviate(abbreviate(directory, :workarea), :home)
+      end
+    end
+
     #
     # https://developer.github.com/v3/repos/#list-user-repositories
     #
