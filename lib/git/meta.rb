@@ -1,19 +1,21 @@
-require "git/meta/version"
-require "git/meta/commands"
-require "git/meta/nike"
-require "git/meta/notify"
-require "git/meta/persistent"
-
-require 'ext/dir'
-require 'ext/string'
-require 'ext/sawyer/resource'
-
-require 'octokit'
-
 require 'etc'
 require 'yaml'
 require 'fileutils'
 require 'shellwords'
+
+require 'octokit'
+
+require 'ext/dir'
+require 'ext/string'
+require 'ext/commify'
+require 'ext/sawyer/resource'
+
+require 'git/meta/version'
+require 'git/meta/settings'
+require 'git/meta/commands'
+require 'git/meta/nike'
+require 'git/meta/notify'
+require 'git/meta/persistent'
 
 module Git
   module Meta
@@ -27,6 +29,67 @@ module Git
         :access_token => TOKEN,
         :auto_paginate => true,
       )
+    end
+
+    def login
+      @login ||= begin
+        client.user.login
+      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
+        nil
+      end
+    end
+
+    # FIXME update organizations as part of `--refresh`
+
+    def github_organizations
+      @github_organizations ||= begin
+        client.organizations
+      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
+        []
+      end
+    end
+
+    def git_option name, default = nil
+      value = `git config #{name}`.chomp.freeze
+      value.empty? && default ? default : value
+    end
+
+    def env_var name, default = nil
+      value = ENV[name].to_s.freeze
+      value.empty? && default ? default : value
+    end
+
+    class << self
+      private :client, :login, :git_option, :env_var
+    end
+
+    def connected?
+      client.validate_credentials
+      true
+    rescue Faraday::ConnectionFailed
+      false
+    end
+
+    USER          = git_option 'github.user'
+    ORGANIZATIONS = git_option('github.organizations').split(/\s*,\s*/)
+
+    TOKEN         = git_option 'gitmeta.token'
+    LOGIN         = login # AFTER setting TOKEN!
+    ORGS          = github_organizations.map(&:login)
+
+    HOME          = env_var 'HOME', Etc.getpwuid.dir
+
+    WORKAREA      = git_option 'gitmeta.workarea',  File.join(HOME, 'Workarea')
+    YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
+    JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
+
+    def abbreviate directory, root_dir = nil
+      case root_dir
+      when :home     then directory.gsub Regexp.escape(Git::Meta::HOME),     '${HOME}'
+      when :workarea then directory.gsub Regexp.escape(Git::Meta::WORKAREA), '${WORKAREA}'
+      else
+        abbreviate(abbreviate(directory, :workarea), :home)
+      end
     end
 
     #

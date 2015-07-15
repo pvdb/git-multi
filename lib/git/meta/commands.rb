@@ -8,14 +8,16 @@ module Git
         puts Git::Meta::VERSION
       end
 
-      def info
-        puts 'User: '          + Git::Meta::USER
-        puts 'Organizations: ' + Git::Meta::ORGANIZATIONS.join(', ')
-        puts 'Token: '         + Git::Meta::TOKEN
-        puts 'Home: '          + Git::Meta::HOME
-        puts 'Workarea: '      + Git::Meta::WORKAREA
-        puts 'YAML cache: '    + Git::Meta::YAML_CACHE
-        puts 'JSON cache: '    + Git::Meta::JSON_CACHE
+      def check
+        Settings.user_status(Git::Meta::USER)
+        Settings.organization_status(Git::Meta::ORGANIZATIONS)
+        Settings.token_status(Git::Meta::TOKEN)
+        Settings.home_status(Git::Meta::HOME)
+        Settings.main_workarea_status(Git::Meta::WORKAREA)
+        Settings.user_workarea_status(Git::Meta::USER)
+        Settings.organization_workarea_status(Git::Meta::ORGANIZATIONS)
+        Settings.yaml_cache_status(Git::Meta::YAML_CACHE)
+        Settings.json_cache_status(Git::Meta::JSON_CACHE)
       end
 
       def help
@@ -51,19 +53,6 @@ module Git
 
       def stale
         puts Git::Meta.stale_repositories.map(&:full_name)
-      end
-
-      def check
-        login = begin
-          Git::Meta.client.user.login
-        rescue Octokit::Unauthorized
-          nil
-        end
-        if login
-          puts "#{'SUCCESS'.bold}: github user: %s ; github login: %s" % [Git::Meta::USER, login]
-        else
-          puts "#{'ERROR'.bold}: 401 - Bad credentials"
-        end
       end
 
       def count
