@@ -2,6 +2,7 @@ require "git/meta/version"
 require "git/meta/commands"
 require "git/meta/nike"
 require "git/meta/notify"
+require "git/meta/persistent"
 
 require 'ext/dir'
 require 'ext/string'
