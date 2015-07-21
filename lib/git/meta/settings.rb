@@ -10,11 +10,11 @@ module Git
 
       def setting_status setting, value, valid, optional = false
         if Nike.interactive?
-          print "   %s: %s\x0d" % [setting, value]
+          print "   %s - %s\x0d" % [setting, value]
           sleep 0.75
           puts "%s" % (valid ? TICK : optional ? ARROW : CROSS)
         else
-          puts "%s  %s: %s" % [
+          puts "%s  %s - %s" % [
             (valid ? TICK : optional ? ARROW : CROSS),
             setting, value,
           ]
@@ -24,7 +24,7 @@ module Git
       def file_status setting, file
         setting_status(
           setting,
-          "%s (%s bytes)" % [
+          "%s - %s bytes" % [
             Git::Meta.abbreviate(file),
             File.size(file).commify
           ],
@@ -45,7 +45,7 @@ module Git
       def workarea_status setting, workarea
         directory_status(
           setting,
-          "%s (%s repos)" % [
+          "%s - %s repos" % [
             Git::Meta.abbreviate(workarea, :workarea),
             Dir.new(workarea).git_repos.count.commify
           ],
