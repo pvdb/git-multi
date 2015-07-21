@@ -9,15 +9,12 @@ module Git
       module_function
 
       def setting_status messages, valid, optional = false
+        fields = messages.join(' - ')
+        icon = valid ? TICK : optional ? ARROW : CROSS
         if Nike.interactive?
-          print "   %s\x0d" % messages.join(' - ')
-          sleep 0.75
-          puts "%s" % (valid ? TICK : optional ? ARROW : CROSS)
+          print "   #{fields}" ; sleep 0.75 ; puts "\x0d#{icon}"
         else
-          puts "%s  %s" % [
-            (valid ? TICK : optional ? ARROW : CROSS),
-            messages.join(' - '),
-          ]
+          puts "#{icon}  #{fields}"
         end
       end
 
