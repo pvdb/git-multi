@@ -9,9 +9,16 @@ module Git
       module_function
 
       def setting_status setting, value, valid, optional = false
-        print "   %s: %s\x0d" % [setting, value]
-        sleep 0.75 if Nike.interactive?
-        puts "%s" % (valid ? TICK : optional ? ARROW : CROSS)
+        if Nike.interactive?
+          print "   %s: %s\x0d" % [setting, value]
+          sleep 0.75
+          puts "%s" % (valid ? TICK : optional ? ARROW : CROSS)
+        else
+          puts "%s  %s: %s" % [
+            (valid ? TICK : optional ? ARROW : CROSS),
+            setting, value,
+          ]
+        end
       end
 
       def file_status setting, file
