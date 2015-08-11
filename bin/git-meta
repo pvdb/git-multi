@@ -9,18 +9,17 @@ if __FILE__ == $0
   case (command = ARGV.shift)
   when /\A--/
     case command
+      when '--version' then Git::Meta::Commands.version
       when '--help'    then Git::Meta::Commands.help
       when '--check'   then Git::Meta::Commands.check
-      when '--version' then Git::Meta::Commands.version
       when '--refresh' then Git::Meta::Commands.refresh
-      when '--list'    then Git::Meta::Commands.list
-      when '--stale'   then Git::Meta::Commands.stale
-      when '--graph'   then Git::Meta::Commands.graph
       when '--count'   then Git::Meta::Commands.count
+      when '--list'    then Git::Meta::Commands.list
       when '--missing' then Git::Meta::Commands.missing
-      when '--report'  then Git::Meta::Commands.report
+      when '--stale'   then Git::Meta::Commands.stale
       when '--excess'  then Git::Meta::Commands.excess
       when '--clone'   then Git::Meta::Commands.clone
+      when '--graph'   then Git::Meta::Commands.graph
       when '--query'   then Git::Meta::Commands.query(ARGV)
       when '--eval'    then Git::Meta::Commands.eval(*ARGV)
       when '--raw'     then Git::Meta::Commands.raw(ARGV)

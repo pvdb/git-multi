@@ -16,15 +16,17 @@ DESCRIPTION
 
 OPTIONS
 
-  git meta --help         # you're looking at it
   git meta --version      # print out this script's version number
+  git meta --help         # you're looking at it
+  git meta --check        # checks all the required settings and configurations
   git meta --refresh      # refresh the list of organization repos
-  git meta --list         # print out names of all organization repos
-  git meta --stale        # list repos that have been deleted on github.com
-  git meta --graph        # create a dependency graph of all organization repos
   git meta --count        # print out the count of organization repos (per type)
+  git meta --list         # print out names of all organization repos
   git meta --missing      # print out names of repos that haven't been cloned
+  git meta --stale        # list repos that have been deleted on github.com
+  git meta --excess       # list repos that don't exist on github.com
   git meta --clone        # clones missing repositories into ${PROJECTS_HOME}
+  git meta --graph        # create a dependency graph of all organization repos
   git meta --query (args) # query Github repo metadata for each repository
   git meta --eval <ruby>  # execute the given Ruby code in the context of each repo
   get meta --raw <cmd>    # execute <cmd> inside each git repository
