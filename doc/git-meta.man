@@ -25,6 +25,7 @@ OPTIONS
   git meta --missing      # print out names of repos that haven't been cloned
   git meta --stale        # list repos that have been deleted on github.com
   git meta --excess       # list repos that don't exist on github.com
+  git meta --spurious     # list cloned repos whose remote doesn't match a github.com origin
   git meta --clone        # clones missing repositories into ${PROJECTS_HOME}
   git meta --graph        # create a dependency graph of all organization repos
   git meta --query (args) # query Github repo metadata for each repository

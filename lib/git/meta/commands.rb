@@ -55,6 +55,10 @@ module Git
         puts Git::Meta.stale_repositories.map(&:full_name)
       end
 
+      def spurious
+        puts Git::Meta.spurious_repositories.map(&:full_name)
+      end
+
       def count
         # https://developer.github.com/v3/repos/#list-user-repositories
         user = Git::Meta::USER
