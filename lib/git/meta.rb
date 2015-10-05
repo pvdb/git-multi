@@ -73,7 +73,7 @@ module Git
     USER          = git_option 'github.user'
     ORGANIZATIONS = git_option('github.organizations').split(/\s*,\s*/)
 
-    TOKEN         = git_option 'gitmeta.token'
+    TOKEN         = env_var 'GITMETA_GITHUB_API_TOKEN'
     LOGIN         = login # AFTER setting TOKEN!
     ORGS          = github_organizations.map(&:login)
 
