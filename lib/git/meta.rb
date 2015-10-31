@@ -181,6 +181,8 @@ module Git
               project.parent_dir = File.join(WORKAREA, project.owner.login)
               project.local_path = File.join(WORKAREA, project.full_name)
               project.fractional_index = "#{index + 1}/#{projects.count}"
+              # ensure 'project' has handle on an Octokit client
+              def project.client() @client ||= Git::Meta.send(:client) ; end
               # extend 'project' with 'just do it' capabilities
               project.extend Nike
               # extend 'project' with some cheeky knowledge
