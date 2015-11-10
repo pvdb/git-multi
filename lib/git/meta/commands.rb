@@ -78,15 +78,14 @@ module Git
       end
 
       def clone
-        Git::Meta.missing_repositories.each do |project|
-          FileUtils.mkdir_p project.parent_dir
-          project_ssh_url = project.rels[:ssh].href
-          project.just_do_it(
+        Git::Meta.missing_repositories.each do |repo|
+          FileUtils.mkdir_p repo.parent_dir
+          repo.just_do_it(
             ->(project) {
-              Kernel.system "git clone #{project_ssh_url.shellescape}"
+              Kernel.system "git clone #{project.rels[:ssh].href.shellescape}"
             },
             ->(project) {
-              Kernel.system "git clone -q #{project_ssh_url.shellescape}"
+              Kernel.system "git clone -q #{project.rels[:ssh].href.shellescape}"
             },
             :in_dir => :parent_dir
           )
@@ -94,8 +93,8 @@ module Git
       end
 
       def query args = []
-        Git::Meta.repositories.each do |project|
-          project.just_do_it(
+        Git::Meta.repositories.each do |repo|
+          repo.just_do_it(
             ->(project) {
               args.each do |attribute|
                 puts "#{attribute}: #{project[attribute]}"
@@ -111,8 +110,8 @@ module Git
 
       def system args = []
         args.map!(&:shellescape)
-        Git::Meta.cloned_repositories.each do |project|
-          project.just_do_it(
+        Git::Meta.cloned_repositories.each do |repo|
+          repo.just_do_it(
             ->(project) {
               Kernel.system "#{args.join(' ')}"
             },
