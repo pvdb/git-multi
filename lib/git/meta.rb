@@ -3,10 +3,10 @@ require 'yaml'
 require 'fileutils'
 require 'shellwords'
 
-require 'octokit'
-
 require 'ext/dir'
+require 'ext/utils'
 require 'ext/string'
+require 'ext/notify'
 require 'ext/commify'
 require 'ext/sawyer/resource'
 
@@ -16,7 +16,6 @@ require 'git/meta/version'
 require 'git/meta/settings'
 require 'git/meta/commands'
 require 'git/meta/nike'
-require 'git/meta/notify'
 require 'git/meta/persistent'
 
 module Git
@@ -26,38 +25,8 @@ module Git
 
     module_function
 
-    def client
-      @client ||= Octokit::Client.new(
-        :access_token => TOKEN,
-        :auto_paginate => true,
-      )
-    end
-
-    def git_option name, default = nil
-      value = `git config #{name}`.chomp.freeze
-      value.empty? && default ? default : value
-    end
-
-    def env_var name, default = nil
-      value = ENV[name].to_s.freeze
-      value.empty? && default ? default : value
-    end
-
-    class << self
-      private :client, :git_option, :env_var
-    end
-
-    def connected?
-      client.validate_credentials
-      true
-    rescue Faraday::ConnectionFailed
-      false
-    end
-
     USER          = git_option 'github.user'
     ORGANIZATIONS = git_option('github.organizations').split(/\s*,\s*/)
-
-    TOKEN         = env_var 'GITMETA_GITHUB_API_TOKEN'
 
     HOME          = env_var 'HOME', Etc.getpwuid.dir
 
@@ -75,60 +44,32 @@ module Git
     end
 
     #
-    # https://developer.github.com/v3/repos/#list-user-repositories
+    # local repositories (in WORKAREA)
     #
-
-    @github_user_repositories = Hash.new { |repos, (user, type)|
-      repos[[user, type]] = begin
-        notify("Refreshing #{type} '#{user}' repositories from GitHub")
-        client.repositories(user, :type => type).
-        sort_by { |repo| repo[:name].downcase }
-      end
-    }
-
-    def github_user_repositories(user, type = :owner) # all, owner, member
-      @github_user_repositories[[user, type]]
-    end
 
     @local_user_repositories = Hash.new { |repos, user|
       repos[user] = Dir.new(WORKAREA).git_repos(user)
     }
 
-    #
-    # https://developer.github.com/v3/repos/#list-organization-repositories
-    #
-
-    @github_org_repositories = Hash.new { |repos, (org, type)|
-      repos[[org, type]] = begin
-        notify("Refreshing #{type} '#{org}' repositories from GitHub")
-        client.org_repositories(org, :type => type).
-        sort_by { |repo| repo[:name].downcase }
-      end
-    }
-
-    def github_org_repositories(org, type = :owner) # all, public, private, forks, sources, member
-      @github_org_repositories[[org, type]]
-    end
-
     @local_org_repositories = Hash.new { |repos, org|
       repos[org] = Dir.new(WORKAREA).git_repos(org)
     }
-
-    #
-    # all together now ...
-    #
-
-    def github_repositories
-      @github_repositories ||= (
-        github_user_repositories(USER) +
-        ORGANIZATIONS.map { |org| github_org_repositories(org) }
-      ).flatten
-    end
 
     def local_repositories
       (
         @local_user_repositories[USER] +
         ORGANIZATIONS.map { |org| @local_org_repositories[org] }
+      ).flatten
+    end
+
+    #
+    # remote repositories (on GitHub)
+    #
+
+    def github_repositories
+      @github_repositories ||= (
+        Git::Hub.user_repositories(USER) +
+        ORGANIZATIONS.map { |org| Git::Hub.org_repositories(org) }
       ).flatten
     end
 
@@ -143,6 +84,10 @@ module Git
       end
     end
 
+    #
+    # the main entry point for `Git::Meta`
+    #
+
     def repositories
       if File.size? YAML_CACHE
         @repositories ||= YAML.load(File.read(YAML_CACHE)).tap do |projects|
@@ -156,7 +101,7 @@ module Git
             project.local_path = File.join(WORKAREA, project.full_name)
             project.fractional_index = "#{index + 1}/#{projects.count}"
             # ensure 'project' has handle on an Octokit client
-            def project.client() @client ||= Git::Meta.send(:client) ; end
+            def project.client() @client ||= Git::Hub.send(:client) ; end
             # extend 'project' with 'just do it' capabilities
             project.extend Nike
             # extend 'project' with some cheeky knowledge
@@ -167,6 +112,10 @@ module Git
         refresh_repositories and repositories
       end
     end
+
+    #
+    # derived lists of repositories
+    #
 
     def excess_repositories
       repository_full_names = repositories.map(&:full_name)

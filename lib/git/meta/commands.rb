@@ -11,7 +11,7 @@ module Git
       def check
         Settings.user_status(Git::Meta::USER)
         Settings.organization_status(Git::Meta::ORGANIZATIONS)
-        Settings.token_status(Git::Meta::TOKEN)
+        Settings.token_status(Git::Hub::TOKEN)
         Settings.home_status(Git::Meta::HOME)
         Settings.main_workarea_status(Git::Meta::WORKAREA)
         Settings.user_workarea_status(Git::Meta::USER)
@@ -35,7 +35,7 @@ module Git
 
       def report
         if (missing_repos = Git::Meta::missing_repositories).any?
-          Git::Meta::notify(missing_repos.map(&:full_name), :subtitle => "#{missing_repos.count} missing repos")
+          notify(missing_repos.map(&:full_name), :subtitle => "#{missing_repos.count} missing repos")
         end
       end
 
@@ -63,12 +63,12 @@ module Git
         # https://developer.github.com/v3/repos/#list-user-repositories
         user = Git::Meta::USER
         %w{ all owner member }.each { |type|
-          puts ["#{user}/#{type}", Git::Meta.github_user_repositories(user, type).count].join("\t")
+          puts ["#{user}/#{type}", Git::Hub.user_repositories(user, type).count].join("\t")
         }
         # https://developer.github.com/v3/repos/#list-organization-repositories
         for org in Git::Meta::ORGANIZATIONS
           %w{ all public private forks sources member }.each { |type|
-            puts ["#{org}/#{type}", Git::Meta.github_org_repositories(org, type).count].join("\t")
+            puts ["#{org}/#{type}", Git::Hub.org_repositories(org, type).count].join("\t")
           }
         end
       end

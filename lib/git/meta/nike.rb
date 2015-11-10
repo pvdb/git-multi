@@ -6,10 +6,6 @@ module Nike
 
   module_function :interactive?
 
-  # ensure the Octokit client instance
-  # is available for --eval one-liners
-  def client() Git::Meta.client ; end
-
   def just_do_it interactive, pipeline, options = {}
     working_dir = case options[:in_dir]
       when :local_path then self.local_path
