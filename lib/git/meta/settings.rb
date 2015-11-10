@@ -38,12 +38,12 @@ module Git
         )
       end
 
-      def workarea_status message, workarea
+      def workarea_status message, workarea, subdir
         directory_status(
           [
             message,
-            Git::Meta.abbreviate(workarea, :workarea),
-            "#{Dir.new(workarea).git_repos.count.commify} repos"
+            File.join(Git::Meta.abbreviate(workarea, :workarea), subdir),
+            "#{Dir.new(workarea).git_repos(subdir).count.commify} repos"
           ],
           workarea
         )
@@ -75,12 +75,12 @@ module Git
       end
 
       def user_workarea_status user
-        workarea_status("Workarea (user: #{user})", File.join(Git::Meta::WORKAREA, user))
+        workarea_status("Workarea (user: #{user})", Git::Meta::WORKAREA, user)
       end
 
       def organization_workarea_status orgs
         for org in orgs
-          workarea_status("Workarea (org: #{org})", File.join(Git::Meta::WORKAREA, org))
+          workarea_status("Workarea (org: #{org})", Git::Meta::WORKAREA, org)
         end
       end
 
