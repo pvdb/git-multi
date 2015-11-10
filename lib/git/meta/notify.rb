@@ -9,6 +9,10 @@ module Git
   module Meta
 
     def notify(message, options = {}, verbose = false)
+      # print the given message to STDERR, if the
+      # script is running with "--verbose" option
+      subtitle = options[:subtitle]
+      warn(subtitle ? "#{subtitle}: #{message}" : message) if $VERBOSE
       # send a given message to the Mac OS X Notification Center
       # but only if the git-meta script is running interactively
       # and if the "terminal-notifier" gem has been installed...
