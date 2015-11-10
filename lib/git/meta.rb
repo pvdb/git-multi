@@ -10,6 +10,8 @@ require 'ext/string'
 require 'ext/commify'
 require 'ext/sawyer/resource'
 
+require 'git/hub'
+
 require 'git/meta/version'
 require 'git/meta/settings'
 require 'git/meta/commands'
@@ -29,26 +31,6 @@ module Git
         :access_token => TOKEN,
         :auto_paginate => true,
       )
-    end
-
-    # FIXME update github_login as part of `--refresh`
-
-    def github_login
-      @github_login ||= begin
-        client.user.login
-      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
-        nil
-      end
-    end
-
-    # FIXME update github_orgs as part of `--refresh`
-
-    def github_orgs
-      @github_orgs ||= begin
-        client.organizations.map(&:login)
-      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
-        []
-      end
     end
 
     def git_option name, default = nil

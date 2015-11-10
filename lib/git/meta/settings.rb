@@ -56,14 +56,14 @@ module Git
       def organization_status orgs
         for org in orgs
           setting_status(["Organization", org], org && !org.empty?, true)
-          setting_status(["Organization", "member?"], Git::Meta.github_orgs.include?(org), !Git::Meta.connected?)
+          setting_status(["Organization", "member?"], Git::Hub.orgs.include?(org), !Git::Meta.connected?)
         end
       end
 
       def token_status token
         setting_status(["Token", token], token && !token.empty?)
-        setting_status(["Token", "valid?"], token && !token.empty? && Git::Meta.github_login, !Git::Meta.connected?)
-        setting_status(["Token", "owned by #{Git::Meta::USER}?"], Git::Meta.github_login == Git::Meta::USER, !Git::Meta.connected?)
+        setting_status(["Token", "valid?"], token && !token.empty? && Git::Hub.login, !Git::Meta.connected?)
+        setting_status(["Token", "owned by #{Git::Meta::USER}?"], Git::Hub.login == Git::Meta::USER, !Git::Meta.connected?)
       end
 
       def home_status home
