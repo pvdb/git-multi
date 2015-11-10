@@ -98,6 +98,7 @@ module Git
 
     @github_user_repositories = Hash.new { |repos, (user, type)|
       repos[[user, type]] = begin
+        notify("Refreshing #{type} '#{user}' repositories from GitHub")
         client.repositories(user, :type => type).
         sort_by { |repo| repo[:name].downcase }
       end
@@ -117,6 +118,7 @@ module Git
 
     @github_org_repositories = Hash.new { |repos, (org, type)|
       repos[[org, type]] = begin
+        notify("Refreshing #{type} '#{org}' repositories from GitHub")
         client.org_repositories(org, :type => type).
         sort_by { |repo| repo[:name].downcase }
       end
@@ -162,6 +164,7 @@ module Git
     def repositories
       if File.size? YAML_CACHE
         @repositories ||= YAML.load(File.read(YAML_CACHE)).tap do |projects|
+          notify "Finished loading #{YAML_CACHE}"
           projects.each_with_index do |project, index|
             # ensure #method_missing works for Sawyer::Resource instances
             project.instance_eval("@_metaclass = (class << self; self ; end)")
