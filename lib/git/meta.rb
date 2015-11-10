@@ -168,7 +168,7 @@ module Git
     end
 
     def repositories
-      if File.exists? YAML_CACHE
+      if File.exist? YAML_CACHE
         if (yaml_cache = File.read(YAML_CACHE)).empty?
           refresh_repositories and repositories
         else
