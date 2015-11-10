@@ -31,20 +31,20 @@ module Git
       )
     end
 
-    # FIXME update login as part of `--refresh`
+    # FIXME update github_login as part of `--refresh`
 
-    def login
-      @login ||= begin
+    def github_login
+      @github_login ||= begin
         client.user.login
       rescue Octokit::Unauthorized, Faraday::ConnectionFailed
         nil
       end
     end
 
-    # FIXME update organizations as part of `--refresh`
+    # FIXME update github_orgs as part of `--refresh`
 
-    def github_organizations
-      @github_organizations ||= begin
+    def github_orgs
+      @github_orgs ||= begin
         client.organizations.map(&:login)
       rescue Octokit::Unauthorized, Faraday::ConnectionFailed
         []
