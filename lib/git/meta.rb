@@ -111,10 +111,6 @@ module Git
       repos[user] = Dir.new(WORKAREA).git_repos(user)
     }
 
-    def local_user_repositories(user)
-      @local_user_repositories[user]
-    end
-
     #
     # https://developer.github.com/v3/repos/#list-organization-repositories
     #
@@ -134,10 +130,6 @@ module Git
       repos[org] = Dir.new(WORKAREA).git_repos(org)
     }
 
-    def local_org_repositories(org)
-      @local_org_repositories[org]
-    end
-
     #
     # all together now ...
     #
@@ -151,8 +143,8 @@ module Git
 
     def local_repositories
       (
-        local_user_repositories(USER) +
-        ORGANIZATIONS.map { |org| local_org_repositories(org) }
+        @local_user_repositories[USER] +
+        ORGANIZATIONS.map { |org| @local_org_repositories[org] }
       ).flatten
     end
 
