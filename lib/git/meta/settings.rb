@@ -22,7 +22,7 @@ module Git
         setting_status(
           [
             message,
-            Git::Meta.abbreviate(file),
+            abbreviate(file),
             "#{File.size(file).commify} bytes",
           ],
           file && !file.empty? && File.file?(file),
@@ -42,7 +42,7 @@ module Git
         directory_status(
           [
             message,
-            File.join(Git::Meta.abbreviate(workarea, :workarea), subdir),
+            File.join(abbreviate(workarea, :workarea), subdir),
             "#{Dir.new(workarea).git_repos(subdir).count.commify} repos"
           ],
           workarea
@@ -71,7 +71,7 @@ module Git
       end
 
       def main_workarea_status workarea
-        directory_status(["Workarea (main)", Git::Meta.abbreviate(workarea, :home)], workarea)
+        directory_status(["Workarea (main)", abbreviate(workarea, :home)], workarea)
       end
 
       def user_workarea_status user
