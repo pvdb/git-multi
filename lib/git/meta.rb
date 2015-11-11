@@ -15,7 +15,6 @@ require 'git/hub'
 require 'git/meta/version'
 require 'git/meta/settings'
 require 'git/meta/commands'
-require 'git/meta/persistent'
 
 module Git
   module Meta
