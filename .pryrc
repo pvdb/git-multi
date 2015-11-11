@@ -31,3 +31,7 @@ def client() pry Git::Hub.send(:client) ; end
 # utility function to set pry context
 # to the Array of github repositories
 def repos() pry Git::Meta.repositories ; end
+
+# utility function to set pry context
+# to the various 'git meta' commands:
+def cmds() pry Git::Meta::Commands ; end
