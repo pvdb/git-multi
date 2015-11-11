@@ -19,10 +19,12 @@ module Git
     end
 
     def connected?
-      client.validate_credentials
-      true
-    rescue Faraday::ConnectionFailed
-      false
+      @connected ||= begin
+        client.validate_credentials
+        true
+      rescue Faraday::ConnectionFailed
+        false
+      end
     end
 
     # FIXME update login as part of `--refresh`
