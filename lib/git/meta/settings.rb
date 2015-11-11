@@ -11,7 +11,7 @@ module Git
       def setting_status messages, valid, optional = false
         fields = messages.join(' - ')
         icon = valid ? TICK : optional ? ARROW : CROSS
-        if Nike.interactive?
+        if $INTERACTIVE
           print "   #{fields}" ; sleep 0.75 ; puts "\x0d#{icon}"
         else
           puts "#{icon}  #{fields}"

@@ -1,11 +1,5 @@
 module Nike
 
-  def interactive?
-    @interactive ||= (STDOUT.tty? && STDERR.tty?)
-  end
-
-  module_function :interactive?
-
   def just_do_it interactive, pipeline, options = {}
     working_dir = case options[:in_dir]
       when :local_path then self.local_path
@@ -13,7 +7,7 @@ module Nike
       else Dir.pwd
     end
     Dir.chdir(working_dir) do
-      if Nike.interactive?
+      if $INTERACTIVE
         puts "%s (%s)" % [
           self.full_name.invert,
           self.fractional_index

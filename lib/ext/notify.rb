@@ -13,7 +13,7 @@ def notify(message, options = {}, verbose = false)
   # send a given message to the Mac OS X Notification Center
   # but only if the git-meta script is running interactively
   # and if the "terminal-notifier" gem has been installed...
-  if Nike.interactive? && defined?(TerminalNotifier)
+  if $INTERACTIVE && defined?(TerminalNotifier)
     options[:title] ||= 'git-meta'
     TerminalNotifier.notify(message, options, verbose)
   end

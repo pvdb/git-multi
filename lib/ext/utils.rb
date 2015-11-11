@@ -1,3 +1,5 @@
+$INTERACTIVE = (STDOUT.tty? && STDERR.tty?)
+
 def git_option name, default = nil
   value = `git config #{name}`.chomp.freeze
   value.empty? && default ? default : value
