@@ -82,7 +82,8 @@ module Git
           FileUtils.mkdir_p repo.parent_dir
           repo.just_do_it(
             ->(project) {
-              Kernel.system "git clone #{project.rels[:ssh].href.shellescape}"
+              notify "Cloning '#{repo.full_name}' repo into #{repo.parent_dir.parent}"
+              Kernel.system "git clone -q #{project.rels[:ssh].href.shellescape}"
             },
             ->(project) {
               Kernel.system "git clone -q #{project.rels[:ssh].href.shellescape}"

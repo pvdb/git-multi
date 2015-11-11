@@ -1,5 +1,6 @@
 require 'etc'
 require 'yaml'
+require 'pathname'
 require 'fileutils'
 require 'shellwords'
 
@@ -111,8 +112,8 @@ module Git
             # ensure 'project' has handle on an Octokit client
             project.client = Git::Hub.send(:client)
             # adorn 'project', which is a Sawyer::Resource
-            project.parent_dir = File.join(WORKAREA, project.owner.login)
-            project.local_path = File.join(WORKAREA, project.full_name)
+            project.parent_dir = Pathname.new(File.join(WORKAREA, project.owner.login))
+            project.local_path = Pathname.new(File.join(WORKAREA, project.full_name))
             project.fractional_index = "#{index + 1}/#{projects.count}"
             # extend 'project' with 'just do it' capabilities
             project.extend Nike
