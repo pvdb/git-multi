@@ -15,7 +15,6 @@ require 'git/hub'
 require 'git/meta/version'
 require 'git/meta/settings'
 require 'git/meta/commands'
-require 'git/meta/nike'
 require 'git/meta/persistent'
 
 module Git
@@ -85,8 +84,31 @@ module Git
     end
 
     #
-    # the main entry point for `Git::Meta`
+    # the main `Git::Meta` capabilities
     #
+
+    module Nike
+
+      def just_do_it interactive, pipeline, options = {}
+        working_dir = case options[:in_dir]
+          when :parent_dir then self.parent_dir
+          when :local_path then self.local_path
+          else Dir.pwd
+        end
+        Dir.chdir(working_dir) do
+          if $INTERACTIVE
+            puts "%s (%s)" % [
+              self.full_name.invert,
+              self.fractional_index
+            ]
+            interactive.call(self)
+          else
+            pipeline.call(self)
+          end
+        end
+      end
+
+    end
 
     def repositories
       if File.size? YAML_CACHE
@@ -104,8 +126,6 @@ module Git
             def project.client() @client ||= Git::Hub.send(:client) ; end
             # extend 'project' with 'just do it' capabilities
             project.extend Nike
-            # extend 'project' with some cheeky knowledge
-            # project.extend Prometheus
           end
         end
       else
