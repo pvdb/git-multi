@@ -134,11 +134,11 @@ module Git
         system args.flatten
       end
 
-      def find command
+      def find commands
         Git::Meta.cloned_repositories.each do |repo|
           Dir.chdir(repo.local_path) do
             begin
-              if repo.instance_eval(command)
+              if repo.instance_eval(commands.join(' && '))
                 repo.just_do_it(
                   ->(project) { nil ; },
                   ->(project) { puts project.full_name ; },
@@ -152,11 +152,11 @@ module Git
         end
       end
 
-      def eval command
+      def eval commands
         Git::Meta.cloned_repositories.each do |repo|
           Dir.chdir(repo.local_path) do
             begin
-              repo.instance_eval(command)
+              repo.instance_eval(commands.join(' ; '))
             rescue Octokit::NotFound
               # project no longer exists on github.com
               # consider running "git meta --stale"...

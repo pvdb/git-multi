@@ -22,8 +22,8 @@ if __FILE__ == $0
       when '--clone'   then Git::Meta::Commands.clone
       when '--graph'   then Git::Meta::Commands.graph
       when '--query'   then Git::Meta::Commands.query(ARGV)
-      when '--find'    then Git::Meta::Commands.find(*ARGV)
-      when '--eval'    then Git::Meta::Commands.eval(*ARGV)
+      when '--find'    then Git::Meta::Commands.find(ARGV)
+      when '--eval'    then Git::Meta::Commands.eval(ARGV)
       when '--raw'     then Git::Meta::Commands.raw(ARGV)
     else
       abort "Unknown 'git-meta' sub-command: #{command}\n"\
