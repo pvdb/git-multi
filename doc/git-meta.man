@@ -54,7 +54,7 @@ EXAMPLES
   git meta --query description | egrep ': *$'
 
   # print out the number of days since the last push to each repository
-  git meta --eval 'puts "%d days" % ((Time.now - pushed_at) / 60 / 60 / 24)'
+  git meta --eval 'puts "%%d days" %% ((Time.now - pushed_at) / 60 / 60 / 24)'
 
   # find all projects that have been pushed to in the last week
   git meta --find '((Time.now - pushed_at) / 60 / 60 / 24) <= 7'
