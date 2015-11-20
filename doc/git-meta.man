@@ -30,6 +30,7 @@ OPTIONS
   git meta --graph        # create a dependency graph of all organization repos
   git meta --query (args) # query Github repo metadata for each repository
   git meta --eval <ruby>  # execute the given Ruby code in the context of each repo
+  git meta --find <ruby>  # print out the repos for which the Ruby code evaluates to true
   get meta --raw <cmd>    # execute <cmd> inside each git repository
 
 EXAMPLES
@@ -51,6 +52,12 @@ EXAMPLES
 
   # find Github repos without a description
   git meta --query description | egrep ': *$'
+
+  # print out the number of days since the last push to each repository
+  git meta --eval 'puts "%d days" % ((Time.now - pushed_at) / 60 / 60 / 24)'
+
+  # find all projects that have been pushed to in the last week
+  git meta --find '((Time.now - pushed_at) / 60 / 60 / 24) <= 7'
 
   # fetch remote branches for all organization repos
   git meta fetch -p
