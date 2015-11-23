@@ -17,7 +17,7 @@ end
 module Git
   module Hub
 
-    TOKEN = env_var 'GITMETA_GITHUB_API_TOKEN'
+    TOKEN = env_var('GITMETA_ACCESS_TOKEN', env_var('OCTOKIT_ACCESS_TOKEN'))
 
     module_function
 
