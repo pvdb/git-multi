@@ -6,8 +6,8 @@ def git_option name, default = nil
 end
 
 def env_var name, default = nil
-  value = ENV[name].to_s.freeze
-  value.empty? && default ? default : value
+  value = ENV[name].freeze
+  (value.nil? || value.empty?) && default ? default : value
 end
 
 def abbreviate directory, root_dir = nil
