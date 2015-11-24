@@ -61,8 +61,8 @@ module Git
       end
 
       def token_status token
-        setting_status(["Token", token || "(nil)"], token && !token.empty?)
-        setting_status(["Token", "valid?"], token && !token.empty? && Git::Hub.login, !Git::Hub.connected?)
+        setting_status(["Token", symbolize(token), describe(token)], !token.nil? && !token.empty?)
+        setting_status(["Token", "valid?"], !token.nil? && !token.empty? && Git::Hub.login, !Git::Hub.connected?)
         setting_status(["Token", "owned by #{Git::Meta::USER}?"], Git::Hub.login == Git::Meta::USER, !Git::Hub.connected?)
       end
 
