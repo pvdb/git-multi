@@ -9,27 +9,28 @@ if __FILE__ == $0
   case (command = ARGV.shift)
   when /\A--/
     case command
-      when '--version' then Git::Meta::Commands.version
-      when '--help'    then Git::Meta::Commands.help
-      when '--check'   then Git::Meta::Commands.check
-      when '--refresh' then Git::Meta::Commands.refresh
-      when '--count'   then Git::Meta::Commands.count
-      when '--list'    then Git::Meta::Commands.list
-      when '--spurious'then Git::Meta::Commands.spurious
-      when '--missing' then Git::Meta::Commands.missing
-      when '--stale'   then Git::Meta::Commands.stale
-      when '--excess'  then Git::Meta::Commands.excess
-      when '--clone'   then Git::Meta::Commands.clone
-      when '--graph'   then Git::Meta::Commands.graph
-      when '--query'   then Git::Meta::Commands.query(ARGV)
-      when '--find'    then Git::Meta::Commands.find(ARGV)
-      when '--eval'    then Git::Meta::Commands.eval(ARGV)
-      when '--raw'     then Git::Meta::Commands.raw(ARGV)
+    when '--version' then Git::Meta::Commands.version
+    when '--help'    then Git::Meta::Commands.help
+    when '--check'   then Git::Meta::Commands.check
+    when '--refresh' then Git::Meta::Commands.refresh
+    when '--count'   then Git::Meta::Commands.count
+    when '--list'    then Git::Meta::Commands.list
+    when '--spurious'then Git::Meta::Commands.spurious
+    when '--missing' then Git::Meta::Commands.missing
+    when '--stale'   then Git::Meta::Commands.stale
+    when '--excess'  then Git::Meta::Commands.excess
+    when '--clone'   then Git::Meta::Commands.clone
+    when '--graph'   then Git::Meta::Commands.graph
+    when '--query'   then Git::Meta::Commands.query(ARGV)
+    when '--find'    then Git::Meta::Commands.find(ARGV)
+    when '--eval'    then Git::Meta::Commands.eval(ARGV)
+    when '--raw'     then Git::Meta::Commands.raw(ARGV)
     else
-      abort "Unknown 'git-meta' sub-command: #{command}\n"\
-            "(use --help/-h to list all available commands)"
+      abort \
+      "Unknown 'git meta' command: #{command}\n\n" \
+      "(use --help/-h to list all available commands)"
     end
-  when *[nil, '', '-h']
+  when nil, '', '-h'
     Git::Meta::Commands.help
   else
     Git::Meta::Commands.report
