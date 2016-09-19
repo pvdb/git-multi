@@ -130,7 +130,7 @@ module Git
       end
 
       def exec command, args = []
-        args.unshift ['git', command]
+        args.unshift ['git', '--no-pager', command]
         system args.flatten
       end
 
