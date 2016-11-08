@@ -23,10 +23,10 @@ module Git
           [
             message,
             abbreviate(file),
-            "#{File.size(file).commify} bytes",
+            "#{File.size(file).commify rescue 'N/A'} bytes",
           ],
           file && !file.empty? && File.file?(file),
-          true
+          false
         )
       end
 
@@ -82,6 +82,10 @@ module Git
         for org in orgs
           workarea_status("Workarea (org: #{org})", Git::Meta::WORKAREA, org)
         end
+      end
+
+      def byte_cache_status byte_cache
+        file_status("BYTE cache", byte_cache)
       end
 
       def yaml_cache_status yaml_cache

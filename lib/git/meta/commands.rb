@@ -16,6 +16,7 @@ module Git
         Settings.main_workarea_status(Git::Meta::WORKAREA)
         Settings.user_workarea_status(Git::Meta::USER)
         Settings.organization_workarea_status(Git::Meta::ORGANIZATIONS)
+        Settings.byte_cache_status(Git::Meta::BYTE_CACHE)
         Settings.yaml_cache_status(Git::Meta::YAML_CACHE)
         Settings.json_cache_status(Git::Meta::JSON_CACHE)
       end

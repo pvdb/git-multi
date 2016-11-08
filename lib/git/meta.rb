@@ -32,6 +32,7 @@ module Git
     WORKAREA      = git_option 'gitmeta.workarea',  File.join(HOME, 'Workarea')
     YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
     JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
+    BYTE_CACHE    = git_option 'gitmeta.bytecache', File.join(HOME, '.gitmeta.byte')
 
     #
     # local repositories (in WORKAREA)
@@ -64,6 +65,9 @@ module Git
     end
 
     def refresh_repositories
+      File.open(BYTE_CACHE, 'wb') do |file|
+        Marshal.dump(github_repositories, file)
+      end
       File.open(YAML_CACHE, 'w') do |file|
         file.write(github_repositories.to_yaml)
       end
@@ -102,13 +106,10 @@ module Git
     end
 
     def repositories
-      if File.size? YAML_CACHE
-        @repositories ||= YAML.load(File.read(YAML_CACHE)).tap do |projects|
-          notify "Finished loading #{YAML_CACHE}"
+      if File.size? BYTE_CACHE
+        @repositories ||= Marshal.load(File.read(BYTE_CACHE)).tap do |projects|
+          notify "Finished loading #{BYTE_CACHE}"
           projects.each_with_index do |project, index|
-            # ensure #method_missing works for Sawyer::Resource instances
-            project.instance_eval("@_metaclass = (class << self; self ; end)")
-            project.owner.instance_eval("@_metaclass = (class << self; self ; end)")
             # ensure 'project' has handle on an Octokit client
             project.client = Git::Hub.send(:client)
             # adorn 'project', which is a Sawyer::Resource

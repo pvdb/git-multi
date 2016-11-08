@@ -113,6 +113,7 @@ FILES
 
   ${HOME}/.gitmeta.yaml    # local YAML cache of the Github data for each repo
   ${HOME}/.gitmeta.json    # local JSON cache of the Github data for each repo
+  ${HOME}/.gitmeta.byte    # local BYTE cache of the Github data for each repo
 
 ENVIRONMENT VARIABLES
 
