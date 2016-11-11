@@ -44,6 +44,10 @@ module Git
         puts Git::Meta.repositories.map(&:full_name)
       end
 
+      def paths
+        puts Git::Meta.repositories.map(&:local_path)
+      end
+
       def missing
         puts Git::Meta.missing_repositories.map(&:full_name)
       end

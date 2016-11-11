@@ -15,6 +15,7 @@ if __FILE__ == $0
     when '--refresh' then Git::Meta::Commands.refresh
     when '--count'   then Git::Meta::Commands.count
     when '--list'    then Git::Meta::Commands.list
+    when '--paths'   then Git::Meta::Commands.paths
     when '--spurious'then Git::Meta::Commands.spurious
     when '--missing' then Git::Meta::Commands.missing
     when '--stale'   then Git::Meta::Commands.stale
