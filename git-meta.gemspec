@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/meta/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "git-meta"
+  spec.name          = Git::Meta::NAME
   spec.version       = Git::Meta::VERSION
   spec.authors       = ["Peter Vandenberk"]
   spec.email         = ["pvandenberk@mac.com"]
