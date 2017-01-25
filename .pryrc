@@ -1,3 +1,11 @@
+# this loads all of "git-meta"
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'git/meta'
+
+# this loads all "git meta" contribs
+Dir.glob File.join(__dir__, 'contrib', '*', '*.rb'), &method(:require)
+
 # configure a logger
 require 'logger'
 logger = Logger.new(STDOUT)
@@ -17,12 +25,6 @@ def (middleware = Octokit.middleware).each_app
     end
   end
 end
-
-# this loads all of "git meta"
-load "bin/git-meta" unless Kernel.const_defined? 'Git::Meta'
-
-# this loads all "git meta" contribs
-Dir.glob File.join(__dir__, 'contrib', '*', '*.rb'), &method(:require)
 
 # utility function to set pry context
 # to an instance of <Octokit::Client>

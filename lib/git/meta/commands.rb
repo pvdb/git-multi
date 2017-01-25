@@ -5,12 +5,7 @@ module Git
       module_function
 
       def version
-        puts "%s v%s (%s v%s)" % [
-          Git::Meta::NAME,
-          Git::Meta::VERSION,
-          'Octokit',
-          Octokit::VERSION,
-        ]
+        puts Git::Meta::LONG_VERSION
       end
 
       def check
