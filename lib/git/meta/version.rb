@@ -1,3 +1,5 @@
+require 'octokit'
+
 module Git
   module Meta
     NAME = 'git-meta'
