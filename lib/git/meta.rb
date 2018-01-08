@@ -4,6 +4,9 @@ require 'pathname'
 require 'fileutils'
 require 'shellwords'
 
+require 'octokit'
+require 'sawyer'
+
 require 'ext/dir'
 require 'ext/utils'
 require 'ext/string'
