@@ -119,6 +119,8 @@ module Git
             project.parent_dir = Pathname.new(File.join(WORKAREA, project.owner.login))
             project.local_path = Pathname.new(File.join(WORKAREA, project.full_name))
             project.fractional_index = "#{index + 1}/#{projects.count}"
+            # fix 'project' => https://github.com/octokit/octokit.rb/issues/727
+            project.compliant_ssh_url = 'ssh://%s/%s' % project.ssh_url.split(':', 2)
             # extend 'project' with 'just do it' capabilities
             project.extend Nike
           end
@@ -149,7 +151,12 @@ module Git
     def spurious_repositories
       cloned_repositories.find_all { |project|
         origin_url = `git -C #{project.local_path} config --get remote.origin.url`.chomp
-        ![project.clone_url, project.ssh_url, project.git_url].include? origin_url
+        ![
+          project.clone_url,
+          project.ssh_url,
+          project.compliant_ssh_url,
+          project.git_url,
+        ].include? origin_url
       }
     end
 
