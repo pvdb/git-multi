@@ -1,7 +1,7 @@
 require "bundler/gem_tasks"
 
 def gemspec
-  @gemspec ||= eval(File.read(Dir["*.gemspec"].first))
+  @gemspec ||= eval(File.read('git-meta.gemspec'))
 end
 
 desc "Validate the gemspec"
