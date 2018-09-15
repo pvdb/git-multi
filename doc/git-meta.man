@@ -27,7 +27,7 @@ OPTIONS
   git meta --stale        # list repos that have been deleted on github.com
   git meta --excess       # list repos that don't exist on github.com
   git meta --spurious     # list cloned repos whose remote doesn't match a github.com origin
-  git meta --clone        # clones missing repositories into ${PROJECTS_HOME}
+  git meta --clone        # clones missing repositories into "${HOME}/Workarea" (by default)
   git meta --query (args) # query Github repo metadata for each repository
   git meta --eval <ruby>  # execute the given Ruby code in the context of each repo
   git meta --find <ruby>  # print out the repos for which the Ruby code evaluates to true
@@ -106,9 +106,7 @@ FILES
   ${HOME}/.gitmeta.json    # local JSON cache of the Github data for each repo
   ${HOME}/.gitmeta.byte    # local BYTE cache of the Github data for each repo
 
-ENVIRONMENT VARIABLES
-
-  ${PROJECTS_HOME} # root directory where organization repos have been cloned
+  ${HOME}/Workarea         # root directory where organization repos have been cloned
 
 REFERENCES
 
