@@ -44,6 +44,18 @@ module Git
         puts Git::Meta.repositories.map(&:full_name)
       end
 
+      def archived
+        puts Git::Meta.archived_repositories.map(&:full_name)
+      end
+
+      def forked
+        puts Git::Meta.forked_repositories.map(&:full_name)
+      end
+
+      def private
+        puts Git::Meta.private_repositories.map(&:full_name)
+      end
+
       def paths
         puts Git::Meta.repositories.map(&:local_path)
       end

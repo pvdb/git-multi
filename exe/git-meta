@@ -13,6 +13,9 @@ when /\A--/
   when '--refresh' then Git::Meta::Commands.refresh
   when '--count'   then Git::Meta::Commands.count
   when '--list'    then Git::Meta::Commands.list
+  when '--archived'then Git::Meta::Commands.archived
+  when '--forked'  then Git::Meta::Commands.forked
+  when '--private' then Git::Meta::Commands.private
   when '--paths'   then Git::Meta::Commands.paths
   when '--spurious'then Git::Meta::Commands.spurious
   when '--missing' then Git::Meta::Commands.missing

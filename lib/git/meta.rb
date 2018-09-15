@@ -131,6 +131,22 @@ module Git
     end
 
     #
+    # lists of repositories with a given state
+    #
+
+    def archived_repositories
+      repositories.find_all(&:archived)
+    end
+
+    def forked_repositories
+      repositories.find_all(&:fork)
+    end
+
+    def private_repositories
+      repositories.find_all(&:private)
+    end
+
+    #
     # derived lists of repositories
     #
 
