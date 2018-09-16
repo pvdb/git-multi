@@ -68,6 +68,9 @@ EXAMPLES
   # find all repos for which the 'origin' remote isn't github.com
   git meta config --get remote.origin.url | fgrep -v git@github.com:
 
+  # a kind of "repository creation" report: count the number of repos created in each quarter
+  git meta --eval "class ::Time; def quarter() (month.to_f / 3.0).ceil; end; end; puts format('%%d-Q%%d', created_at.year, created_at.quarter)" | sort | uniq -c
+
   # for each repo, list all remote branches, sorted by the "age" of the last commit on each branch
   git meta for-each-ref --sort="-authordate" --format="%%(refname)%%09%%(authordate:relative)%%09%%(authorname)" refs/remotes/origin
 
