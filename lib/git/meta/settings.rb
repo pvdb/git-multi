@@ -88,14 +88,6 @@ module Git
         file_status("BYTE cache", byte_cache)
       end
 
-      def yaml_cache_status yaml_cache
-        file_status("YAML cache", yaml_cache)
-      end
-
-      def json_cache_status json_cache
-        file_status("JSON cache", json_cache)
-      end
-
     end
   end
 end

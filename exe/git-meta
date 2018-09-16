@@ -11,6 +11,7 @@ when /\A--/
   when '--help'    then Git::Meta::Commands.help
   when '--check'   then Git::Meta::Commands.check
   when '--refresh' then Git::Meta::Commands.refresh
+  when '--json'    then Git::Meta::Commands.json
   when '--count'   then Git::Meta::Commands.count
   when '--list'    then Git::Meta::Commands.list
   when '--archived'then Git::Meta::Commands.archived
