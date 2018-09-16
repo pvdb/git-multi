@@ -33,9 +33,9 @@ module Git
     HOME          = env_var 'HOME', Etc.getpwuid.dir
 
     WORKAREA      = git_option 'gitmeta.workarea',  File.join(HOME, 'Workarea')
-    YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
-    JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
     BYTE_CACHE    = git_option 'gitmeta.bytecache', File.join(HOME, '.gitmeta.byte')
+    JSON_CACHE    = git_option 'gitmeta.jsoncache', File.join(HOME, '.gitmeta.json')
+    YAML_CACHE    = git_option 'gitmeta.yamlcache', File.join(HOME, '.gitmeta.yaml')
 
     #
     # local repositories (in WORKAREA)
@@ -71,14 +71,14 @@ module Git
       File.open(BYTE_CACHE, 'wb') do |file|
         Marshal.dump(github_repositories, file)
       end
-      File.open(YAML_CACHE, 'w') do |file|
-        file.write(github_repositories.to_yaml)
-      end
-      File.open(JSON_CACHE, 'w') do |file|
-        github_repositories.each do |sawyer_resource|
-          file.puts(sawyer_resource.to_json)
-        end
-      end
+      # File.open(JSON_CACHE, 'w') do |file|
+      #   github_repositories.each do |sawyer_resource|
+      #     file.puts(sawyer_resource.to_json)
+      #   end
+      # end
+      # File.open(YAML_CACHE, 'w') do |file|
+      #   file.write(github_repositories.to_yaml)
+      # end
     end
 
     #
