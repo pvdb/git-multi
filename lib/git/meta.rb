@@ -23,17 +23,23 @@ require 'git/meta/commands'
 module Git
   module Meta
 
-    MAN_PAGE = File.expand_path('../../../doc/git-meta.man', __FILE__)
+    HOME             = Dir.home
+
+    DEFAULT_WORKAREA = File.join(HOME, 'Workarea')
+    WORKAREA         = git_option('gitmeta.workarea', DEFAULT_WORKAREA)
+
+    DEFAULT_TOKEN    = env_var('OCTOKIT_ACCESS_TOKEN') # same as Octokit
+    TOKEN            = git_option('github.token', DEFAULT_TOKEN)
+
+    CACHE            = File.join(HOME, '.git', 'meta')
+    REPOSITORIES     = File.join(CACHE, 'repositories.byte')
+
+    USER             = git_option('github.user')
+    ORGANIZATIONS    = git_option('github.organizations').split(/\s*,\s*/)
+
+    MAN_PAGE         = File.expand_path('../../doc/git-meta.man', __dir__)
 
     module_function
-
-    USER          = git_option 'github.user'
-    ORGANIZATIONS = git_option('github.organizations').split(/\s*,\s*/)
-
-    HOME          = env_var 'HOME', Etc.getpwuid.dir
-
-    WORKAREA      = git_option 'gitmeta.workarea',  File.join(HOME, 'Workarea')
-    BYTE_CACHE    = git_option 'gitmeta.bytecache', File.join(HOME, '.gitmeta.byte')
 
     #
     # local repositories (in WORKAREA)
@@ -66,7 +72,9 @@ module Git
     end
 
     def refresh_repositories
-      File.open(BYTE_CACHE, 'wb') do |file|
+      File.directory?(CACHE_DIR) || FileUtils.mkdir_p(CACHE_DIR)
+
+      File.open(REPOSITORIES, 'wb') do |file|
         Marshal.dump(github_repositories, file)
       end
     end
@@ -99,9 +107,9 @@ module Git
     end
 
     def repositories
-      if File.size? BYTE_CACHE
-        @repositories ||= Marshal.load(File.read(BYTE_CACHE)).tap do |projects|
-          notify "Finished loading #{BYTE_CACHE}"
+      if File.size?(REPOSITORIES)
+        @repositories ||= Marshal.load(File.read(REPOSITORIES)).tap do |projects|
+          notify "Finished loading #{REPOSITORIES}"
           projects.each_with_index do |project, index|
             # ensure 'project' has handle on an Octokit client
             project.client = Git::Hub.send(:client)

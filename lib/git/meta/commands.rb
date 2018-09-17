@@ -11,12 +11,12 @@ module Git
       def check
         Settings.user_status(Git::Meta::USER)
         Settings.organization_status(Git::Meta::ORGANIZATIONS)
-        Settings.token_status(Git::Hub::TOKEN)
+        Settings.token_status(Git::Meta::TOKEN)
         Settings.home_status(Git::Meta::HOME)
         Settings.main_workarea_status(Git::Meta::WORKAREA)
         Settings.user_workarea_status(Git::Meta::USER)
         Settings.organization_workarea_status(Git::Meta::ORGANIZATIONS)
-        Settings.byte_cache_status(Git::Meta::BYTE_CACHE)
+        Settings.file_status(Git::Meta::REPOSITORIES)
       end
 
       def help

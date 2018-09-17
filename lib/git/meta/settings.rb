@@ -18,7 +18,8 @@ module Git
         end
       end
 
-      def file_status message, file
+      def file_status file, message = nil
+        message ||= File.basename(file)
         setting_status(
           [
             message,
@@ -82,10 +83,6 @@ module Git
         for org in orgs
           workarea_status("Workarea (org: #{org})", Git::Meta::WORKAREA, org)
         end
-      end
-
-      def byte_cache_status byte_cache
-        file_status("BYTE cache", byte_cache)
       end
 
     end

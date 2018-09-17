@@ -17,7 +17,6 @@ end
 def symbolize token
   case token
   when nil, '' then describe(token)
-  when env_var('GITMETA_ACCESS_TOKEN') then '${GITMETA_ACCESS_TOKEN}'
   when env_var('OCTOKIT_ACCESS_TOKEN') then '${OCTOKIT_ACCESS_TOKEN}'
   else
     token

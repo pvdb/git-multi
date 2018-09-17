@@ -17,13 +17,11 @@ end
 module Git
   module Hub
 
-    TOKEN = env_var('GITMETA_ACCESS_TOKEN', env_var('OCTOKIT_ACCESS_TOKEN'))
-
     module_function
 
     def client
       @client ||= Octokit::Client.new(
-        :access_token => TOKEN,
+        :access_token => Git::Meta::TOKEN,
         :auto_paginate => true,
       )
     end
