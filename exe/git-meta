@@ -7,9 +7,9 @@ require 'git/meta'
 case (command = ARGV.shift)
 when /\A--/
   case command
-  when '--version' then Git::Meta::Commands.version
   when '--help'    then Git::Meta::Commands.help
   when '--check'   then Git::Meta::Commands.check
+  when '--version' then Git::Meta::Commands.version
   when '--refresh' then Git::Meta::Commands.refresh
   when '--json'    then Git::Meta::Commands.json
   when '--count'   then Git::Meta::Commands.count
