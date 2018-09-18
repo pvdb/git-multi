@@ -9,7 +9,7 @@ module Git
       module_function
 
       def setting_status messages, valid, optional = false
-        fields = messages.join(' - ')
+        fields = messages.compact.join(' - ')
         icon = valid ? TICK : optional ? ARROW : CROSS
         if $INTERACTIVE
           print "   #{fields}" ; sleep 0.75 ; puts "\x0d#{icon}"
@@ -44,7 +44,7 @@ module Git
           [
             message,
             File.join(abbreviate(workarea, :workarea), owner),
-            "#{Dir.new(workarea).git_repos(owner).count.commify} repos"
+            File.directory?(workarea) ? "#{Dir.new(workarea).git_repos(owner).count.commify} repos" : nil
           ],
           workarea
         )
