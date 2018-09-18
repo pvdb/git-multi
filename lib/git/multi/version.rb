@@ -5,7 +5,7 @@ require 'psych'
 module Git
   module Multi
     NAME = 'git-multi'
-    VERSION = '1.0.1'
+    VERSION = '1.0.2'
 
     LONG_VERSION = "%s v%s (%s v%s, %s v%s, %s v%s)" % [
       NAME,
@@ -20,12 +20,17 @@ module Git
 
     PIM = <<~"EOPIM" # gem post_install_message
 
-    The required settings are as follows:
+    The required settings for \033[1mgit multi\33[0m are as follows:
 
-    git config --global --add github.user <your_github_username>
-    git config --global --add github.organizations <your_github_orgs>
-    git config --global --add github.token <your_github_token>
-    git config --global --add gitmulti.workarea <your_root_workarea>
+    \tgit config --global --add \033[1mgithub.user\033[0m <your_github_username>
+    \tgit config --global --add \033[1mgithub.organizations\033[0m <your_github_orgs>
+    \tgit config --global --add \033[1mgithub.token\033[0m <your_github_oauth_token>
+
+    Unless your top-level workarea is `${HOME}/Workarea` you should also set:
+
+    \tgit config --global --add \033[1mgit.multi.workarea\033[0m <your_root_workarea>
+
+    Thanks for using \033[1mgit multi\033[0m ... the ultimate multi-repo utility for git!
 
     EOPIM
   end

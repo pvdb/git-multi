@@ -26,7 +26,7 @@ module Git
     HOME             = Dir.home
 
     DEFAULT_WORKAREA = File.join(HOME, 'Workarea')
-    WORKAREA         = git_option('gitmulti.workarea', DEFAULT_WORKAREA)
+    WORKAREA         = git_option('git.multi.workarea', DEFAULT_WORKAREA)
 
     DEFAULT_TOKEN    = env_var('OCTOKIT_ACCESS_TOKEN') # same as Octokit
     TOKEN            = git_option('github.token', DEFAULT_TOKEN)
