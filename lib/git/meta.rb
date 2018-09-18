@@ -72,7 +72,7 @@ module Git
     end
 
     def refresh_repositories
-      File.directory?(CACHE_DIR) || FileUtils.mkdir_p(CACHE_DIR)
+      File.directory?(CACHE) || FileUtils.mkdir_p(CACHE)
 
       File.open(REPOSITORIES, 'wb') do |file|
         Marshal.dump(github_repositories, file)
