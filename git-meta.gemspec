@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.post_install_message = Git::Meta::PIM
+
   spec.add_dependency 'octokit', '~> 4.12'
 
   spec.add_development_dependency 'bundler'
