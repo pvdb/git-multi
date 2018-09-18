@@ -39,12 +39,12 @@ module Git
         )
       end
 
-      def workarea_status message, workarea, subdir
+      def workarea_status message, workarea, owner
         directory_status(
           [
             message,
-            File.join(abbreviate(workarea, :workarea), subdir),
-            "#{Dir.new(workarea).git_repos(subdir).count.commify} repos"
+            File.join(abbreviate(workarea, :workarea), owner),
+            "#{Dir.new(workarea).git_repos(owner).count.commify} repos"
           ],
           workarea
         )
