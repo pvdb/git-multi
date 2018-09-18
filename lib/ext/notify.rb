@@ -11,10 +11,10 @@ def notify(message, options = {}, verbose = false)
   subtitle = options[:subtitle]
   warn(subtitle ? "#{subtitle}: #{message}" : message) if $VERBOSE
   # send a given message to the Mac OS X Notification Center
-  # but only if the git-meta script is running interactively
+  # but only if the git-multi script is running interactively
   # and if the "terminal-notifier" gem has been installed...
   if $INTERACTIVE && defined?(TerminalNotifier)
-    options[:title] ||= 'git-meta'
+    options[:title] ||= 'git-multi'
     TerminalNotifier.notify(message, options, verbose)
   end
 end

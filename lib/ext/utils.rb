@@ -24,8 +24,8 @@ end
 
 def abbreviate directory, root_dir = nil
   case root_dir
-  when :home     then directory.gsub(Git::Meta::HOME,     '${HOME}')
-  when :workarea then directory.gsub(Git::Meta::WORKAREA, '${WORKAREA}')
+  when :home     then directory.gsub(Git::Multi::HOME,     '${HOME}')
+  when :workarea then directory.gsub(Git::Multi::WORKAREA, '${WORKAREA}')
   else abbreviate(abbreviate(directory, :workarea), :home)
   end
 end

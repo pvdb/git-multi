@@ -54,10 +54,10 @@ if __FILE__ == $0
 
   $:.unshift File.expand_path('../../lib', __dir__)
 
-  require 'git/meta'
+  require 'git/multi'
 
   # get list of GitHub repositories:
-  @projects = Git::Meta.repositories
+  @projects = Git::Multi.repositories
 
   # annotate the list of projects
   @projects.each do |project|

@@ -3,7 +3,7 @@ require 'bundler/gem_tasks'
 def gemspec
   @gemspec ||= begin
                  # rubocop:disable Security/Eval
-                 eval(File.read('git-meta.gemspec'))
+                 eval(File.read('git-multi.gemspec'))
                  # rubocop:enable Security/Eval
                end
 end

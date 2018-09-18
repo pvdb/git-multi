@@ -16,28 +16,28 @@ require 'ext/sawyer/resource'
 
 require 'git/hub'
 
-require 'git/meta/version'
-require 'git/meta/settings'
-require 'git/meta/commands'
+require 'git/multi/version'
+require 'git/multi/settings'
+require 'git/multi/commands'
 
 module Git
-  module Meta
+  module Multi
 
     HOME             = Dir.home
 
     DEFAULT_WORKAREA = File.join(HOME, 'Workarea')
-    WORKAREA         = git_option('gitmeta.workarea', DEFAULT_WORKAREA)
+    WORKAREA         = git_option('gitmulti.workarea', DEFAULT_WORKAREA)
 
     DEFAULT_TOKEN    = env_var('OCTOKIT_ACCESS_TOKEN') # same as Octokit
     TOKEN            = git_option('github.token', DEFAULT_TOKEN)
 
-    CACHE            = File.join(HOME, '.git', 'meta')
+    CACHE            = File.join(HOME, '.git', 'multi')
     REPOSITORIES     = File.join(CACHE, 'repositories.byte')
 
     USER             = git_option('github.user')
     ORGANIZATIONS    = git_option('github.organizations').split(/\s*,\s*/)
 
-    MAN_PAGE         = File.expand_path('../../doc/git-meta.man', __dir__)
+    MAN_PAGE         = File.expand_path('../../doc/git-multi.man', __dir__)
 
     module_function
 
@@ -80,7 +80,7 @@ module Git
     end
 
     #
-    # the main `Git::Meta` capabilities
+    # the main `Git::Multi` capabilities
     #
 
     module Nike

@@ -21,7 +21,7 @@ module Git
 
     def client
       @client ||= Octokit::Client.new(
-        :access_token => Git::Meta::TOKEN,
+        :access_token => Git::Multi::TOKEN,
         :auto_paginate => true,
       )
     end

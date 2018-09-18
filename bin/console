@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require 'git/meta'
+require 'git/multi'
 
 require 'pry'
 Pry.start

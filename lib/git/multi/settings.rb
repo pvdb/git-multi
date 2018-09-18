@@ -1,5 +1,5 @@
 module Git
-  module Meta
+  module Multi
     module Settings
 
       TICK  = ["2714".hex].pack("U*").green.freeze
@@ -63,7 +63,7 @@ module Git
       def token_status token
         setting_status(["Token", symbolize(token), describe(token)], !token.nil? && !token.empty?)
         setting_status(["Token", "valid?"], !token.nil? && !token.empty? && Git::Hub.login, !Git::Hub.connected?)
-        setting_status(["Token", "owned by #{Git::Meta::USER}?"], Git::Hub.login == Git::Meta::USER, !Git::Hub.connected?)
+        setting_status(["Token", "owned by #{Git::Multi::USER}?"], Git::Hub.login == Git::Multi::USER, !Git::Hub.connected?)
       end
 
       def home_status home
@@ -75,12 +75,12 @@ module Git
       end
 
       def user_workarea_status user
-        workarea_status("Workarea (user: #{user})", Git::Meta::WORKAREA, user)
+        workarea_status("Workarea (user: #{user})", Git::Multi::WORKAREA, user)
       end
 
       def organization_workarea_status orgs
         for org in orgs
-          workarea_status("Workarea (org: #{org})", Git::Meta::WORKAREA, org)
+          workarea_status("Workarea (org: #{org})", Git::Multi::WORKAREA, org)
         end
       end
 

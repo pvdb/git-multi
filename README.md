@@ -1,4 +1,4 @@
-# `git-meta`
+# `git-multi`
 
 ## Summary
 
@@ -6,9 +6,9 @@ Execute the same `git` command in a set of related repos.
 
 There are plenty of other utilities out there that do something similar, but typically they only support a limited number of hard-coded `git` commands which can be executed in multiple repositories.
 
-`git-meta` is different: any `git` command _(including any `git` extensions you may have installed or any `git` aliases you may have defined)_ can be executed in multiple repositories.
+`git-multi` is different: any `git` command _(including any `git` extensions you may have installed or any `git` aliases you may have defined)_ can be executed in multiple repositories.
 
-`git-meta` only concerns itself with iterating over the set of related repos; what it executes in each of them is completely up to you.
+`git-multi` only concerns itself with iterating over the set of related repos; what it executes in each of them is completely up to you.
 
 ## Features
 
@@ -20,9 +20,9 @@ There are plenty of other utilities out there that do something similar, but typ
 
 ## Prerequisites
 
-`git-meta` is a Ruby script, so you will have to have Ruby installed on your system _(system Ruby, [RVM][], [rbenv][], etc)_.
+`git-multi` is a Ruby script, so you will have to have Ruby installed on your system _(system Ruby, [RVM][], [rbenv][], etc)_.
 
-`git-meta` is also tightly coupled to your [GitHub][] account _(via the github API)_, so you will also need to generate a so-called [personal access token][token] and install it in your git config _(instructions provided below)_.
+`git-multi` is also tightly coupled to your [GitHub][] account _(via the github API)_, so you will also need to generate a so-called [personal access token][token] and install it in your git config _(instructions provided below)_.
 
 [rvm]:    https://rvm.io
 [rbenv]:  http://rbenv.org
@@ -31,11 +31,11 @@ There are plenty of other utilities out there that do something similar, but typ
 
 ## Installation
 
-    $ gem install git-meta
+    $ gem install git-multi
 
 ## Usage
 
-    $ git meta --help
+    $ git multi --help
 
 ## Known Issues
 
@@ -43,7 +43,7 @@ There are plenty of other utilities out there that do something similar, but typ
 
 ## Contributing
 
-1. Fork it ( https://github.com/pvdb/git-meta/fork )
+1. Fork it ( https://github.com/pvdb/git-multi/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
