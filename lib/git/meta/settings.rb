@@ -18,13 +18,12 @@ module Git
         end
       end
 
-      def file_status file, message = nil
-        message ||= File.basename(file)
+      def file_status file, message = 'File'
         setting_status(
           [
             message,
             abbreviate(file),
-            "#{File.size(file).commify rescue 'N/A'} bytes",
+            File.file?(file) ? "#{File.size(file).commify} bytes" : nil,
           ],
           file && !file.empty? && File.file?(file),
           false
