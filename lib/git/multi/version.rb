@@ -5,7 +5,7 @@ require 'psych'
 module Git
   module Multi
     NAME = 'git-multi'
-    VERSION = '1.0.0'
+    VERSION = '1.0.1'
 
     LONG_VERSION = "%s v%s (%s v%s, %s v%s, %s v%s)" % [
       NAME,

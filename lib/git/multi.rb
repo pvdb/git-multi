@@ -119,6 +119,8 @@ module Git
             project.fractional_index = "#{index + 1}/#{projects.count}"
             # fix 'project' => https://github.com/octokit/octokit.rb/issues/727
             project.compliant_ssh_url = 'ssh://%s/%s' % project.ssh_url.split(':', 2)
+            # remove optional '.git' suffix from 'git@github.com:pvdb/git-multi.git'
+            project.abbreviated_ssh_url = project.ssh_url.chomp('.git')
             # extend 'project' with 'just do it' capabilities
             project.extend Nike
           end
@@ -169,6 +171,7 @@ module Git
           project.clone_url,
           project.ssh_url,
           project.compliant_ssh_url,
+          project.abbreviated_ssh_url,
           project.git_url,
         ].include? origin_url
       }
