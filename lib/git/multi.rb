@@ -37,7 +37,7 @@ module Git
     USER             = git_option('github.user')
     ORGANIZATIONS    = git_option('github.organizations').split(/\s*,\s*/)
 
-    MAN_PAGE         = File.expand_path('../../doc/git-multi.man', __dir__)
+    MAN_PAGE         = File.expand_path('../../doc/git-multi.txt', __dir__)
 
     module_function
 

@@ -27,7 +27,7 @@ module Git
           |foo, bar, qux| '%-20s  %-20s %-20s' % [foo, bar, qux]
         }
         puts File.read(Git::Multi::MAN_PAGE) % {
-          :version => Git::Multi::VERSION,
+          :vv => Git::Multi::VERSION,
           :query_args => query_args.join("\n    "),
         }
       end
