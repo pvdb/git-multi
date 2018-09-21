@@ -6,6 +6,11 @@ NAME
 
 git-multi - execute the same git command in multiple repositories
 
+VERSION
+-------
+
+This is `v1.0.3` of 'git multi' ... hooray!
+
 SYNOPSIS
 --------
 
@@ -254,4 +259,3 @@ https://developer.github.com/v3/
 * the `jq` command-line utility:
 http://stedolan.github.io/jq/
 
-git-multi v1.0.3                1 October 2018                    GIT-MULTI(1)

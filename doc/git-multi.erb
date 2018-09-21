@@ -6,6 +6,11 @@ NAME
 
 git-multi - execute the same git command in multiple repositories
 
+VERSION
+-------
+
+This is `v<%= Git::Multi::VERSION %>` of 'git multi' ... hooray!
+
 SYNOPSIS
 --------
 
@@ -133,19 +138,19 @@ find all repos for which the 'origin' remote isn't github.com
 
 a kind of "repository creation" report: count the number of repos created in each quarter
 
- git multi --eval "class ::Time; def quarter() (month.to_f / 3.0).ceil; end; end; puts format('%%d-Q%%d', created_at.year, created_at.quarter)" | sort | uniq -c
+ git multi --eval "class ::Time; def quarter() (month.to_f / 3.0).ceil; end; end; puts format('%d-Q%d', created_at.year, created_at.quarter)" | sort | uniq -c
 
 for each repo, list all remote branches, sorted by the "age" of the last commit on each branch
 
- git multi for-each-ref --sort="-authordate" --format="%%(refname)%%09%%(authordate:relative)%%09%%(authorname)" refs/remotes/origin
+ git multi for-each-ref --sort="-authordate" --format="%(refname)%09%(authordate:relative)%09%(authorname)" refs/remotes/origin
 
 same as above, but columnize the generated output (NOTE: replace '^I' with CTRL-V/CTRL-I in your terminal)
 
- git multi for-each-ref --sort="-authordate" --format="%%(refname)%%09%%(authordate:relative)%%09%%(authorname)" refs/remotes/origin | column -t -s "^I"
+ git multi for-each-ref --sort="-authordate" --format="%(refname)%09%(authordate:relative)%09%(authorname)" refs/remotes/origin | column -t -s "^I"
 
 same as above, but refresh the list of remote branches first
 
- git multi fetch -p ; git multi for-each-ref --sort="-authordate" --format="%%(refname)%%09%%(authordate:relative)%%09%%(authorname)" refs/remotes/origin
+ git multi fetch -p ; git multi for-each-ref --sort="-authordate" --format="%(refname)%09%(authordate:relative)%09%(authorname)" refs/remotes/origin
 
 find all Rails projects
 
@@ -161,7 +166,7 @@ find all projects that have been pushed to in the last week
 
 print out the number of days since the last push to each repository
 
- git multi --eval 'puts "%%d days" %% ((Time.now - pushed_at) / 60 / 60 / 24)'
+ git multi --eval 'puts "%d days" % ((Time.now - pushed_at) / 60 / 60 / 24)'
 
 find all projects that have seen activity this calendar year
 
@@ -192,7 +197,7 @@ QUERY ARGUMENTS
 
 The following is a list of valid arguments for the `git multi --query` option:
 
-    %{query_args}
+    <%= query_args %>
 
 JQ INTEGRATION
 --------------
@@ -229,4 +234,3 @@ https://developer.github.com/v3/
 * the `jq` command-line utility:
 http://stedolan.github.io/jq/
 
-git-multi v%{vv}                1 October 2018                    GIT-MULTI(1)

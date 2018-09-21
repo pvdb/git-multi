@@ -27,8 +27,9 @@ task :default => :test
 
 task :documentation => 'doc/git-multi.txt'
 
+require 'git/multi'
+
 def query_args
-  require 'git/multi'
 
   client = Git::Hub.send(:client) # Octokit GitHub API client
   repo = client.repo('git/git')   # random GitHub repository
@@ -41,10 +42,8 @@ def query_args
 end
 
 file 'doc/git-multi.txt' => 'doc/git-multi.erb' do |task|
-  File.write(task.name, File.read(task.source) % {
-    :vv => Git::Multi::VERSION,
-    :query_args => query_args,
-  })
+  require 'erb'
+  File.write(task.name, ERB.new(File.read(task.source)).result)
 end
 
 # rubocop:enable Style/HashSyntax
