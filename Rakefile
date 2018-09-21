@@ -25,7 +25,7 @@ end
 
 task :default => :test
 
-task :documentation => 'doc/git-multi.txt'
+task :documentation => 'man/git-multi.txt'
 
 require 'git/multi'
 
@@ -41,7 +41,7 @@ def query_args
   }.join("\n    ")
 end
 
-file 'doc/git-multi.txt' => 'doc/git-multi.erb' do |task|
+file 'man/git-multi.txt' => 'man/git-multi.erb' do |task|
   require 'erb'
   File.write(task.name, ERB.new(File.read(task.source)).result)
 end
