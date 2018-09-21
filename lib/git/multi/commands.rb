@@ -20,16 +20,7 @@ module Git
       end
 
       def help
-        # instead of maintaining a list of valid query args in the help-
-        # file, we determine it at runtime... less is more, and all that
-        # TODO remove attributes we 'adorned' the repos with on line 95?
-        query_args = Git::Multi.repositories.sample.fields.sort.each_slice(3).map {
-          |foo, bar, qux| '%-20s  %-20s %-20s' % [foo, bar, qux]
-        }
-        puts File.read(Git::Multi::MAN_PAGE) % {
-          :vv => Git::Multi::VERSION,
-          :query_args => query_args.join("\n    "),
-        }
+        Kernel.exec "cat #{Git::Multi::MAN_PAGE}"
       end
 
       def report

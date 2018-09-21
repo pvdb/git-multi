@@ -25,4 +25,26 @@ end
 
 task :default => :test
 
+task :documentation => 'doc/git-multi.txt'
+
+def query_args
+  require 'git/multi'
+
+  client = Git::Hub.send(:client) # Octokit GitHub API client
+  repo = client.repo('git/git')   # random GitHub repository
+
+  # instead of maintaining a list of valid query args in the help-
+  # file, we determine it at runtime... less is more, and all that
+  repo.fields.sort.each_slice(3).map { |foo, bar, qux|
+    format('%-20s %-20s %-20s', foo, bar, qux).rstrip
+  }.join("\n    ")
+end
+
+file 'doc/git-multi.txt' => 'doc/git-multi.erb' do |task|
+  File.write(task.name, File.read(task.source) % {
+    :vv => Git::Multi::VERSION,
+    :query_args => query_args,
+  })
+end
+
 # rubocop:enable Style/HashSyntax
