@@ -1,0 +1,551 @@
+'\" t
+.\"     Title: git-multi
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
+.\"      Date: 09/21/2018
+.\"    Manual: Git Manual
+.\"    Source: Git 2.19.0.216.g2d3b1c576.dirty
+.\"  Language: English
+.\"
+.TH "GIT\-MULTI" "1" "09/21/2018" "Git 2\&.19\&.0\&.216\&.g2d3b1c" "Git Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+git-multi \- execute the same git command in multiple repositories
+.SH "VERSION"
+.sp
+This is \fBv1\&.0\&.3\fR of \fIgit multi\fR \&... hooray!
+.SH "SYNOPSIS"
+.sp
+There are some options for \fBgit multi\fR itself, in which case it is invoked as follows:
+.sp
+.nf
+\fIgit multi\fR <dash_dash_option> [<option_arguments>]
+.fi
+.sp
+.sp
+To execute the same git command in multiple repositories, the invocation is as follows:
+.sp
+.nf
+\fIgit multi\fR <git_command> [<git_command_arguments>]
+.fi
+.sp
+.SH "DESCRIPTION"
+.sp
+Convenient way to execute the same git command in a set of related repos, currently the repositories of a GitHub user, incl\&. the organizations they are a member of; the repo list is determined via a GitHub API v3 call, and cached locally \fI(in binary format)\fR for performance and offline usage\&.
+.SH "OPTIONS"
+.PP
+\-\-help
+.RS 4
+you\(cqre looking at it: show the man page
+.RE
+.PP
+\-\-html
+.RS 4
+open the HTML version of the man page
+.RE
+.PP
+\-\-check
+.RS 4
+checks all the required settings and configurations
+.RE
+.PP
+\-\-version
+.RS 4
+print out this script\(cqs version number
+.RE
+.PP
+\-\-refresh
+.RS 4
+refresh the list of user & organization repos
+.RE
+.PP
+\-\-json
+.RS 4
+output repository details to JSON
+.RE
+.PP
+\-\-count
+.RS 4
+print out the count of repos (per type)
+.RE
+.PP
+\-\-list
+.RS 4
+print out the names of all repos
+.RE
+.PP
+\-\-archived
+.RS 4
+print out the names of all repos
+.RE
+.PP
+\-\-forked
+.RS 4
+print out the names of all repos
+.RE
+.PP
+\-\-private
+.RS 4
+print out the names of all repos
+.RE
+.PP
+\-\-paths
+.RS 4
+print out the full path for each repos
+.RE
+.PP
+\-\-spurious
+.RS 4
+list cloned repos whose remote doesn\(cqt match a github\&.com origin
+.RE
+.PP
+\-\-missing
+.RS 4
+print out names of repos that haven\(cqt been cloned
+.RE
+.PP
+\-\-stale
+.RS 4
+list repos that have been deleted on github\&.com
+.RE
+.PP
+\-\-excess
+.RS 4
+list repos that don\(cqt exist on github\&.com
+.RE
+.PP
+\-\-clone
+.RS 4
+clones missing repositories into
+\fB${HOME}/Workarea\fR
+(by default)
+.RE
+.PP
+\-\-query (args)
+.RS 4
+query GitHub repo metadata for each repository
+.RE
+.PP
+\-\-find <ruby>
+.RS 4
+print out the repos for which the Ruby code evaluates to true
+.RE
+.PP
+\-\-eval <ruby>
+.RS 4
+execute the given Ruby code in the context of each repo
+.RE
+.PP
+\-\-raw <cmd>
+.RS 4
+execute the given shell command inside each git repository
+.RE
+.SH "EXAMPLES"
+.sp
+count the number of repos
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-list | wc \-l
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+disk usage of each locally cloned repo
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-paths | xargs \-n 1 du \-hs
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+disk usage using the \fB\-\-raw\fR option
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-raw \*(Aqdu \-hs \&.\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+group and count the repos by GitHub\-determined language
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-query language | cut \-f 2 \-d : | sort | uniq \-c | sort \-n \-r
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find out the most\-used Ruby versions
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-raw \*(Aq[ \-f \&.ruby\-version ] && cat \&.ruby\-version\*(Aq | cut \-f 2 \-d : | sort | uniq \-c | sort \-n \-r
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find GitHub repos without a description
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-query description | egrep \*(Aq: *$\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+fetch remote branches for all repos
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi fetch \-p
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+print out the local branch for each repo
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi rev\-parse \-\-abbrev\-ref=strict HEAD
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find all repos for which the \fIorigin\fR remote isn\(cqt github\&.com
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi config \-\-get remote\&.origin\&.url | fgrep \-v git@github\&.com:
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+a kind of "repository creation" report: count the number of repos created in each quarter
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-eval "class ::Time; def quarter() (month\&.to_f / 3\&.0)\&.ceil; end; end; puts format(\*(Aq%d\-Q%d\*(Aq, created_at\&.year, created_at\&.quarter)" | sort | uniq \-c
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+for each repo, list all remote branches, sorted by the "age" of the last commit on each branch
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi for\-each\-ref \-\-sort="\-authordate" \-\-format="%(refname)%09%(authordate:relative)%09%(authorname)" refs/remotes/origin
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+same as above, but columnize the generated output (NOTE: replace \fI^I\fR with CTRL\-V/CTRL\-I in your terminal)
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi for\-each\-ref \-\-sort="\-authordate" \-\-format="%(refname)%09%(authordate:relative)%09%(authorname)" refs/remotes/origin | column \-t \-s "^I"
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+same as above, but refresh the list of remote branches first
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi fetch \-p ; git multi for\-each\-ref \-\-sort="\-authordate" \-\-format="%(refname)%09%(authordate:relative)%09%(authorname)" refs/remotes/origin
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find all Rails projects
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-raw \*(Aq[ \-f Gemfile ] && fgrep \-q \-l rails Gemfile && echo uses Rails\*(Aq | cat
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find all Mongoid dependencies
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-raw \*(Aq[ \-f Gemfile\&.lock ] && egrep \-i "^    mongoid (\&.*)" Gemfile\&.lock\*(Aq | column \-s: \-t
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find all projects that have been pushed to in the last week
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-find \*(Aq((Time\&.now \- pushed_at) / 60 / 60 / 24) <= 7\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+print out the number of days since the last push to each repository
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-eval \*(Aqputs "%d days" % ((Time\&.now \- pushed_at) / 60 / 60 / 24)\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find all projects that have seen activity this calendar year
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-find \*(Aqpushed_at >= Date\&.civil(Date\&.today\&.year, 1, 1)\&.to_time\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+print out all webhooks
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-eval \*(Aq(hooks = client\&.hooks(project\&.full_name))\&.any? && begin print project\&.full_name ; print "\et" ; puts hooks\&.map { |hook| ["", hook\&.name, hook\&.config\&.url]\&.join("\et") } ; end\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+print out all deploy keys
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-eval \*(Aq(keys = client\&.list_deploy_keys(project\&.full_name))\&.any? && begin print project\&.full_name ; print "\et" ; puts keys\&.map(&:title)\&.sort\&.join("\et") ; end\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+find all organization repositories that depend on a given org repo, e\&.g\&. \fIbusiness_rules\fR
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-graph | fgrep business_rules
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+generate a dependency graph of all organization repositories using yuml\&.me
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+DEPENDENCIES=$( git multi \-\-graph | ruby \-n \-e \*(Aqparent, children = $_\&.split(": ") ; puts children\&.split(" ")\&.map { |child| "[#{parent}]\->[#{child}]" }\*(Aq | tr \*(Aq\en\*(Aq \*(Aq,\*(Aq ) ; open "http://yuml\&.me/diagram/scruffy/class/${DEPENDENCIES}"
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+generate a dependency graph of all organization repositories using Graphviz
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-graph | ruby \-n \-e \*(Aqparent, children = $_\&.split(": ") ; puts children\&.split(" ")\&.map { |child| "\e"#{parent}\e"\->\e"#{child}\e";" }\*(Aq | awk \*(AqBEGIN { print "digraph {\enrankdir=\e"LR\e";\en" } ; { print ; } END { print "}\en" } ; \*(Aq | dot \-Tpng > /tmp/ghor\&.png ; open \-a Preview /tmp/ghor\&.png
+.fi
+.if n \{\
+.RE
+.\}
+.SH "QUERY ARGUMENTS"
+.sp
+The following is a list of valid arguments for the \fBgit multi \-\-query\fR option:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+archive_url          archived             assignees_url
+blobs_url            branches_url         clone_url
+collaborators_url    comments_url         commits_url
+compare_url          contents_url         contributors_url
+created_at           default_branch       deployments_url
+description          downloads_url        events_url
+fork                 forks                forks_count
+forks_url            full_name            git_commits_url
+git_refs_url         git_tags_url         git_url
+has_downloads        has_issues           has_pages
+has_projects         has_wiki             homepage
+hooks_url            html_url             id
+issue_comment_url    issue_events_url     issues_url
+keys_url             labels_url           language
+languages_url        license              merges_url
+milestones_url       mirror_url           name
+network_count        node_id              notifications_url
+open_issues          open_issues_count    organization
+owner                permissions          private
+pulls_url            pushed_at            releases_url
+size                 ssh_url              stargazers_count
+stargazers_url       statuses_url         subscribers_count
+subscribers_url      subscription_url     svn_url
+tags_url             teams_url            trees_url
+updated_at           url                  watchers
+watchers_count
+.fi
+.if n \{\
+.RE
+.\}
+.SH "JQ INTEGRATION"
+.sp
+\fBjq\fR is like \fBsed\fR for JSON data\&... all of the above query arguments can be used in conjunction with \fBjq\fR to query, filter, map and transform the GitHub repository attributes stored in the local, binary repository cache; here are some examples:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# print out each repository\*(Aqs name and its description
+git multi \-\-json | jq \*(Aq\&.[] | \&.name + ": " + \&.description\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+# print out the name of all "forked" repositories
+git multi \-\-json | jq \*(Aq\&.[] | select(\&.fork == true) | \&.full_name\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.SH "FILES"
+.PP
+\fB${HOME}/Workarea\fR
+.RS 4
+root directory where repos will been cloned
+.RE
+.PP
+\fB${HOME}/\&.git/multi/repositories\&.byte\fR
+.RS 4
+local, binary cache of GitHub repository metadata
+.RE
+.SH "REFERENCES"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+homepage for
+\fBgit\-multi\fR:
+\m[blue]\fBhttps://github\&.com/pvdb/git\-multi\fR\m[]
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+the GitHub API:
+\m[blue]\fBhttps://developer\&.github\&.com/v3/\fR\m[]
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+the
+\fBjq\fR
+command\-line utility:
+\m[blue]\fBhttp://stedolan\&.github\&.io/jq/\fR\m[]
+.RE

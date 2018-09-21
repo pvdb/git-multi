@@ -8,6 +8,7 @@ case (command = ARGV.shift)
 when /\A--/
   case command
   when '--help'    then Git::Multi::Commands.help
+  when '--html'    then Git::Multi::Commands.html
   when '--check'   then Git::Multi::Commands.check
   when '--version' then Git::Multi::Commands.version
   when '--refresh' then Git::Multi::Commands.refresh

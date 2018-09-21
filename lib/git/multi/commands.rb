@@ -20,7 +20,11 @@ module Git
       end
 
       def help
-        Kernel.exec "cat #{Git::Multi::MAN_PAGE}"
+        Kernel.exec "man #{Git::Multi::MAN_PAGE}"
+      end
+
+      def html
+        Kernel.exec "open #{Git::Multi::HTML_PAGE}"
       end
 
       def report
