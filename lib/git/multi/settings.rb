@@ -11,7 +11,7 @@ module Git
       def setting_status messages, valid, optional = false
         fields = messages.compact.join(' - ')
         icon = valid ? TICK : optional ? ARROW : CROSS
-        if $INTERACTIVE
+        if interactive?
           print "   #{fields}" ; sleep 0.75 ; puts "\x0d#{icon}"
         else
           puts "#{icon}  #{fields}"

@@ -11,6 +11,7 @@ require 'ext/dir'
 require 'ext/utils'
 require 'ext/string'
 require 'ext/notify'
+require 'ext/kernel'
 require 'ext/commify'
 require 'ext/sawyer/resource'
 
@@ -93,11 +94,8 @@ module Git
           else Dir.pwd
         end
         Dir.chdir(working_dir) do
-          if $INTERACTIVE
-            puts "%s (%s)" % [
-              self.full_name.invert,
-              self.fractional_index
-            ]
+          if interactive?
+            puts "#{full_name.invert} (#{fractional_index})"
             interactive.call(self)
           else
             pipeline.call(self)
@@ -127,7 +125,8 @@ module Git
           end
         end
       else
-        refresh_repositories and repositories
+        refresh_repositories
+        repositories # retry
       end
     end
 
