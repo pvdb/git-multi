@@ -6,6 +6,6 @@ end
 
 class String
   def commify
-    gsub(/(\d)(?=(\d{3})+(\..*)?$)/,'\1,')
+    gsub(/(\d)(?=(\d{3})+(\..*)?$)/, '\1,')
   end
 end

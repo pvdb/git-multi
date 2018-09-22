@@ -5,20 +5,16 @@ require 'addressable'
 
 module Git
   module Multi
-    NAME = 'git-multi'
-    VERSION = '1.0.5'
+    NAME = 'git-multi'.freeze
+    VERSION = '1.0.5'.freeze
 
-    LONG_VERSION = "%s v%s (%s v%s, %s v%s, %s v%s, %s v%s)" % [
-      NAME,
-      VERSION,
-      'octokit.rb',
-      Octokit::VERSION,
-      'sawyer',
-      Sawyer::VERSION,
-      'faraday',
-      Faraday::VERSION,
-      'addressable',
-      Addressable::VERSION::STRING,
-    ]
+    DEPENDENCY_VERSIONS = [
+      "octokit.rb v#{Octokit::VERSION}",
+      "sawyer v#{Sawyer::VERSION}",
+      "faraday v#{Faraday::VERSION}",
+      "addressable v#{Addressable::VERSION::STRING}",
+    ].join(', ').freeze
+
+    LONG_VERSION = "#{NAME} v#{VERSION} (#{DEPENDENCY_VERSIONS})".freeze
   end
 end

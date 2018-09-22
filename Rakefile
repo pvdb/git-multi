@@ -41,8 +41,8 @@ end
 
 task :documentation => git_asciidoc do
   Dir.chdir(documentation) do
-    # use git's documentation approach and build system
-    %x{ make git-multi.1 git-multi.html }
+    # use git's documentation framework
+    `make git-multi.1 git-multi.html`
     FileUtils.cp 'git-multi.1',    Git::Multi::MAN_PAGE
     FileUtils.cp 'git-multi.html', Git::Multi::HTML_PAGE
   end

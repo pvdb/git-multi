@@ -16,10 +16,10 @@ require 'octokit'
 Octokit.middleware.response :logger, logger
 
 # enumerator for Faraday middleware apps
-def (middleware = Octokit.middleware).each_app
+def (_middleware = Octokit.middleware).each_app
   Enumerator.new do |yielder|
     next_app = app
-    while next_app do
+    while next_app
       yielder << next_app
       next_app = next_app.instance_variable_get(:@app)
     end
@@ -28,12 +28,12 @@ end
 
 # utility function to set pry context
 # to an instance of <Octokit::Client>
-def client() pry Git::Hub.send(:client) ; end
+def client() pry Git::Hub.send(:client); end
 
 # utility function to set pry context
 # to the Array of github repositories
-def repos() pry Git::Multi.repositories ; end
+def repos() pry Git::Multi.repositories; end
 
 # utility function to set pry context
 # to the various 'git multi' commands:
-def cmds() pry Git::Multi::Commands ; end
+def cmds() pry Git::Multi::Commands; end

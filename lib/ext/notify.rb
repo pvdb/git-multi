@@ -13,7 +13,7 @@ def notify(message, options = {}, verbose = false)
   # send a given message to the Mac OS X Notification Center
   # but only if the git-multi script is running interactively
   # and if the "terminal-notifier" gem has been installed...
-  if interactive? && defined?(TerminalNotifier)
+  interactive? && defined?(TerminalNotifier) && begin
     options[:title] ||= 'git-multi'
     TerminalNotifier.notify(message, options, verbose)
   end

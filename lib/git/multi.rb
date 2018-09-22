@@ -87,12 +87,12 @@ module Git
 
     module Nike
 
-      def just_do_it interactive, pipeline, options = {}
+      def just_do_it(interactive, pipeline, options = {})
         working_dir = case (options[:in] || '').to_sym
-          when :parent_dir then self.parent_dir
-          when :local_path then self.local_path
-          else Dir.pwd
-        end
+                      when :parent_dir then parent_dir
+                      when :local_path then local_path
+                      else Dir.pwd
+                      end
         Dir.chdir(working_dir) do
           if interactive?
             puts "#{full_name.invert} (#{fractional_index})"
@@ -107,6 +107,7 @@ module Git
 
     def repositories
       if File.size?(REPOSITORIES)
+        # rubocop:disable Security/MarshalLoad
         @repositories ||= Marshal.load(File.read(REPOSITORIES)).tap do |projects|
           notify "Finished loading #{REPOSITORIES}"
           projects.each_with_index do |project, index|
@@ -117,13 +118,14 @@ module Git
             project.local_path = Pathname.new(File.join(WORKAREA, project.full_name))
             project.fractional_index = "#{index + 1}/#{projects.count}"
             # fix 'project' => https://github.com/octokit/octokit.rb/issues/727
-            project.compliant_ssh_url = 'ssh://%s/%s' % project.ssh_url.split(':', 2)
+            project.compliant_ssh_url = 'ssh://' + project.ssh_url.split(':', 2).join('/')
             # remove optional '.git' suffix from 'git@github.com:pvdb/git-multi.git'
             project.abbreviated_ssh_url = project.ssh_url.chomp('.git')
             # extend 'project' with 'just do it' capabilities
             project.extend Nike
           end
         end
+        # rubocop:enable Security/MarshalLoad
       else
         refresh_repositories
         repositories # retry

@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# rubocop:disable all
+
 TIME_INTERVALS = {
 
   :minute  => (  MINUTE = 60 ), # seconds
@@ -50,9 +52,11 @@ RED = {
   :year    => "#FF2222" ,
 }.freeze
 
-if __FILE__ == $0
+# rubocop:enable all
 
-  $:.unshift File.expand_path('../../lib', __dir__)
+if $PROGRAM_NAME == __FILE__
+
+  $LOAD_PATH.unshift File.expand_path('../../lib', __dir__)
 
   require 'git/multi'
 
@@ -64,6 +68,7 @@ if __FILE__ == $0
     def project.age_in_seconds
       (Time.now - pushed_at).to_i
     end
+
     def project.age_in_words
       time_distance_in_words(age_in_seconds)
     end
@@ -75,7 +80,7 @@ if __FILE__ == $0
   require 'erb'
 
   # generate HTML page with a dashboard of global GitHub repository activity:
-  puts ERB.new(File.read(File.join(__dir__, "git-dash.erb"))).result(binding)
+  puts ERB.new(File.read(File.join(__dir__, 'git-dash.erb'))).result(binding)
 
 end
 

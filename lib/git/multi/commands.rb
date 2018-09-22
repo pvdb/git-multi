@@ -28,9 +28,8 @@ module Git
       end
 
       def report
-        if (missing_repos = Git::Multi::missing_repositories).any?
-          notify(missing_repos.map(&:full_name), :subtitle => "#{missing_repos.count} missing repos")
-        end
+        (missing_repos = Git::Multi.missing_repositories).any? &&
+          notify(missing_repos.map(&:full_name), subtitle: "#{missing_repos.count} missing repos")
       end
 
       def list
@@ -72,12 +71,12 @@ module Git
       def count
         # https://developer.github.com/v3/repos/#list-user-repositories
         user = Git::Multi::USER
-        %w{ all owner member }.each { |type|
+        %w[all owner member].each { |type|
           puts ["#{user}/#{type}", Git::Hub.user_repositories(user, type).count].join("\t")
         }
         # https://developer.github.com/v3/repos/#list-organization-repositories
-        for org in Git::Multi::ORGANIZATIONS
-          %w{ all public private forks sources member }.each { |type|
+        Git::Multi::ORGANIZATIONS.each do |org|
+          %w[all public private forks sources member].each { |type|
             puts ["#{org}/#{type}", Git::Hub.org_repositories(org, type).count].join("\t")
           }
         end
@@ -107,7 +106,7 @@ module Git
         end
       end
 
-      def query args = []
+      def query(args = [])
         Git::Multi.repositories.each do |repo|
           repo.just_do_it(
             ->(project) {
@@ -123,58 +122,54 @@ module Git
         end
       end
 
-      def system args = []
-        args.map!(&:shellescape)
+      def system(args = [])
+        cmd = args.map!(&:shellescape).join(' ')
         Git::Multi.cloned_repositories.each do |repo|
           repo.just_do_it(
-            ->(project) {
-              Kernel.system "#{args.join(' ')}"
+            ->(_project) {
+              Kernel.system cmd
             },
             ->(project) {
-              Kernel.system "#{args.join(' ')} 2>&1 | sed -e 's#^##{project.full_name.shellescape}: #'"
+              Kernel.system "#{cmd} 2>&1 | sed -e 's#^##{project.full_name.shellescape}: #'"
             },
             in: 'local_path'
           )
         end
       end
 
-      def raw args
+      def raw(args)
         args.unshift ['sh', '-c']
         system args.flatten
       end
 
-      def exec command, args = []
+      def exec(command, args = [])
         args.unshift ['git', '--no-pager', command]
         system args.flatten
       end
 
-      def find commands
+      def find(commands)
         Git::Multi.cloned_repositories.each do |repo|
           Dir.chdir(repo.local_path) do
-            begin
-              if repo.instance_eval(commands.join(' && '))
-                repo.just_do_it(
-                  ->(project) { nil ; },
-                  ->(project) { puts project.full_name ; },
-                )
-              end
-            rescue Octokit::NotFound
-              # project no longer exists on github.com
-              # consider running "git multi --stale"...
+            if repo.instance_eval(commands.join(' && '))
+              repo.just_do_it(
+                ->(_project) { nil },
+                ->(project) { puts project.full_name },
+              )
             end
+          rescue Octokit::NotFound
+            # project no longer exists on github.com
+            # consider running "git multi --stale"...
           end
         end
       end
 
-      def eval commands
+      def eval(commands)
         Git::Multi.cloned_repositories.each do |repo|
           Dir.chdir(repo.local_path) do
-            begin
-              repo.instance_eval(commands.join(' ; '))
-            rescue Octokit::NotFound
-              # project no longer exists on github.com
-              # consider running "git multi --stale"...
-            end
+            repo.instance_eval(commands.join(' ; '))
+          rescue Octokit::NotFound
+            # project no longer exists on github.com
+            # consider running "git multi --stale"...
           end
         end
       end

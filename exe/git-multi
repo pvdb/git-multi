@@ -31,7 +31,7 @@ when /\A--/
   else
     abort \
       "Unknown 'git multi' command: #{command}\n\n" \
-      "(use --help/-h to list all available commands)"
+      '(use --help/-h to list all available commands)'
   end
 when nil, '', '-h'
   Git::Multi::Commands.help

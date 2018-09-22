@@ -21,8 +21,8 @@ module Git
 
     def client
       @client ||= Octokit::Client.new(
-        :access_token => Git::Multi::TOKEN,
-        :auto_paginate => true,
+        access_token: Git::Multi::TOKEN,
+        auto_paginate: true,
       )
     end
 
@@ -39,7 +39,7 @@ module Git
       end
     end
 
-    # FIXME update login as part of `--refresh`
+    # FIXME: update login as part of `--refresh`
 
     def login
       @login ||= begin
@@ -49,7 +49,7 @@ module Git
       end
     end
 
-    # FIXME update orgs as part of `--refresh`
+    # FIXME: update orgs as part of `--refresh`
 
     def orgs
       @orgs ||= begin
@@ -78,12 +78,14 @@ module Git
     @user_repositories = Hash.new { |repos, (user, type)|
       repos[[user, type]] = begin
         notify("Refreshing #{type} '#{user}' repositories from GitHub")
-        client.repositories(user, :type => type).
-        sort_by { |repo| repo[:name].downcase }
+        client
+          .repositories(user, type: type)
+          .sort_by { |repo| repo[:name].downcase }
       end
     }
 
-    def user_repositories(user, type = :owner) # all, owner, member
+    def user_repositories(user, type = :owner)
+      # type can be one of: all, owner, member
       @user_repositories[[user, type]]
     end
 
@@ -94,12 +96,14 @@ module Git
     @org_repositories = Hash.new { |repos, (org, type)|
       repos[[org, type]] = begin
         notify("Refreshing #{type} '#{org}' repositories from GitHub")
-        client.org_repositories(org, :type => type).
-        sort_by { |repo| repo[:name].downcase }
+        client
+          .org_repositories(org, type: type)
+          .sort_by { |repo| repo[:name].downcase }
       end
     }
 
-    def org_repositories(org, type = :owner) # all, public, private, forks, sources, member
+    def org_repositories(org, type = :owner)
+      # type can be one of: all, public, private, forks, sources, member
       @org_repositories[[org, type]]
     end
 

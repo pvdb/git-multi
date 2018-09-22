@@ -1,6 +1,6 @@
 module Git
   module Multi
-    PIM = <<~"EOPIM" # gem post_install_message, used in git-multi.gemspec
+    PIM = <<~"PIM".freeze # gem post_install_message, used in git-multi.gemspec
 
       The required settings for \033[1mgit multi\33[0m are as follows:
 
@@ -14,6 +14,6 @@ module Git
 
       Thanks for using \033[1mgit multi\033[0m ... the ultimate multi-repo utility for git!
 
-    EOPIM
+    PIM
   end
 end
