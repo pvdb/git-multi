@@ -48,4 +48,6 @@ task :documentation => git_asciidoc do
   end
 end
 
+Rake::Task['build'].enhance([:documentation])
+
 # rubocop:enable Style/HashSyntax
