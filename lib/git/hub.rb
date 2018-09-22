@@ -59,6 +59,18 @@ module Git
       end
     end
 
+    # pick a (semi-)random repo from GitHub
+
+    def repository_fields
+      client.repo('git/git').fields
+    end
+
+    def query_args
+      repository_fields.sort.each_slice(3).map { |foo, bar, qux|
+        format('%-20s %-20s %-20s', foo, bar, qux).rstrip
+      }.join("\n    ")
+    end
+
     #
     # https://developer.github.com/v3/repos/#list-user-repositories
     #

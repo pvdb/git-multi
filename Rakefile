@@ -29,18 +29,6 @@ task :documentation => 'man/git-multi.txt'
 
 require 'git/multi'
 
-def query_args
-
-  client = Git::Hub.send(:client) # Octokit GitHub API client
-  repo = client.repo('git/git')   # random GitHub repository
-
-  # instead of maintaining a list of valid query args in the help-
-  # file, we determine it at runtime... less is more, and all that
-  repo.fields.sort.each_slice(3).map { |foo, bar, qux|
-    format('%-20s %-20s %-20s', foo, bar, qux).rstrip
-  }.join("\n    ")
-end
-
 file 'man/git-multi.txt' => 'man/git-multi.erb' do |task|
   require 'erb'
   File.write(task.name, ERB.new(File.read(task.source)).result)
