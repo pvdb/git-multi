@@ -1,6 +1,7 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/multi/version'
+require 'git/multi/gemspec'
 
 Gem::Specification.new do |spec|
   spec.name          = Git::Multi::NAME
