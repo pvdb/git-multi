@@ -1,4 +1,33 @@
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+
+Lint/HandleExceptions:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+Metrics/LineLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
-Style/BlockDelimiters:
+Style/Lambda:
+  Enabled: false
+Style/NestedTernaryOperator:
+  Enabled: false
+Style/SingleLineMethods:
+  Enabled: false
+Style/TrailingCommaInArguments:
+  Enabled: false
+Style/TrailingCommaInLiteral:
   Enabled: false
