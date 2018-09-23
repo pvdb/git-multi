@@ -88,7 +88,7 @@ module Git
     module Nike
 
       def just_do_it interactive, pipeline, options = {}
-        working_dir = case options[:in_dir]
+        working_dir = case (options[:in] || '').to_sym
           when :parent_dir then self.parent_dir
           when :local_path then self.local_path
           else Dir.pwd

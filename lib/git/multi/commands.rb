@@ -102,7 +102,7 @@ module Git
             ->(project) {
               Kernel.system "git clone -q #{project.rels[:ssh].href.shellescape}"
             },
-            :in_dir => :parent_dir
+            in: 'parent_dir'
           )
         end
       end
@@ -133,7 +133,7 @@ module Git
             ->(project) {
               Kernel.system "#{args.join(' ')} 2>&1 | sed -e 's#^##{project.full_name.shellescape}: #'"
             },
-            :in_dir => :local_path
+            in: 'local_path'
           )
         end
       end
