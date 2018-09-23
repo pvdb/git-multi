@@ -8,7 +8,6 @@ require 'octokit'
 require 'sawyer'
 
 require 'ext/dir'
-require 'ext/utils'
 require 'ext/string'
 require 'ext/notify'
 require 'ext/kernel'
@@ -17,6 +16,7 @@ require 'ext/sawyer/resource'
 
 require 'git/hub'
 
+require 'git/multi/utils'
 require 'git/multi/version'
 require 'git/multi/settings'
 require 'git/multi/commands'
