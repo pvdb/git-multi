@@ -76,8 +76,10 @@ module Git
         directory_status(['Workarea (main)', abbreviate(workarea, :home)], workarea)
       end
 
-      def user_workarea_status(user)
-        workarea_status("Workarea (user: #{user})", Git::Multi::WORKAREA, user)
+      def user_workarea_status(users)
+        users.each do |user|
+          workarea_status("Workarea (user: #{user})", Git::Multi::WORKAREA, user)
+        end
       end
 
       def organization_workarea_status(orgs)

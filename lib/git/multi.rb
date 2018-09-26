@@ -35,7 +35,7 @@ module Git
     CACHE            = File.join(HOME, '.git', 'multi')
     REPOSITORIES     = File.join(CACHE, 'repositories.byte')
 
-    USER             = git_option('github.user')
+    USERS            = git_list('github.users')
     ORGANIZATIONS    = git_list('github.organizations')
 
     MAN_PAGE         = File.expand_path('../../man/git-multi.1', __dir__)
@@ -57,7 +57,7 @@ module Git
 
     def local_repositories
       (
-        @local_user_repositories[USER] +
+        USERS.map { |user| @local_user_repositories[user] } +
         ORGANIZATIONS.map { |org| @local_org_repositories[org] }
       ).flatten
     end
@@ -68,7 +68,7 @@ module Git
 
     def github_repositories
       @github_repositories ||= (
-        Git::Hub.user_repositories(USER) +
+        USERS.map { |user| Git::Hub.user_repositories(user) } +
         ORGANIZATIONS.map { |org| Git::Hub.org_repositories(org) }
       ).flatten
     end
