@@ -44,6 +44,10 @@ module Git
       value.empty? && default ? default : value
     end
 
+    def git_list(name, default = nil)
+      git_option(name, default).split(',').map(&:strip)
+    end
+
     def env_var(name, default = nil)
       value = ENV[name].freeze
       (value.nil? || value.empty?) && default ? default : value
