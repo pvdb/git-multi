@@ -1,23 +1,19 @@
+# rubocop:disable Style/SymbolArray
 # rubocop:disable Style/HashSyntax
 
 require 'bundler/gem_tasks'
 
-def gemspec
-  @gemspec ||= begin
-                 # rubocop:disable Security/Eval
-                 eval(File.read('git-multi.gemspec'))
-                 # rubocop:enable Security/Eval
-               end
+task :validate_gemspec do
+  Bundler.load_gemspec('git-multi.gemspec').validate
 end
 
-desc 'Validate the gemspec'
-task :validate do
-  gemspec.validate
+task :version => :validate_gemspec do
+  puts Git::Multi::VERSION
 end
 
 require 'rubocop/rake_task'
 
-RuboCop::RakeTask.new
+RuboCop::RakeTask.new(:rubocop)
 
 require 'rake/testtask'
 
@@ -52,6 +48,7 @@ task :documentation => git_asciidoc do
   end
 end
 
-Rake::Task['build'].enhance([:documentation])
+Rake::Task['build'].enhance([:default, :documentation])
 
 # rubocop:enable Style/HashSyntax
+# rubocop:enable Style/SymbolArray
