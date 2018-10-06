@@ -13,6 +13,7 @@ module Git
       "sawyer v#{Sawyer::VERSION}",
       "faraday v#{Faraday::VERSION}",
       "addressable v#{Addressable::VERSION::STRING}",
+      "#{RUBY_ENGINE} #{RUBY_VERSION}p#{RUBY_PATCHLEVEL}",
     ].join(', ').freeze
 
     LONG_VERSION = "#{NAME} v#{VERSION} (#{DEPENDENCY_VERSIONS})".freeze
