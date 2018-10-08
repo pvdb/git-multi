@@ -2,11 +2,15 @@ module Git
   module Multi
     PIM = <<~"PIM".freeze # gem post_install_message, used in git-multi.gemspec
 
-      The required settings for \033[1mgit multi\33[0m are as follows:
+      The only required setting for \033[1mgit multi\33[0m is:
 
-      \tgit config --global --add \033[1mgithub.user\033[0m <your_github_username>
-      \tgit config --global --add \033[1mgithub.organizations\033[0m <your_github_orgs>
       \tgit config --global --add \033[1mgithub.token\033[0m <your_github_oauth_token>
+
+      The following settings for \033[1mgit multi\33[0m are
+      optional, and take 0, 1 or more values:
+
+      \tgit config --global --add \033[1mgithub.users\033[0m <list_of_github_users>
+      \tgit config --global --add \033[1mgithub.organizations\033[0m <list_of_github_orgs>
 
       Unless your top-level workarea is `${HOME}/Workarea` you should also set:
 
