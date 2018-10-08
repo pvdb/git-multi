@@ -70,10 +70,11 @@ module Git
 
       def count
         # https://developer.github.com/v3/repos/#list-user-repositories
-        user = Git::Multi::USER
-        %w[all owner member].each { |type|
-          puts ["#{user}/#{type}", Git::Hub.user_repositories(user, type).count].join("\t")
-        }
+        Git::Multi::USERS.each do |user|
+          %w[all owner member].each { |type|
+            puts ["#{user}/#{type}", Git::Hub.user_repositories(user, type).count].join("\t")
+          }
+        end
         # https://developer.github.com/v3/repos/#list-organization-repositories
         Git::Multi::ORGANIZATIONS.each do |org|
           %w[all public private forks sources member].each { |type|
