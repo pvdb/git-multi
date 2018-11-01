@@ -748,7 +748,7 @@ git-multi(1) Manual Page
 <div class="sect1">
 <h2 id="_version">VERSION</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>This is <code>v1.0.9</code> of <em>git multi</em> &#8230; hooray!</p></div>
+<div class="paragraph"><p>This is <code>v1.0.10</code> of <em>git multi</em> &#8230; hooray!</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -990,7 +990,12 @@ cached locally <em>(in binary format)</em> for performance and offline usage.</p
 <div class="content">
 <pre><code>git multi fetch -p</code></pre>
 </div></div>
-<div class="paragraph"><p>print out the local branch for each repo</p></div>
+<div class="paragraph"><p>print out the local branch for each repo (using <code>symbolic-ref</code>)</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>git multi symbolic-ref --quiet --short HEAD</code></pre>
+</div></div>
+<div class="paragraph"><p>print out the local branch for each repo (using <code>rev-parse</code>)</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>git multi rev-parse --abbrev-ref=strict HEAD</code></pre>
@@ -1033,27 +1038,27 @@ cached locally <em>(in binary format)</em> for performance and offline usage.</p
 <div class="paragraph"><p>find all projects that have been pushed to in the last week</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>git multi --find '((Time.now - pushed_at) / 60 / 60 / 24) &lt;= 7'</code></pre>
+<pre><code>git multi --find '((Time.now.utc - pushed_at) / 60 / 60 / 24) &lt;= 7'</code></pre>
 </div></div>
 <div class="paragraph"><p>print out the number of days since the last push to each repository</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>git multi --eval 'puts "%d days" % ((Time.now - pushed_at) / 60 / 60 / 24)'</code></pre>
+<pre><code>git multi --eval 'puts "%s - %d days" % [full_name, ((Time.now.utc - pushed_at) / 60 / 60 / 24).ceil]'</code></pre>
 </div></div>
 <div class="paragraph"><p>find all projects that have seen activity this calendar year</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>git multi --find 'pushed_at &gt;= Date.civil(Date.today.year, 1, 1).to_time'</code></pre>
+<pre><code>git multi --find 'pushed_at &gt;= Date.civil(Date.today.year, 1, 1).to_time.utc'</code></pre>
 </div></div>
 <div class="paragraph"><p>print out all webhooks</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>git multi --eval '(hooks = client.hooks(project.full_name)).any? &amp;&amp; begin print project.full_name ; print "\t" ; puts hooks.map { |hook| ["", hook.name, hook.config.url].join("\t") } ; end'</code></pre>
+<pre><code>git multi --eval '(hooks = client.hooks(full_name)).any? &amp;&amp; begin print full_name ; print "\t" ; puts hooks.map { |hook| ["", hook.name, hook.config.url].join("\t") } ; end'</code></pre>
 </div></div>
 <div class="paragraph"><p>print out all deploy keys</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>git multi --eval '(keys = client.list_deploy_keys(project.full_name)).any? &amp;&amp; begin print project.full_name ; print "\t" ; puts keys.map(&amp;:title).sort.join("\t") ; end'</code></pre>
+<pre><code>git multi --eval '(keys = client.list_deploy_keys(full_name)).any? &amp;&amp; begin print full_name ; print "\t" ; puts keys.map(&amp;:title).sort.join("\t") ; end'</code></pre>
 </div></div>
 <div class="paragraph"><p>find all organization repositories that depend on a given org repo, e.g. <em>business_rules</em></p></div>
 <div class="literalblock">
@@ -1117,12 +1122,12 @@ are some examples:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code># print out each repository's name and its description
-git multi --json | jq '.[] | .name + ": " + .description'</code></pre>
+git multi --json | jq -r '.[] | .name + ": " + .description'</code></pre>
 </div></div>
 <div class="literalblock">
 <div class="content">
 <pre><code># print out the name of all "forked" repositories
-git multi --json | jq '.[] | select(.fork == true) | .full_name'</code></pre>
+git multi --json | jq -r '.[] | select(.fork == true) | .full_name'</code></pre>
 </div></div>
 </div>
 </div>
@@ -1179,7 +1184,7 @@ the <code>jq</code> command-line utility:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-10-08 19:59:55 BST
+ 2018-11-01 16:32:39 GMT
 </div>
 </div>
 </body>

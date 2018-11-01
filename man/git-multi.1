@@ -2,12 +2,12 @@
 .\"     Title: git-multi
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 10/08/2018
+.\"      Date: 11/01/2018
 .\"    Manual: Git Manual
-.\"    Source: Git 2.19.1.272.gf84b9b09d.dirty
+.\"    Source: Git 2.19.1.542.gc4df23f792.dirty
 .\"  Language: English
 .\"
-.TH "GIT\-MULTI" "1" "10/08/2018" "Git 2\&.19\&.1\&.272\&.gf84b9b" "Git Manual"
+.TH "GIT\-MULTI" "1" "11/01/2018" "Git 2\&.19\&.1\&.542\&.gc4df23" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -31,7 +31,7 @@
 git-multi \- execute the same git command in multiple repositories
 .SH "VERSION"
 .sp
-This is \fBv1\&.0\&.9\fR of \fIgit multi\fR \&... hooray!
+This is \fBv1\&.0\&.10\fR of \fIgit multi\fR \&... hooray!
 .SH "SYNOPSIS"
 .sp
 There are some options for \fBgit multi\fR itself, in which case it is invoked as follows:
@@ -244,7 +244,19 @@ git multi fetch \-p
 .RE
 .\}
 .sp
-print out the local branch for each repo
+print out the local branch for each repo (using \fBsymbolic\-ref\fR)
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi symbolic\-ref \-\-quiet \-\-short HEAD
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+print out the local branch for each repo (using \fBrev\-parse\fR)
 .sp
 .if n \{\
 .RS 4
@@ -346,7 +358,7 @@ find all projects that have been pushed to in the last week
 .RS 4
 .\}
 .nf
-git multi \-\-find \*(Aq((Time\&.now \- pushed_at) / 60 / 60 / 24) <= 7\*(Aq
+git multi \-\-find \*(Aq((Time\&.now\&.utc \- pushed_at) / 60 / 60 / 24) <= 7\*(Aq
 .fi
 .if n \{\
 .RE
@@ -358,7 +370,7 @@ print out the number of days since the last push to each repository
 .RS 4
 .\}
 .nf
-git multi \-\-eval \*(Aqputs "%d days" % ((Time\&.now \- pushed_at) / 60 / 60 / 24)\*(Aq
+git multi \-\-eval \*(Aqputs "%s \- %d days" % [full_name, ((Time\&.now\&.utc \- pushed_at) / 60 / 60 / 24)\&.ceil]\*(Aq
 .fi
 .if n \{\
 .RE
@@ -370,7 +382,7 @@ find all projects that have seen activity this calendar year
 .RS 4
 .\}
 .nf
-git multi \-\-find \*(Aqpushed_at >= Date\&.civil(Date\&.today\&.year, 1, 1)\&.to_time\*(Aq
+git multi \-\-find \*(Aqpushed_at >= Date\&.civil(Date\&.today\&.year, 1, 1)\&.to_time\&.utc\*(Aq
 .fi
 .if n \{\
 .RE
@@ -382,7 +394,7 @@ print out all webhooks
 .RS 4
 .\}
 .nf
-git multi \-\-eval \*(Aq(hooks = client\&.hooks(project\&.full_name))\&.any? && begin print project\&.full_name ; print "\et" ; puts hooks\&.map { |hook| ["", hook\&.name, hook\&.config\&.url]\&.join("\et") } ; end\*(Aq
+git multi \-\-eval \*(Aq(hooks = client\&.hooks(full_name))\&.any? && begin print full_name ; print "\et" ; puts hooks\&.map { |hook| ["", hook\&.name, hook\&.config\&.url]\&.join("\et") } ; end\*(Aq
 .fi
 .if n \{\
 .RE
@@ -394,7 +406,7 @@ print out all deploy keys
 .RS 4
 .\}
 .nf
-git multi \-\-eval \*(Aq(keys = client\&.list_deploy_keys(project\&.full_name))\&.any? && begin print project\&.full_name ; print "\et" ; puts keys\&.map(&:title)\&.sort\&.join("\et") ; end\*(Aq
+git multi \-\-eval \*(Aq(keys = client\&.list_deploy_keys(full_name))\&.any? && begin print full_name ; print "\et" ; puts keys\&.map(&:title)\&.sort\&.join("\et") ; end\*(Aq
 .fi
 .if n \{\
 .RE
@@ -482,7 +494,7 @@ watchers_count
 .\}
 .nf
 # print out each repository\*(Aqs name and its description
-git multi \-\-json | jq \*(Aq\&.[] | \&.name + ": " + \&.description\*(Aq
+git multi \-\-json | jq \-r \*(Aq\&.[] | \&.name + ": " + \&.description\*(Aq
 .fi
 .if n \{\
 .RE
@@ -493,7 +505,7 @@ git multi \-\-json | jq \*(Aq\&.[] | \&.name + ": " + \&.description\*(Aq
 .\}
 .nf
 # print out the name of all "forked" repositories
-git multi \-\-json | jq \*(Aq\&.[] | select(\&.fork == true) | \&.full_name\*(Aq
+git multi \-\-json | jq \-r \*(Aq\&.[] | select(\&.fork == true) | \&.full_name\*(Aq
 .fi
 .if n \{\
 .RE
