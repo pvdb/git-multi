@@ -28,12 +28,18 @@ end
 
 # utility function to set pry context
 # to an instance of <Octokit::Client>
-def client() pry Git::Hub.send(:client); end
+def client() pry(Git::Hub.send(:client)); end
 
 # utility function to set pry context
 # to the Array of github repositories
-def repos() pry Git::Multi.repositories; end
+def repos() pry(Git::Multi.repositories); end
 
 # utility function to set pry context
 # to the various 'git multi' commands:
-def cmds() pry Git::Multi::Commands; end
+def cmds() pry(Git::Multi::Commands); end
+
+# utility function to set context
+# to the named github repository:
+def repo_named(full_name)
+  pry(Git::Multi.repositories.find { |repo| repo.full_name == full_name })
+end
