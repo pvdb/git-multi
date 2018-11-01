@@ -131,7 +131,11 @@ fetch remote branches for all repos
 
  git multi fetch -p
 
-print out the local branch for each repo
+print out the local branch for each repo (using `symbolic-ref`)
+
+ git multi symbolic-ref --quiet --short HEAD
+
+print out the local branch for each repo (using `rev-parse`)
 
  git multi rev-parse --abbrev-ref=strict HEAD
 
@@ -165,23 +169,23 @@ find all Mongoid dependencies
 
 find all projects that have been pushed to in the last week
 
- git multi --find '((Time.now - pushed_at) / 60 / 60 / 24) <= 7'
+ git multi --find '((Time.now.utc - pushed_at) / 60 / 60 / 24) <= 7'
 
 print out the number of days since the last push to each repository
 
- git multi --eval 'puts "%d days" % ((Time.now - pushed_at) / 60 / 60 / 24)'
+ git multi --eval 'puts "%s - %d days" % [full_name, ((Time.now.utc - pushed_at) / 60 / 60 / 24).ceil]'
 
 find all projects that have seen activity this calendar year
 
- git multi --find 'pushed_at >= Date.civil(Date.today.year, 1, 1).to_time'
+ git multi --find 'pushed_at >= Date.civil(Date.today.year, 1, 1).to_time.utc'
 
 print out all webhooks
 
- git multi --eval '(hooks = client.hooks(project.full_name)).any? && begin print project.full_name ; print "\t" ; puts hooks.map { |hook| ["", hook.name, hook.config.url].join("\t") } ; end'
+ git multi --eval '(hooks = client.hooks(full_name)).any? && begin print full_name ; print "\t" ; puts hooks.map { |hook| ["", hook.name, hook.config.url].join("\t") } ; end'
 
 print out all deploy keys
 
- git multi --eval '(keys = client.list_deploy_keys(project.full_name)).any? && begin print project.full_name ; print "\t" ; puts keys.map(&:title).sort.join("\t") ; end'
+ git multi --eval '(keys = client.list_deploy_keys(full_name)).any? && begin print full_name ; print "\t" ; puts keys.map(&:title).sort.join("\t") ; end'
 
 find all organization repositories that depend on a given org repo, e.g. 'business_rules'
 
@@ -211,10 +215,10 @@ repository attributes stored in the local, binary repository cache; here
 are some examples:
 
  # print out each repository's name and its description
- git multi --json | jq '.[] | .name + ": " + .description'
+ git multi --json | jq -r '.[] | .name + ": " + .description'
 
  # print out the name of all "forked" repositories
- git multi --json | jq '.[] | select(.fork == true) | .full_name'
+ git multi --json | jq -r '.[] | select(.fork == true) | .full_name'
 
 FILES
 -----
