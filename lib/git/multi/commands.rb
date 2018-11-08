@@ -87,8 +87,8 @@ module Git
         Git::Multi.refresh_repositories
       end
 
-      def json
-        puts Git::Multi.repositories.to_json
+      def json(multi_repo = nil)
+        puts Git::Multi.repositories_for(multi_repo).to_json
       end
 
       def clone(multi_repo)
