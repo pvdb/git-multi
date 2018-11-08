@@ -91,8 +91,8 @@ module Git
         puts Git::Multi.repositories.to_json
       end
 
-      def clone
-        Git::Multi.missing_repositories.each do |repo|
+      def clone(multi_repo)
+        Git::Multi.missing_repositories_for(multi_repo).each do |repo|
           FileUtils.mkdir_p repo.parent_dir
           repo.just_do_it(
             ->(project) {

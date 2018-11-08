@@ -34,7 +34,7 @@ when /\A--/
   when '--missing' then Git::Multi::Commands.missing(multi_repo)
   when '--stale'   then Git::Multi::Commands.stale
   when '--excess'  then Git::Multi::Commands.excess
-  when '--clone'   then Git::Multi::Commands.clone
+  when '--clone'   then Git::Multi::Commands.clone(multi_repo)
   when '--query'   then Git::Multi::Commands.query(ARGV)
   when '--find'    then Git::Multi::Commands.find(ARGV)
   when '--eval'    then Git::Multi::Commands.eval(ARGV)
