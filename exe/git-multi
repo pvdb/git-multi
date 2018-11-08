@@ -31,7 +31,7 @@ when /\A--/
   when '--private' then Git::Multi::Commands.private
   when '--paths'   then Git::Multi::Commands.paths(multi_repo)
   when '--spurious'then Git::Multi::Commands.spurious
-  when '--missing' then Git::Multi::Commands.missing
+  when '--missing' then Git::Multi::Commands.missing(multi_repo)
   when '--stale'   then Git::Multi::Commands.stale
   when '--excess'  then Git::Multi::Commands.excess
   when '--clone'   then Git::Multi::Commands.clone

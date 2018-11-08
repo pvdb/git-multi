@@ -201,8 +201,8 @@ module Git
       }
     end
 
-    def missing_repositories
-      repositories.find_all { |project|
+    def missing_repositories_for(multi_repo = nil)
+      repositories_for(multi_repo).find_all { |project|
         !File.directory? project.local_path
       }
     end
