@@ -32,8 +32,8 @@ module Git
           notify(missing_repos.map(&:full_name), subtitle: "#{missing_repos.count} missing repos")
       end
 
-      def list
-        puts Git::Multi.repositories.map(&:full_name)
+      def list(multi_repo = nil)
+        puts Git::Multi.repositories_for(multi_repo).map(&:full_name)
       end
 
       def archived
