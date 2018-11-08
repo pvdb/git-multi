@@ -141,6 +141,20 @@ module Git
     end
 
     #
+    # lists of repos for a given multi-repo
+    #
+
+    def repositories_for(multi_repo = nil)
+      if multi_repo.nil?
+        repositories
+      else
+        repositories.find_all { |repository|
+          repository.owner.login == multi_repo
+        }
+      end
+    end
+
+    #
     # lists of repositories with a given state
     #
 
