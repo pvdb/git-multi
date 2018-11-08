@@ -48,8 +48,8 @@ module Git
         puts Git::Multi.private_repositories.map(&:full_name)
       end
 
-      def paths
-        puts Git::Multi.repositories.map(&:local_path)
+      def paths(multi_repo = nil)
+        puts Git::Multi.repositories_for(multi_repo).map(&:local_path)
       end
 
       def missing

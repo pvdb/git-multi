@@ -29,7 +29,7 @@ when /\A--/
   when '--archived'then Git::Multi::Commands.archived
   when '--forked'  then Git::Multi::Commands.forked
   when '--private' then Git::Multi::Commands.private
-  when '--paths'   then Git::Multi::Commands.paths
+  when '--paths'   then Git::Multi::Commands.paths(multi_repo)
   when '--spurious'then Git::Multi::Commands.spurious
   when '--missing' then Git::Multi::Commands.missing
   when '--stale'   then Git::Multi::Commands.stale
