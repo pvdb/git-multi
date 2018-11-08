@@ -4,7 +4,18 @@ lib = File.expand_path('../../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/multi'
 
-case (command = ARGV.shift)
+if (command = ARGV.shift).start_with? '++'
+  multi_repo = command[2..-1]
+  if Git::Multi.valid?(multi_repo)
+    command = nil
+  else
+    abort \
+      "Unknown multi repo: #{multi_repo}\n\n" \
+      '(use --check to list all known multi repos)'
+  end
+end
+
+case (command ||= ARGV.shift)
 when /\A--/
   case command
   when '--help'    then Git::Multi::Commands.help

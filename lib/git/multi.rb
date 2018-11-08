@@ -44,6 +44,14 @@ module Git
     module_function
 
     #
+    # multi-repo support
+    #
+
+    def valid?(multi_repo)
+      (USERS + ORGANIZATIONS).include? multi_repo
+    end
+
+    #
     # local repositories (in WORKAREA)
     #
 
