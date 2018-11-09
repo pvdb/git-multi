@@ -64,7 +64,7 @@ module Git
     }
 
     def local_repositories
-      (
+      @local_repositories ||= (
         USERS.map { |user| @local_user_repositories[user] } +
         ORGANIZATIONS.map { |org| @local_org_repositories[org] }
       ).flatten
@@ -87,10 +87,18 @@ module Git
     # remote repositories (on GitHub)
     #
 
+    @github_user_repositories = Hash.new { |repos, user|
+      repos[user] = Git::Hub.user_repositories(user)
+    }
+
+    @github_org_repositories = Hash.new { |repos, org|
+      repos[org] = Git::Hub.org_repositories(org)
+    }
+
     def github_repositories
       @github_repositories ||= (
-        USERS.map { |user| Git::Hub.user_repositories(user) } +
-        ORGANIZATIONS.map { |org| Git::Hub.org_repositories(org) }
+        USERS.map { |user| @github_user_repositories[user] } +
+        ORGANIZATIONS.map { |org| @github_org_repositories[org] }
       ).flatten
     end
 
