@@ -757,13 +757,25 @@ git-multi(1) Manual Page
 <div class="paragraph"><p>There are some options for <code>git multi</code> itself, in which case it
 is invoked as follows:</p></div>
 <div class="verseblock">
-<pre class="content"><em>git multi</em> &lt;dash_dash_option&gt; [&lt;option_arguments&gt;]</pre>
+<pre class="content"><em>git multi</em> --&lt;option&gt; [&lt;option_arguments&gt;]</pre>
 <div class="attribution">
 </div></div>
 <div class="paragraph"><p>To execute the same git command in multiple repositories, the
 invocation is as follows:</p></div>
 <div class="verseblock">
 <pre class="content"><em>git multi</em> &lt;git_command&gt; [&lt;git_command_arguments&gt;]</pre>
+<div class="attribution">
+</div></div>
+<div class="paragraph"><p>Both ways of running <code>git multi</code> take an optional, so-called "multi repo"
+argument to limit the operation to the list of repositories in the referenced
+"multi repo", ie. a single GitHub user or a single GitHub organization:</p></div>
+<div class="verseblock">
+<pre class="content"><em>git multi</em> ++&lt;multi_repo&gt; --&lt;option&gt; [&lt;option_arguments&gt;]</pre>
+<div class="attribution">
+</div></div>
+<div class="paragraph"><p>and&#8230;</p></div>
+<div class="verseblock">
+<pre class="content"><em>git multi</em> ++&lt;multi_repo&gt; &lt;git_command&gt; [&lt;git_command_arguments&gt;]</pre>
 <div class="attribution">
 </div></div>
 </div>
@@ -773,14 +785,26 @@ invocation is as follows:</p></div>
 <div class="sectionbody">
 <div class="paragraph"><p>Convenient way to execute the same git command in a set of related repos,
 currently the repositories of a GitHub user, incl. the organizations they
-are a member of; the repo list is determined via a GitHub API v3 call, and
+are a member of.</p></div>
+<div class="paragraph"><p>The list of repositories is determined via a GitHub API v3 call, and
 cached locally <em>(in binary format)</em> for performance and offline usage.</p></div>
+<div class="paragraph"><p>By default, <code>git multi</code> operates on all repositories for all configured users
+and all configured organizations.  To limit the operation to a single user or
+a single organization, the optional <code>++&lt;multi_repo&gt;</code> argument can be used.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_options">OPTIONS</h2>
 <div class="sectionbody">
 <div class="dlist"><dl>
+<dt class="hdlist1">
+--version
+</dt>
+<dd>
+<p>
+        print out this script&#8217;s version number
+</p>
+</dd>
 <dt class="hdlist1">
 --help
 </dt>
@@ -806,11 +830,11 @@ cached locally <em>(in binary format)</em> for performance and offline usage.</p
 </p>
 </dd>
 <dt class="hdlist1">
---version
+--count
 </dt>
 <dd>
 <p>
-        print out this script&#8217;s version number
+        print out the count of repos (per type)
 </p>
 </dd>
 <dt class="hdlist1">
@@ -827,14 +851,6 @@ cached locally <em>(in binary format)</em> for performance and offline usage.</p
 <dd>
 <p>
         output repository details to JSON
-</p>
-</dd>
-<dt class="hdlist1">
---count
-</dt>
-<dd>
-<p>
-        print out the count of repos (per type)
 </p>
 </dd>
 <dt class="hdlist1">
@@ -878,19 +894,19 @@ cached locally <em>(in binary format)</em> for performance and offline usage.</p
 </p>
 </dd>
 <dt class="hdlist1">
---spurious
-</dt>
-<dd>
-<p>
-        list cloned repos whose remote doesn&#8217;t match a github.com origin
-</p>
-</dd>
-<dt class="hdlist1">
 --missing
 </dt>
 <dd>
 <p>
         print out names of repos that haven&#8217;t been cloned
+</p>
+</dd>
+<dt class="hdlist1">
+--clone
+</dt>
+<dd>
+<p>
+        clones missing repositories into <code>${HOME}/Workarea</code> (by default)
 </p>
 </dd>
 <dt class="hdlist1">
@@ -910,11 +926,11 @@ cached locally <em>(in binary format)</em> for performance and offline usage.</p
 </p>
 </dd>
 <dt class="hdlist1">
---clone
+--spurious
 </dt>
 <dd>
 <p>
-        clones missing repositories into <code>${HOME}/Workarea</code> (by default)
+        list cloned repos whose remote doesn&#8217;t match a github.com origin
 </p>
 </dd>
 <dt class="hdlist1">
@@ -1184,7 +1200,7 @@ the <code>jq</code> command-line utility:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-11-01 16:32:39 GMT
+ 2018-11-09 13:33:47 GMT
 </div>
 </div>
 </body>

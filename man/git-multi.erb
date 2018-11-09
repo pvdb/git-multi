@@ -18,7 +18,7 @@ There are some options for `git multi` itself, in which case it
 is invoked as follows:
 
 [verse]
-'git multi' <dash_dash_option> [<option_arguments>]
+'git multi' --<option> [<option_arguments>]
 
 To execute the same git command in multiple repositories, the
 invocation is as follows:
@@ -26,13 +26,31 @@ invocation is as follows:
 [verse]
 'git multi' <git_command> [<git_command_arguments>]
 
+Both ways of running `git multi` take an optional, so-called "multi repo"
+argument to limit the operation to the list of repositories in the referenced
+"multi repo", ie. a single GitHub user or a single GitHub organization:
+
+[verse]
+'git multi' ++<multi_repo> --<option> [<option_arguments>]
+
+and...
+
+[verse]
+'git multi' ++<multi_repo> <git_command> [<git_command_arguments>]
+
 DESCRIPTION
 -----------
 
 Convenient way to execute the same git command in a set of related repos,
 currently the repositories of a GitHub user, incl. the organizations they
-are a member of; the repo list is determined via a GitHub API v3 call, and
+are a member of.
+
+The list of repositories is determined via a GitHub API v3 call, and
 cached locally '(in binary format)' for performance and offline usage.
+
+By default, `git multi` operates on all repositories for all configured users
+and all configured organizations.  To limit the operation to a single user or
+a single organization, the optional `++<multi_repo>` argument can be used.
 
 OPTIONS
 -------

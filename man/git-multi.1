@@ -2,12 +2,12 @@
 .\"     Title: git-multi
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 11/01/2018
+.\"      Date: 11/09/2018
 .\"    Manual: Git Manual
 .\"    Source: Git 2.19.1.542.gc4df23f792.dirty
 .\"  Language: English
 .\"
-.TH "GIT\-MULTI" "1" "11/01/2018" "Git 2\&.19\&.1\&.542\&.gc4df23" "Git Manual"
+.TH "GIT\-MULTI" "1" "11/09/2018" "Git 2\&.19\&.1\&.542\&.gc4df23" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -37,7 +37,7 @@ This is \fBv1\&.0\&.10\fR of \fIgit multi\fR \&... hooray!
 There are some options for \fBgit multi\fR itself, in which case it is invoked as follows:
 .sp
 .nf
-\fIgit multi\fR <dash_dash_option> [<option_arguments>]
+\fIgit multi\fR \-\-<option> [<option_arguments>]
 .fi
 .sp
 .sp
@@ -47,10 +47,33 @@ To execute the same git command in multiple repositories, the invocation is as f
 \fIgit multi\fR <git_command> [<git_command_arguments>]
 .fi
 .sp
+.sp
+Both ways of running \fBgit multi\fR take an optional, so\-called "multi repo" argument to limit the operation to the list of repositories in the referenced "multi repo", ie\&. a single GitHub user or a single GitHub organization:
+.sp
+.nf
+\fIgit multi\fR ++<multi_repo> \-\-<option> [<option_arguments>]
+.fi
+.sp
+.sp
+and\&...
+.sp
+.nf
+\fIgit multi\fR ++<multi_repo> <git_command> [<git_command_arguments>]
+.fi
+.sp
 .SH "DESCRIPTION"
 .sp
-Convenient way to execute the same git command in a set of related repos, currently the repositories of a GitHub user, incl\&. the organizations they are a member of; the repo list is determined via a GitHub API v3 call, and cached locally \fI(in binary format)\fR for performance and offline usage\&.
+Convenient way to execute the same git command in a set of related repos, currently the repositories of a GitHub user, incl\&. the organizations they are a member of\&.
+.sp
+The list of repositories is determined via a GitHub API v3 call, and cached locally \fI(in binary format)\fR for performance and offline usage\&.
+.sp
+By default, \fBgit multi\fR operates on all repositories for all configured users and all configured organizations\&. To limit the operation to a single user or a single organization, the optional \fB++<multi_repo>\fR argument can be used\&.
 .SH "OPTIONS"
+.PP
+\-\-version
+.RS 4
+print out this script\(cqs version number
+.RE
 .PP
 \-\-help
 .RS 4
@@ -67,9 +90,9 @@ open the HTML version of the man page
 checks all the required settings and configurations
 .RE
 .PP
-\-\-version
+\-\-count
 .RS 4
-print out this script\(cqs version number
+print out the count of repos (per type)
 .RE
 .PP
 \-\-refresh
@@ -80,11 +103,6 @@ refresh the list of user & organization repos
 \-\-json
 .RS 4
 output repository details to JSON
-.RE
-.PP
-\-\-count
-.RS 4
-print out the count of repos (per type)
 .RE
 .PP
 \-\-list
@@ -112,14 +130,16 @@ print out the names of all repos
 print out the full path for each repos
 .RE
 .PP
-\-\-spurious
-.RS 4
-list cloned repos whose remote doesn\(cqt match a github\&.com origin
-.RE
-.PP
 \-\-missing
 .RS 4
 print out names of repos that haven\(cqt been cloned
+.RE
+.PP
+\-\-clone
+.RS 4
+clones missing repositories into
+\fB${HOME}/Workarea\fR
+(by default)
 .RE
 .PP
 \-\-stale
@@ -132,11 +152,9 @@ list repos that have been deleted on github\&.com
 list repos that don\(cqt exist on github\&.com
 .RE
 .PP
-\-\-clone
+\-\-spurious
 .RS 4
-clones missing repositories into
-\fB${HOME}/Workarea\fR
-(by default)
+list cloned repos whose remote doesn\(cqt match a github\&.com origin
 .RE
 .PP
 \-\-query (args)
