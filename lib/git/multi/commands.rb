@@ -67,8 +67,8 @@ module Git
         puts Git::Multi.stale_repositories_for(multi_repo).map(&:full_name)
       end
 
-      def spurious
-        puts Git::Multi.spurious_repositories.map(&:full_name)
+      def spurious(multi_repo = nil)
+        puts Git::Multi.spurious_repositories_for(multi_repo).map(&:full_name)
       end
 
       def count

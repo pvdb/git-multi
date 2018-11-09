@@ -226,8 +226,8 @@ module Git
       }
     end
 
-    def spurious_repositories
-      cloned_repositories.find_all { |project|
+    def spurious_repositories_for(multi_repo = nil)
+      cloned_repositories_for(multi_repo).find_all { |project|
         origin_url = `git -C #{project.local_path} config --get remote.origin.url`.chomp
         ![
           project.clone_url,

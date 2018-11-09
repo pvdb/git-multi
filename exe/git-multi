@@ -30,7 +30,7 @@ when /\A--/
   when '--forked'  then Git::Multi::Commands.forked(multi_repo)
   when '--private' then Git::Multi::Commands.private(multi_repo)
   when '--paths'   then Git::Multi::Commands.paths(multi_repo)
-  when '--spurious'then Git::Multi::Commands.spurious
+  when '--spurious'then Git::Multi::Commands.spurious(multi_repo)
   when '--missing' then Git::Multi::Commands.missing(multi_repo)
   when '--stale'   then Git::Multi::Commands.stale(multi_repo)
   when '--excess'  then Git::Multi::Commands.excess(multi_repo)
