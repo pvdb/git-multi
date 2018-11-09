@@ -6,7 +6,7 @@ require 'addressable'
 module Git
   module Multi
     NAME = 'git-multi'.freeze
-    VERSION = '1.1.0'.freeze
+    VERSION = '1.2.0'.freeze
 
     DEPENDENCY_VERSIONS = [
       "octokit.rb v#{Octokit::VERSION}",
