@@ -8,6 +8,14 @@ module Git
         puts Git::Multi::LONG_VERSION
       end
 
+      def help
+        Kernel.exec "man #{Git::Multi::MAN_PAGE}"
+      end
+
+      def html
+        Kernel.exec "open #{Git::Multi::HTML_PAGE}"
+      end
+
       def check
         # Settings.user_status(Git::Multi::USER)
         # Settings.organization_status(Git::Multi::ORGANIZATIONS)
@@ -19,20 +27,27 @@ module Git
         # Settings.file_status(Git::Multi::REPOSITORIES)
       end
 
-      def help
-        Kernel.exec "man #{Git::Multi::MAN_PAGE}"
+      def count
+        # https://developer.github.com/v3/repos/#list-user-repositories
+        Git::Multi::USERS.each do |user|
+          %w[all owner member].each { |type|
+            puts ["#{user}/#{type}", Git::Hub.user_repositories(user, type).count].join("\t")
+          }
+        end
+        # https://developer.github.com/v3/repos/#list-organization-repositories
+        Git::Multi::ORGANIZATIONS.each do |org|
+          %w[all public private forks sources member].each { |type|
+            puts ["#{org}/#{type}", Git::Hub.org_repositories(org, type).count].join("\t")
+          }
+        end
       end
 
-      def html
-        Kernel.exec "open #{Git::Multi::HTML_PAGE}"
+      def refresh
+        Git::Multi.refresh_repositories
       end
 
-      def report(multi_repo = nil)
-        (missing = Git::Multi.missing_repositories_for(multi_repo)).any? &&
-          notify(
-            missing.map(&:full_name),
-            subtitle: "#{missing.count} missing repos"
-          )
+      def json(multi_repo = nil)
+        puts Git::Multi.repositories_for(multi_repo).to_json
       end
 
       def list(multi_repo = nil)
@@ -59,41 +74,6 @@ module Git
         puts Git::Multi.missing_repositories_for(multi_repo).map(&:full_name)
       end
 
-      def excess(multi_repo = nil)
-        puts Git::Multi.excess_repositories_for(multi_repo).map(&:full_name)
-      end
-
-      def stale(multi_repo = nil)
-        puts Git::Multi.stale_repositories_for(multi_repo).map(&:full_name)
-      end
-
-      def spurious(multi_repo = nil)
-        puts Git::Multi.spurious_repositories_for(multi_repo).map(&:full_name)
-      end
-
-      def count
-        # https://developer.github.com/v3/repos/#list-user-repositories
-        Git::Multi::USERS.each do |user|
-          %w[all owner member].each { |type|
-            puts ["#{user}/#{type}", Git::Hub.user_repositories(user, type).count].join("\t")
-          }
-        end
-        # https://developer.github.com/v3/repos/#list-organization-repositories
-        Git::Multi::ORGANIZATIONS.each do |org|
-          %w[all public private forks sources member].each { |type|
-            puts ["#{org}/#{type}", Git::Hub.org_repositories(org, type).count].join("\t")
-          }
-        end
-      end
-
-      def refresh
-        Git::Multi.refresh_repositories
-      end
-
-      def json(multi_repo = nil)
-        puts Git::Multi.repositories_for(multi_repo).to_json
-      end
-
       def clone(multi_repo = nil)
         Git::Multi.missing_repositories_for(multi_repo).each do |repo|
           FileUtils.mkdir_p repo.parent_dir
@@ -110,6 +90,18 @@ module Git
         end
       end
 
+      def stale(multi_repo = nil)
+        puts Git::Multi.stale_repositories_for(multi_repo).map(&:full_name)
+      end
+
+      def excess(multi_repo = nil)
+        puts Git::Multi.excess_repositories_for(multi_repo).map(&:full_name)
+      end
+
+      def spurious(multi_repo = nil)
+        puts Git::Multi.spurious_repositories_for(multi_repo).map(&:full_name)
+      end
+
       def query(args = [], multi_repo = nil)
         Git::Multi.repositories_for(multi_repo).each do |repo|
           repo.just_do_it(
@@ -124,31 +116,6 @@ module Git
             },
           )
         end
-      end
-
-      def system(args = [], multi_repo = nil)
-        cmd = args.map!(&:shellescape).join(' ')
-        Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
-          repo.just_do_it(
-            ->(_project) {
-              Kernel.system cmd
-            },
-            ->(project) {
-              Kernel.system "#{cmd} 2>&1 | sed -e 's#^##{project.full_name.shellescape}: #'"
-            },
-            in: 'local_path'
-          )
-        end
-      end
-
-      def raw(args, multi_repo = nil)
-        args.unshift ['sh', '-c']
-        system(args.flatten, multi_repo)
-      end
-
-      def exec(command, args = [], multi_repo = nil)
-        args.unshift ['git', '--no-pager', command]
-        system(args.flatten, multi_repo)
       end
 
       def find(commands, multi_repo = nil)
@@ -177,6 +144,41 @@ module Git
           end
         end
       end
+
+      def raw(args, multi_repo = nil)
+        args.unshift ['sh', '-c']
+        system(args.flatten, multi_repo)
+      end
+
+      def report(multi_repo = nil)
+        (missing = Git::Multi.missing_repositories_for(multi_repo)).any? &&
+          notify(
+            missing.map(&:full_name),
+            subtitle: "#{missing.count} missing repos"
+          )
+      end
+
+      def exec(command, args = [], multi_repo = nil)
+        args.unshift ['git', '--no-pager', command]
+        system(args.flatten, multi_repo)
+      end
+
+      def system(args = [], multi_repo = nil)
+        cmd = args.map!(&:shellescape).join(' ')
+        Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
+          repo.just_do_it(
+            ->(_project) {
+              Kernel.system cmd
+            },
+            ->(project) {
+              Kernel.system "#{cmd} 2>&1 | sed -e 's#^##{project.full_name.shellescape}: #'"
+            },
+            in: 'local_path'
+          )
+        end
+      end
+
+      private_class_method :system
 
     end
   end

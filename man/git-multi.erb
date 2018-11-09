@@ -37,6 +37,9 @@ cached locally '(in binary format)' for performance and offline usage.
 OPTIONS
 -------
 
+--version::
+	print out this script's version number
+
 --help::
 	you're looking at it: show the man page
 
@@ -46,17 +49,14 @@ OPTIONS
 --check::
 	checks all the required settings and configurations
 
---version::
-	print out this script's version number
+--count::
+	print out the count of repos (per type)
 
 --refresh::
 	refresh the list of user & organization repos
 
 --json::
 	output repository details to JSON
-
---count::
-	print out the count of repos (per type)
 
 --list::
 	print out the names of all repos
@@ -73,11 +73,11 @@ OPTIONS
 --paths::
 	print out the full path for each repos
 
---spurious::
-	list cloned repos whose remote doesn't match a github.com origin
-
 --missing::
 	print out names of repos that haven't been cloned
+
+--clone::
+	clones missing repositories into `${HOME}/Workarea` (by default)
 
 --stale::
 	list repos that have been deleted on github.com
@@ -85,8 +85,8 @@ OPTIONS
 --excess::
 	list repos that don't exist on github.com
 
---clone::
-	clones missing repositories into `${HOME}/Workarea` (by default)
+--spurious::
+	list cloned repos whose remote doesn't match a github.com origin
 
 --query (args)::
 	query GitHub repo metadata for each repository
