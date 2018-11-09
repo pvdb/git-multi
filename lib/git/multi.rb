@@ -70,6 +70,19 @@ module Git
       ).flatten
     end
 
+    def local_repositories_for(multi_repo = nil)
+      case (owner = multi_repo)
+      when nil
+        local_repositories
+      when *USERS
+        @local_user_repositories[owner]
+      when *ORGANIZATIONS
+        @local_org_repositories[owner]
+      else
+        raise "Unknown multi repo: #{multi_repo}"
+      end
+    end
+
     #
     # remote repositories (on GitHub)
     #
@@ -174,9 +187,9 @@ module Git
     # derived lists of repositories
     #
 
-    def excess_repositories
-      repository_full_names = repositories.map(&:full_name)
-      local_repositories.reject { |project|
+    def excess_repositories_for(multi_repo = nil)
+      repository_full_names = repositories_for(multi_repo).map(&:full_name)
+      local_repositories_for(multi_repo).reject { |project|
         repository_full_names.include? project.full_name
       }
     end

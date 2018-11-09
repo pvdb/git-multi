@@ -59,8 +59,8 @@ module Git
         puts Git::Multi.missing_repositories_for(multi_repo).map(&:full_name)
       end
 
-      def excess
-        puts Git::Multi.excess_repositories.map(&:full_name)
+      def excess(multi_repo = nil)
+        puts Git::Multi.excess_repositories_for(multi_repo).map(&:full_name)
       end
 
       def stale
