@@ -138,9 +138,9 @@ module Git
         end
       end
 
-      def raw(args)
+      def raw(args, multi_repo = nil)
         args.unshift ['sh', '-c']
-        system args.flatten
+        system(args.flatten, multi_repo)
       end
 
       def exec(command, args = [], multi_repo = nil)

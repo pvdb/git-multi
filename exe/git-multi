@@ -38,7 +38,7 @@ when /\A--/
   when '--query'   then Git::Multi::Commands.query(ARGV)
   when '--find'    then Git::Multi::Commands.find(ARGV)
   when '--eval'    then Git::Multi::Commands.eval(ARGV)
-  when '--raw'     then Git::Multi::Commands.raw(ARGV)
+  when '--raw'     then Git::Multi::Commands.raw(ARGV, multi_repo)
   else
     abort \
       "Unknown 'git multi' command: #{command}\n\n" \
