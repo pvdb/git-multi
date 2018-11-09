@@ -77,11 +77,10 @@ module Git
 
     @user_repositories = Hash.new { |repos, (user, type)|
       repos[[user, type]] = begin
-        notify("Refreshing #{type} '#{user}' repositories from GitHub")
-        client
-          .repositories(user, type: type)
-          .sort_by { |repo| repo[:name].downcase }
-      end
+                              client
+                                .repositories(user, type: type)
+                                .sort_by { |repo| repo[:name].downcase }
+                            end
     }
 
     def user_repositories(user, type = :owner)
@@ -95,11 +94,10 @@ module Git
 
     @org_repositories = Hash.new { |repos, (org, type)|
       repos[[org, type]] = begin
-        notify("Refreshing #{type} '#{org}' repositories from GitHub")
-        client
-          .org_repositories(org, type: type)
-          .sort_by { |repo| repo[:name].downcase }
-      end
+                             client
+                               .org_repositories(org, type: type)
+                               .sort_by { |repo| repo[:name].downcase }
+                           end
     }
 
     def org_repositories(org, type = :owner)

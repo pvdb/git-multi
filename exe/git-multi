@@ -47,7 +47,6 @@ when /\A--/
 when nil, '', '-h'
   Git::Multi::Commands.help
 else
-  Git::Multi::Commands.report(multi_repo)
   Git::Multi::Commands.exec(command, ARGV, multi_repo)
 end
 

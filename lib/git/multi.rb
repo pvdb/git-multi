@@ -9,7 +9,6 @@ require 'sawyer'
 
 require 'ext/dir'
 require 'ext/string'
-require 'ext/notify'
 require 'ext/kernel'
 require 'ext/commify'
 require 'ext/sawyer/resource'
@@ -155,7 +154,6 @@ module Git
       if File.size?(REPOSITORIES)
         # rubocop:disable Security/MarshalLoad
         @repositories ||= Marshal.load(File.read(REPOSITORIES)).tap do |projects|
-          notify "Finished loading #{REPOSITORIES}"
           projects.each_with_index do |project, index|
             # ensure 'project' has handle on an Octokit client
             project.client = Git::Hub.send(:client)

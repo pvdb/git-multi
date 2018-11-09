@@ -79,7 +79,6 @@ module Git
           FileUtils.mkdir_p repo.parent_dir
           repo.just_do_it(
             ->(project) {
-              notify "Cloning '#{repo.full_name}' repo into #{repo.parent_dir.parent}"
               Kernel.system "git clone -q #{project.rels[:ssh].href.shellescape}"
             },
             ->(project) {
@@ -148,14 +147,6 @@ module Git
       def raw(args, multi_repo = nil)
         args.unshift ['sh', '-c']
         system(args.flatten, multi_repo)
-      end
-
-      def report(multi_repo = nil)
-        (missing = Git::Multi.missing_repositories_for(multi_repo)).any? &&
-          notify(
-            missing.map(&:full_name),
-            subtitle: "#{missing.count} missing repos"
-          )
       end
 
       def exec(command, args = [], multi_repo = nil)
