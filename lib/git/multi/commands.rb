@@ -63,8 +63,8 @@ module Git
         puts Git::Multi.excess_repositories_for(multi_repo).map(&:full_name)
       end
 
-      def stale
-        puts Git::Multi.stale_repositories.map(&:full_name)
+      def stale(multi_repo = nil)
+        puts Git::Multi.stale_repositories_for(multi_repo).map(&:full_name)
       end
 
       def spurious

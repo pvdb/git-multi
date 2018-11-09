@@ -102,6 +102,23 @@ module Git
       ).flatten
     end
 
+    def github_repositories_for(multi_repo = nil)
+      case (owner = multi_repo)
+      when nil
+        github_repositories
+      when *USERS
+        @github_user_repositories[owner]
+      when *ORGANIZATIONS
+        @github_org_repositories[owner]
+      else
+        raise "Unknown multi repo: #{multi_repo}"
+      end
+    end
+
+    #
+    # manage the local repository cache
+    #
+
     def refresh_repositories
       File.directory?(CACHE) || FileUtils.mkdir_p(CACHE)
 
@@ -202,9 +219,9 @@ module Git
       }
     end
 
-    def stale_repositories
-      repository_full_names = github_repositories.map(&:full_name)
-      repositories.reject { |project|
+    def stale_repositories_for(multi_repo = nil)
+      repository_full_names = github_repositories_for(multi_repo).map(&:full_name)
+      repositories_for(multi_repo).reject { |project|
         repository_full_names.include? project.full_name
       }
     end
