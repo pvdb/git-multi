@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.post_install_message = Git::Multi::PIM
 
-  spec.add_dependency 'octokit', '~> 4.12'
+  spec.add_dependency 'octokit', '~> 4.13'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'pry'
