@@ -4,7 +4,7 @@ lib = File.expand_path('../../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/multi'
 
-if (command = ARGV.shift).start_with? '++'
+if (command = ARGV.shift)&.start_with? '++'
   multi_repo = command[2..-1]
   if Git::Multi.valid?(multi_repo)
     command = nil
