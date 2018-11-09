@@ -148,8 +148,8 @@ module Git
         system(args.flatten, multi_repo)
       end
 
-      def find(commands)
-        Git::Multi.cloned_repositories.each do |repo|
+      def find(commands, multi_repo = nil)
+        Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
           Dir.chdir(repo.local_path) do
             if repo.instance_eval(commands.join(' && '))
               repo.just_do_it(
