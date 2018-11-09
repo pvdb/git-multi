@@ -164,8 +164,8 @@ module Git
         end
       end
 
-      def eval(commands)
-        Git::Multi.cloned_repositories.each do |repo|
+      def eval(commands, multi_repo)
+        Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
           Dir.chdir(repo.local_path) do
             repo.instance_eval(commands.join(' ; '))
           rescue Octokit::NotFound
