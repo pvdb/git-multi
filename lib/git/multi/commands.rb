@@ -27,9 +27,12 @@ module Git
         Kernel.exec "open #{Git::Multi::HTML_PAGE}"
       end
 
-      def report
-        (missing_repos = Git::Multi.missing_repositories).any? &&
-          notify(missing_repos.map(&:full_name), subtitle: "#{missing_repos.count} missing repos")
+      def report(multi_repo = nil)
+        (missing = Git::Multi.missing_repositories_for(multi_repo)).any? &&
+          notify(
+            missing.map(&:full_name),
+            subtitle: "#{missing.count} missing repos"
+          )
       end
 
       def list(multi_repo = nil)
