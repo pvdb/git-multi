@@ -91,7 +91,7 @@ module Git
         puts Git::Multi.repositories_for(multi_repo).to_json
       end
 
-      def clone(multi_repo)
+      def clone(multi_repo = nil)
         Git::Multi.missing_repositories_for(multi_repo).each do |repo|
           FileUtils.mkdir_p repo.parent_dir
           repo.just_do_it(
@@ -107,8 +107,8 @@ module Git
         end
       end
 
-      def query(args = [])
-        Git::Multi.repositories.each do |repo|
+      def query(args = [], multi_repo = nil)
+        Git::Multi.repositories_for(multi_repo).each do |repo|
           repo.just_do_it(
             ->(project) {
               args.each do |attribute|
