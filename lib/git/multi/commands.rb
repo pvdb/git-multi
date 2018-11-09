@@ -123,9 +123,9 @@ module Git
         end
       end
 
-      def system(args = [])
+      def system(args = [], multi_repo = nil)
         cmd = args.map!(&:shellescape).join(' ')
-        Git::Multi.cloned_repositories.each do |repo|
+        Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
           repo.just_do_it(
             ->(_project) {
               Kernel.system cmd
@@ -143,9 +143,9 @@ module Git
         system args.flatten
       end
 
-      def exec(command, args = [])
+      def exec(command, args = [], multi_repo = nil)
         args.unshift ['git', '--no-pager', command]
-        system args.flatten
+        system(args.flatten, multi_repo)
       end
 
       def find(commands)
