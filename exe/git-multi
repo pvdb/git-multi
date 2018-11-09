@@ -26,9 +26,9 @@ when /\A--/
   when '--json'    then Git::Multi::Commands.json(multi_repo)
   when '--count'   then Git::Multi::Commands.count
   when '--list'    then Git::Multi::Commands.list(multi_repo)
-  when '--archived'then Git::Multi::Commands.archived
-  when '--forked'  then Git::Multi::Commands.forked
-  when '--private' then Git::Multi::Commands.private
+  when '--archived'then Git::Multi::Commands.archived(multi_repo)
+  when '--forked'  then Git::Multi::Commands.forked(multi_repo)
+  when '--private' then Git::Multi::Commands.private(multi_repo)
   when '--paths'   then Git::Multi::Commands.paths(multi_repo)
   when '--spurious'then Git::Multi::Commands.spurious
   when '--missing' then Git::Multi::Commands.missing(multi_repo)

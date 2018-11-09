@@ -36,16 +36,16 @@ module Git
         puts Git::Multi.repositories_for(multi_repo).map(&:full_name)
       end
 
-      def archived
-        puts Git::Multi.archived_repositories.map(&:full_name)
+      def archived(multi_repo = nil)
+        puts Git::Multi.archived_repositories_for(multi_repo).map(&:full_name)
       end
 
-      def forked
-        puts Git::Multi.forked_repositories.map(&:full_name)
+      def forked(multi_repo = nil)
+        puts Git::Multi.forked_repositories_for(multi_repo).map(&:full_name)
       end
 
-      def private
-        puts Git::Multi.private_repositories.map(&:full_name)
+      def private(multi_repo = nil)
+        puts Git::Multi.private_repositories_for(multi_repo).map(&:full_name)
       end
 
       def paths(multi_repo = nil)

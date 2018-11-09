@@ -158,16 +158,16 @@ module Git
     # lists of repositories with a given state
     #
 
-    def archived_repositories
-      repositories.find_all(&:archived)
+    def archived_repositories_for(multi_repo = nil)
+      repositories_for(multi_repo).find_all(&:archived)
     end
 
-    def forked_repositories
-      repositories.find_all(&:fork)
+    def forked_repositories_for(multi_repo = nil)
+      repositories_for(multi_repo).find_all(&:fork)
     end
 
-    def private_repositories
-      repositories.find_all(&:private)
+    def private_repositories_for(multi_repo = nil)
+      repositories_for(multi_repo).find_all(&:private)
     end
 
     #
