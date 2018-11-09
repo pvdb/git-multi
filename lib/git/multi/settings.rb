@@ -8,7 +8,7 @@ module Git
 
       module_function
 
-      def setting_status(messages, valid, optional = false)
+      def setting_status(messages, valid = false, optional = true)
         fields = messages.compact.join(' - ')
         icon = valid ? TICK : optional ? ARROW : CROSS
         if interactive?
@@ -45,10 +45,22 @@ module Git
           [
             message,
             File.join(abbreviate(workarea, :workarea), owner),
-            File.directory?(workarea) ? "#{Dir.new(workarea).git_repos(owner).count.commify} repos" : nil
           ],
           workarea
         )
+
+        github_count = Git::Multi.repositories_for(owner).count
+        cloned_count = Git::Multi.cloned_repositories_for(owner).count
+        missing_count = (github_count - cloned_count)
+        subdir_count = Dir.new(workarea).git_repos(owner).count
+        surplus_count = (subdir_count - cloned_count)
+
+        setting_status(["\tGitHub ", github_count])
+        setting_status(["\tcloned ", cloned_count, "(#{missing_count} missing)"])
+        Git::Multi.missing_repositories_for(owner).each do |missing|
+          setting_status(["\tmissing", missing.full_name], false, false)
+        end
+        setting_status(["\tsubdirs", subdir_count, "(#{surplus_count} surplus)"])
       end
 
       def user_status(user)

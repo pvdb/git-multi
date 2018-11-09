@@ -11,7 +11,7 @@ if (command = ARGV.shift).start_with? '++'
   else
     abort \
       "Unknown multi repo: #{multi_repo}\n\n" \
-      '(use --check to list all known multi repos)'
+      '(use --report to list all known multi repos)'
   end
 end
 
@@ -21,7 +21,7 @@ when /\A--/
   when '--version' then Git::Multi::Commands.version
   when '--help'    then Git::Multi::Commands.help
   when '--html'    then Git::Multi::Commands.html
-  when '--check'   then Git::Multi::Commands.check
+  when '--report'  then Git::Multi::Commands.report
   when '--count'   then Git::Multi::Commands.count
   when '--refresh' then Git::Multi::Commands.refresh
   when '--json'    then Git::Multi::Commands.json(multi_repo)

@@ -16,15 +16,11 @@ module Git
         Kernel.exec "open #{Git::Multi::HTML_PAGE}"
       end
 
-      def check
-        # Settings.user_status(Git::Multi::USER)
-        # Settings.organization_status(Git::Multi::ORGANIZATIONS)
-        # Settings.token_status(Git::Multi::TOKEN)
+      def report
         Settings.home_status(Git::Multi::HOME)
         Settings.main_workarea_status(Git::Multi::WORKAREA)
         Settings.user_workarea_status(Git::Multi::USERS)
         Settings.organization_workarea_status(Git::Multi::ORGANIZATIONS)
-        # Settings.file_status(Git::Multi::REPOSITORIES)
       end
 
       def count
