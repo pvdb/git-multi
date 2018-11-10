@@ -34,8 +34,8 @@ module Git
     CACHE            = File.join(HOME, '.git', 'multi')
     REPOSITORIES     = File.join(CACHE, 'repositories.byte')
 
-    USERS            = git_list('github.users')
-    ORGANIZATIONS    = git_list('github.organizations')
+    USERS            = git_list('git.multi.users')
+    ORGANIZATIONS    = git_list('git.multi.organizations')
 
     MAN_PAGE         = File.expand_path('../../man/git-multi.1', __dir__)
     HTML_PAGE        = File.expand_path('../../man/git-multi.html', __dir__)
