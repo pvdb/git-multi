@@ -41,16 +41,17 @@ and...
 DESCRIPTION
 -----------
 
-Convenient way to execute the same git command in a set of related repos,
-currently the repositories of a GitHub user, incl. the organizations they
-are a member of.
+Convenient way to execute the same git command in a set of related
+repositories, which could be all GitHub repos for a given user, or
+all repos for a given GitHub organization.
 
-The list of repositories is determined via a GitHub API v3 call, and
-cached locally '(in binary format)' for performance and offline usage.
+Multipe users and organizations can be configured, and by default
+`git multi` operates on all repositories for all users and all orgs;
+to limit the operation to a single user or a single org, the optional
+`++<multi_repo>` argument can be used.
 
-By default, `git multi` operates on all repositories for all configured users
-and all configured organizations.  To limit the operation to a single user or
-a single organization, the optional `++<multi_repo>` argument can be used.
+The list of repos for a user or an org is determined via a GitHub API v3 call
+and cached locally '(in binary format)' for performance and offline usage.
 
 OPTIONS
 -------

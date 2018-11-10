@@ -2,12 +2,12 @@
 .\"     Title: git-multi
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 11/09/2018
+.\"      Date: 11/10/2018
 .\"    Manual: Git Manual
 .\"    Source: Git 2.19.1.542.gc4df23f792.dirty
 .\"  Language: English
 .\"
-.TH "GIT\-MULTI" "1" "11/09/2018" "Git 2\&.19\&.1\&.542\&.gc4df23" "Git Manual"
+.TH "GIT\-MULTI" "1" "11/10/2018" "Git 2\&.19\&.1\&.542\&.gc4df23" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -63,11 +63,11 @@ and\&...
 .sp
 .SH "DESCRIPTION"
 .sp
-Convenient way to execute the same git command in a set of related repos, currently the repositories of a GitHub user, incl\&. the organizations they are a member of\&.
+Convenient way to execute the same git command in a set of related repositories, which could be all GitHub repos for a given user, or all repos for a given GitHub organization\&.
 .sp
-The list of repositories is determined via a GitHub API v3 call, and cached locally \fI(in binary format)\fR for performance and offline usage\&.
+Multipe users and organizations can be configured, and by default \fBgit multi\fR operates on all repositories for all users and all orgs; to limit the operation to a single user or a single org, the optional \fB++<multi_repo>\fR argument can be used\&.
 .sp
-By default, \fBgit multi\fR operates on all repositories for all configured users and all configured organizations\&. To limit the operation to a single user or a single organization, the optional \fB++<multi_repo>\fR argument can be used\&.
+The list of repos for a user or an org is determined via a GitHub API v3 call and cached locally \fI(in binary format)\fR for performance and offline usage\&.
 .SH "OPTIONS"
 .PP
 \-\-version

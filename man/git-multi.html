@@ -783,14 +783,15 @@ argument to limit the operation to the list of repositories in the referenced
 <div class="sect1">
 <h2 id="_description">DESCRIPTION</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Convenient way to execute the same git command in a set of related repos,
-currently the repositories of a GitHub user, incl. the organizations they
-are a member of.</p></div>
-<div class="paragraph"><p>The list of repositories is determined via a GitHub API v3 call, and
-cached locally <em>(in binary format)</em> for performance and offline usage.</p></div>
-<div class="paragraph"><p>By default, <code>git multi</code> operates on all repositories for all configured users
-and all configured organizations.  To limit the operation to a single user or
-a single organization, the optional <code>++&lt;multi_repo&gt;</code> argument can be used.</p></div>
+<div class="paragraph"><p>Convenient way to execute the same git command in a set of related
+repositories, which could be all GitHub repos for a given user, or
+all repos for a given GitHub organization.</p></div>
+<div class="paragraph"><p>Multipe users and organizations can be configured, and by default
+<code>git multi</code> operates on all repositories for all users and all orgs;
+to limit the operation to a single user or a single org, the optional
+<code>++&lt;multi_repo&gt;</code> argument can be used.</p></div>
+<div class="paragraph"><p>The list of repos for a user or an org is determined via a GitHub API v3 call
+and cached locally <em>(in binary format)</em> for performance and offline usage.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -1200,7 +1201,7 @@ the <code>jq</code> command-line utility:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-11-09 16:43:35 GMT
+ 2018-11-10 07:51:23 GMT
 </div>
 </div>
 </body>
