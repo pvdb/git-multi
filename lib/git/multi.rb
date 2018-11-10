@@ -36,6 +36,7 @@ module Git
 
     USERS            = git_list('git.multi.users')
     ORGANIZATIONS    = git_list('git.multi.organizations')
+    SUPERPROJECTS    = git_list('git.multi.superprojects')
 
     MAN_PAGE         = File.expand_path('../../man/git-multi.1', __dir__)
     HTML_PAGE        = File.expand_path('../../man/git-multi.html', __dir__)
@@ -47,7 +48,7 @@ module Git
     #
 
     def valid?(multi_repo)
-      (USERS + ORGANIZATIONS).include? multi_repo
+      (USERS + ORGANIZATIONS + SUPERPROJECTS).include? multi_repo
     end
 
     #
