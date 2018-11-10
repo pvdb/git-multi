@@ -75,11 +75,11 @@ module Git
       end
 
       def home_status(home)
-        directory_status(['Home', home], home)
+        directory_status(['${HOME}', home], home)
       end
 
       def main_workarea_status(workarea)
-        directory_status(['Workarea (main)', abbreviate(workarea, :home)], workarea)
+        directory_status(['${WORKAREA}', abbreviate(workarea, :home)], workarea)
       end
 
       def user_workarea_status(users)
