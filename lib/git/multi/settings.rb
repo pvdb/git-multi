@@ -40,7 +40,7 @@ module Git
             message,
             File.join(abbreviate(workarea, :workarea), owner),
           ],
-          workarea
+          File.join(workarea, owner)
         )
 
         github_count = Git::Multi.repositories_for(owner).count
