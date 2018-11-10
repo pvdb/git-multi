@@ -49,7 +49,7 @@ module Git
         subdir_count = Dir.new(workarea).git_repos(owner).count
         surplus_count = (subdir_count - cloned_count)
 
-        setting_status(["\tGitHub ", github_count])
+        setting_status(["\tGitHub ", "#{github_count} repositories"])
         setting_status(["\tcloned ", cloned_count, "(#{missing_count} missing)"])
         Git::Multi.missing_repositories_for(owner).each do |missing|
           setting_status(["\tmissing", missing.full_name], false, false)
@@ -84,13 +84,13 @@ module Git
 
       def user_workarea_status(users)
         users.each do |user|
-          workarea_status("Workarea (user: #{user})", Git::Multi::WORKAREA, user)
+          workarea_status("user \"#{user}\"", Git::Multi::WORKAREA, user)
         end
       end
 
       def organization_workarea_status(orgs)
         orgs.each do |org|
-          workarea_status("Workarea (org: #{org})", Git::Multi::WORKAREA, org)
+          workarea_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
         end
       end
 
