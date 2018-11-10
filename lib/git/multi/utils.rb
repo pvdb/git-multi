@@ -39,6 +39,11 @@ module Git
 
     module_function
 
+    def git_all(config, name)
+      list = `git config --file #{config} --get-all #{name}`
+      list.split($RS).map(&:strip)
+    end
+
     def git_option(name, default = nil)
       value = `git config #{name}`.chomp.freeze
       value.empty? && default ? default : value

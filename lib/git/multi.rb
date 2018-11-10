@@ -52,6 +52,10 @@ module Git
       (USERS + ORGANIZATIONS + SUPERPROJECTS).include? multi_repo
     end
 
+    def full_names_for(superproject)
+      git_all(SUPERPROJECTS_CONFIG, "superproject.#{superproject}.repo")
+    end
+
     #
     # local repositories (in WORKAREA)
     #
