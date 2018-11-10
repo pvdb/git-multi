@@ -31,8 +31,9 @@ module Git
     DEFAULT_TOKEN    = env_var('OCTOKIT_ACCESS_TOKEN') # same as Octokit
     TOKEN            = git_option('github.token', DEFAULT_TOKEN)
 
-    CACHE            = File.join(HOME, '.git', 'multi')
-    REPOSITORIES     = File.join(CACHE, 'repositories.byte')
+    GIT_MULTI_DIR        = File.join(HOME, '.git', 'multi')
+    GITHUB_CACHE         = File.join(GIT_MULTI_DIR, 'repositories.byte')
+    SUPERPROJECTS_CONFIG = File.join(GIT_MULTI_DIR, 'superprojects.config')
 
     USERS            = git_list('git.multi.users')
     ORGANIZATIONS    = git_list('git.multi.organizations')
@@ -120,9 +121,9 @@ module Git
     #
 
     def refresh_repositories
-      File.directory?(CACHE) || FileUtils.mkdir_p(CACHE)
+      File.directory?(GIT_MULTI_DIR) || FileUtils.mkdir_p(GIT_MULTI_DIR)
 
-      File.open(REPOSITORIES, 'wb') do |file|
+      File.open(GITHUB_CACHE, 'wb') do |file|
         Marshal.dump(github_repositories, file)
       end
     end
@@ -152,9 +153,9 @@ module Git
     end
 
     def repositories
-      if File.size?(REPOSITORIES)
+      if File.size?(GITHUB_CACHE)
         # rubocop:disable Security/MarshalLoad
-        @repositories ||= Marshal.load(File.read(REPOSITORIES)).tap do |projects|
+        @repositories ||= Marshal.load(File.read(GITHUB_CACHE)).tap do |projects|
           projects.each_with_index do |project, index|
             # ensure 'project' has handle on an Octokit client
             project.client = Git::Hub.send(:client)
