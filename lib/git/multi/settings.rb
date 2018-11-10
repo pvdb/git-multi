@@ -11,13 +11,7 @@ module Git
       def setting_status(messages, valid = false, optional = true)
         fields = messages.compact.join(' - ')
         icon = valid ? TICK : optional ? ARROW : CROSS
-        if interactive?
-          print "   #{fields}"
-          sleep 0.66
-          puts "\x0d#{icon}"
-        else
-          puts "#{icon}  #{fields}"
-        end
+        puts "#{icon}  #{fields}"
       end
 
       def file_status(file, message = 'File')
