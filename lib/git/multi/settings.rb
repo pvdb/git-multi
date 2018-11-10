@@ -57,6 +57,20 @@ module Git
         setting_status(["\tsubdirs", subdir_count, "(#{surplus_count} surplus)"])
       end
 
+      def project_status(message, superproject)
+        setting_status([message], true)
+
+        github_count = Git::Multi.repositories_for(superproject).count
+        cloned_count = Git::Multi.cloned_repositories_for(superproject).count
+        missing_count = (github_count - cloned_count)
+
+        setting_status(["\tGitHub ", "#{github_count} repositories"])
+        setting_status(["\tcloned ", cloned_count, "(#{missing_count} missing)"])
+        Git::Multi.missing_repositories_for(superproject).each do |missing|
+          setting_status(["\tmissing", missing.full_name], false, false)
+        end
+      end
+
       def user_status(user)
         setting_status(['User', user], user && !user.empty?)
       end
@@ -91,6 +105,12 @@ module Git
       def organization_workarea_status(orgs)
         orgs.each do |org|
           workarea_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
+        end
+      end
+
+      def superproject_workarea_status(projects)
+        projects.each do |project|
+          project_status("superproject \"#{project}\"", project)
         end
       end
 

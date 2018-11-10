@@ -21,6 +21,7 @@ module Git
         Settings.main_workarea_status(Git::Multi::WORKAREA)
         Settings.user_workarea_status(Git::Multi::USERS)
         Settings.organization_workarea_status(Git::Multi::ORGANIZATIONS)
+        Settings.superproject_workarea_status(Git::Multi::SUPERPROJECTS)
       end
 
       def count
