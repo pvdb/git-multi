@@ -75,16 +75,16 @@ module Git
       ).flatten
     end
 
-    def local_repositories_for(multi_repo = nil)
-      case (owner = multi_repo)
+    def local_repositories_for(owner = nil)
+      case owner
       when nil
-        local_repositories
+        local_repositories # all of them
       when *USERS
         @local_user_repositories[owner]
       when *ORGANIZATIONS
         @local_org_repositories[owner]
       else
-        raise "Unknown multi repo: #{multi_repo}"
+        raise "Unknown owner: #{owner}"
       end
     end
 
@@ -107,16 +107,16 @@ module Git
       ).flatten
     end
 
-    def github_repositories_for(multi_repo = nil)
-      case (owner = multi_repo)
+    def github_repositories_for(owner = nil)
+      case owner
       when nil
-        github_repositories
+        github_repositories # all of them
       when *USERS
         @github_user_repositories[owner]
       when *ORGANIZATIONS
         @github_org_repositories[owner]
       else
-        raise "Unknown multi repo: #{multi_repo}"
+        raise "Unknown owner: #{owner}"
       end
     end
 
@@ -187,12 +187,20 @@ module Git
     #
 
     def repositories_for(multi_repo = nil)
-      if multi_repo.nil?
-        repositories
-      else
+      case (owner = superproject = multi_repo)
+      when nil
+        repositories # all of them
+      when *USERS, *ORGANIZATIONS
         repositories.find_all { |repository|
-          repository.owner.login == multi_repo
+          repository.owner.login == owner
         }
+      when *SUPERPROJECTS
+        full_names = full_names_for(superproject)
+        repositories.find_all { |repository|
+          full_names.include?(repository.full_name)
+        }
+      else
+        raise "Unknown multi repo: #{multi_repo}"
       end
     end
 
