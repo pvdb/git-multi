@@ -19,7 +19,7 @@ module Git
         case token
         when Git::Multi.env_var('OCTOKIT_ACCESS_TOKEN')
           then '${OCTOKIT_ACCESS_TOKEN}'
-        when Git::Multi.git_option('github.token')
+        when Git::Multi.global_option('github.token')
           then 'github.token'
         else '(unset)'
         end
@@ -39,27 +39,27 @@ module Git
 
     module_function
 
-    def git_all(config, name)
-      list = `git config --file #{config} --get-all #{name}`
-      list.split($RS).map(&:strip)
-    end
-
-    def git_local(path, name, default = nil)
-      value = `git -C #{path} config --get #{name}`.chomp.freeze
+    def local_option(path, name, default = nil)
+      value = `git -C #{path} config --local --get #{name}`.chomp.freeze
       value.empty? && default ? default : value
     end
 
-    def git_option(name, default = nil)
-      value = `git config #{name}`.chomp.freeze
+    def local_list(filename, name)
+      list = `git config --file #{filename} --get-all #{name}`
+      list.split($RS).map(&:strip).map(&:freeze)
+    end
+
+    def global_option(name, default = nil)
+      value = `git config --global --get #{name}`.chomp.freeze
       value.empty? && default ? default : value
     end
 
-    def git_list(name, default = nil)
-      git_option(name, default).split(',').map(&:strip)
+    def global_list(name, default = nil)
+      global_option(name, default).split(',').map(&:strip).map(&:freeze)
     end
 
     def env_var(name, default = nil)
-      value = ENV[name].freeze
+      value = ENV[name].dup.freeze
       (value.nil? || value.empty?) && default ? default : value
     end
 

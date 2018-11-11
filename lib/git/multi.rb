@@ -26,10 +26,10 @@ module Git
     HOME             = Dir.home
 
     DEFAULT_WORKAREA = File.join(HOME, 'Workarea')
-    WORKAREA         = git_option('git.multi.workarea', DEFAULT_WORKAREA)
+    WORKAREA         = global_option('git.multi.workarea', DEFAULT_WORKAREA)
 
     DEFAULT_TOKEN    = env_var('OCTOKIT_ACCESS_TOKEN') # same as Octokit
-    TOKEN            = git_option('github.token', DEFAULT_TOKEN)
+    TOKEN            = global_option('github.token', DEFAULT_TOKEN)
 
     GIT_MULTI_DIR    = File.join(HOME, '.git', 'multi')
 
@@ -38,9 +38,9 @@ module Git
     GITHUB_CACHE         = File.join(GIT_MULTI_DIR, 'repositories.byte')
     SUPERPROJECTS_CONFIG = File.join(GIT_MULTI_DIR, 'superprojects.config')
 
-    USERS            = git_list('git.multi.users')
-    ORGANIZATIONS    = git_list('git.multi.organizations')
-    SUPERPROJECTS    = git_list('git.multi.superprojects')
+    USERS            = global_list('git.multi.users')
+    ORGANIZATIONS    = global_list('git.multi.organizations')
+    SUPERPROJECTS    = global_list('git.multi.superprojects')
 
     MAN_PAGE         = File.expand_path('../../man/git-multi.1', __dir__)
     HTML_PAGE        = File.expand_path('../../man/git-multi.html', __dir__)
@@ -56,7 +56,7 @@ module Git
     end
 
     def full_names_for(superproject)
-      git_all(SUPERPROJECTS_CONFIG, "superproject.#{superproject}.repo")
+      local_list(SUPERPROJECTS_CONFIG, "superproject.#{superproject}.repo")
     end
 
     #
@@ -241,7 +241,7 @@ module Git
 
     def spurious_repositories_for(multi_repo = nil)
       cloned_repositories_for(multi_repo).find_all { |project|
-        origin_url = git_local(project.local_path, 'remote.origin.url')
+        origin_url = local_option(project.local_path, 'remote.origin.url')
 
         ![
           project.clone_url,
