@@ -16,12 +16,19 @@ module Git
         Kernel.exec "open #{Git::Multi::HTML_PAGE}"
       end
 
-      def report
-        Report.home_status(Git::Multi::HOME)
-        Report.main_workarea_status(Git::Multi::WORKAREA)
-        Report.user_workarea_status(Git::Multi::USERS)
-        Report.organization_workarea_status(Git::Multi::ORGANIZATIONS)
-        Report.superproject_workarea_status(Git::Multi::SUPERPROJECTS)
+      def report(multi_repo = nil)
+        case multi_repo
+        when nil
+          Report.home_status(Git::Multi::HOME)
+          Report.main_workarea_status(Git::Multi::WORKAREA)
+          Report.user_workarea_status(Git::Multi::USERS)
+          Report.organization_workarea_status(Git::Multi::ORGANIZATIONS)
+          Report.superproject_workarea_status(Git::Multi::SUPERPROJECTS)
+        when *MULTI_REPOS
+          Report.for(multi_repo)
+        else
+          raise "Unknown multi repo: #{multi_repo}"
+        end
       end
 
       def count

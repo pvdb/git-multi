@@ -148,6 +148,19 @@ module Git
         end
       end
 
+      def for(multi_repo)
+        case (user = org = project = multi_repo)
+        when *USERS
+          workarea_status("user \"#{user}\"", Git::Multi::WORKAREA, user)
+        when *ORGANIZATIONS
+          workarea_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
+        when *SUPERPROJECTS
+          project_status("superproject \"#{project}\"", project)
+        else
+          raise "Unknown multi repo: #{multi_repo}"
+        end
+      end
+
     end
   end
 end

@@ -21,7 +21,7 @@ when /\A--/
   when '--version' then Git::Multi::Commands.version
   when '--help'    then Git::Multi::Commands.help
   when '--html'    then Git::Multi::Commands.html
-  when '--report'  then Git::Multi::Commands.report
+  when '--report'  then Git::Multi::Commands.report(multi_repo)
   when '--count'   then Git::Multi::Commands.count
   when '--refresh' then Git::Multi::Commands.refresh
   when '--json'    then Git::Multi::Commands.json(multi_repo)
