@@ -31,7 +31,10 @@ module Git
     DEFAULT_TOKEN    = env_var('OCTOKIT_ACCESS_TOKEN') # same as Octokit
     TOKEN            = git_option('github.token', DEFAULT_TOKEN)
 
-    GIT_MULTI_DIR        = File.join(HOME, '.git', 'multi')
+    GIT_MULTI_DIR    = File.join(HOME, '.git', 'multi')
+
+    FileUtils.mkdir_p(GIT_MULTI_DIR) # ensure `~/.git/multi` directory exists
+
     GITHUB_CACHE         = File.join(GIT_MULTI_DIR, 'repositories.byte')
     SUPERPROJECTS_CONFIG = File.join(GIT_MULTI_DIR, 'superprojects.config')
 
@@ -125,8 +128,6 @@ module Git
     #
 
     def refresh_repositories
-      File.directory?(GIT_MULTI_DIR) || FileUtils.mkdir_p(GIT_MULTI_DIR)
-
       File.open(GITHUB_CACHE, 'wb') do |file|
         Marshal.dump(github_repositories, file)
       end
