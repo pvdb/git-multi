@@ -17,11 +17,11 @@ module Git
       end
 
       def report
-        Settings.home_status(Git::Multi::HOME)
-        Settings.main_workarea_status(Git::Multi::WORKAREA)
-        Settings.user_workarea_status(Git::Multi::USERS)
-        Settings.organization_workarea_status(Git::Multi::ORGANIZATIONS)
-        Settings.superproject_workarea_status(Git::Multi::SUPERPROJECTS)
+        Report.home_status(Git::Multi::HOME)
+        Report.main_workarea_status(Git::Multi::WORKAREA)
+        Report.user_workarea_status(Git::Multi::USERS)
+        Report.organization_workarea_status(Git::Multi::ORGANIZATIONS)
+        Report.superproject_workarea_status(Git::Multi::SUPERPROJECTS)
       end
 
       def count

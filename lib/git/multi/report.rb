@@ -1,6 +1,6 @@
 module Git
   module Multi
-    module Settings
+    module Report
 
       TICK  = ['2714'.hex].pack('U*').green.freeze
       CROSS = ['2718'.hex].pack('U*').red.freeze
