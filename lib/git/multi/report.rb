@@ -130,24 +130,6 @@ module Git
         directory_status(['${WORKAREA}', abbreviate(workarea, :home)], workarea)
       end
 
-      def user_workarea_status(users)
-        users.each do |user|
-          workarea_status("user \"#{user}\"", Git::Multi::WORKAREA, user)
-        end
-      end
-
-      def organization_workarea_status(orgs)
-        orgs.each do |org|
-          workarea_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
-        end
-      end
-
-      def superproject_workarea_status(projects)
-        projects.each do |project|
-          project_status("superproject \"#{project}\"", project)
-        end
-      end
-
       def for(multi_repo)
         case (user = org = project = multi_repo)
         when *USERS
