@@ -72,14 +72,14 @@ module Git
       end
 
       def clone(multi_repo = nil)
-        Git::Multi.missing_repositories_for(multi_repo).each do |repo|
-          FileUtils.mkdir_p repo.parent_dir
-          repo.just_do_it(
-            ->(project) {
-              Kernel.system "git clone -q #{project.rels[:ssh].href.shellescape}"
+        Git::Multi.missing_repositories_for(multi_repo).each do |repository|
+          FileUtils.mkdir_p repository.parent_dir # create multi-repo workarea
+          repository.just_do_it(
+            ->(repo) {
+              Kernel.system "git clone -q #{repo.rels[:ssh].href.shellescape}"
             },
-            ->(project) {
-              Kernel.system "git clone -q #{project.rels[:ssh].href.shellescape}"
+            ->(repo) {
+              Kernel.system "git clone -q #{repo.rels[:ssh].href.shellescape}"
             },
             in: 'parent_dir'
           )
@@ -99,33 +99,33 @@ module Git
       end
 
       def query(args = [], multi_repo = nil)
-        Git::Multi.repositories_for(multi_repo).each do |repo|
-          repo.just_do_it(
-            ->(project) {
+        Git::Multi.repositories_for(multi_repo).each do |repository|
+          repository.just_do_it(
+            ->(repo) {
               args.each do |attribute|
-                puts "#{attribute}: #{project[attribute]}"
+                puts "#{attribute}: #{repo[attribute]}"
               end
             },
-            ->(project) {
-              print "#{project.full_name}: "
-              puts args.map { |attribute| project[attribute] }.join(' ')
+            ->(repo) {
+              print "#{repo.full_name}: "
+              puts args.map { |attribute| repo[attribute] }.join(' ')
             },
           )
         end
       end
 
       def find(commands, multi_repo = nil)
-        Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
-          Dir.chdir(repo.local_path) do
+        Git::Multi.cloned_repositories_for(multi_repo).each do |repository|
+          Dir.chdir(repository.local_path) do
             if repo.instance_eval(commands.join(' && '))
               repo.just_do_it(
-                ->(_project) { nil },
-                ->(project) { puts project.full_name },
+                ->(_repo) { nil },
+                ->(repo) { puts repo.full_name },
               )
             end
           rescue Octokit::NotFound
-            # project no longer exists on github.com
-            # consider running "git multi --stale"...
+            # repository no longer exists on GitHub
+            # consider running "git multi --stale"!
           end
         end
       end
@@ -135,8 +135,8 @@ module Git
           Dir.chdir(repo.local_path) do
             repo.instance_eval(commands.join(' ; '))
           rescue Octokit::NotFound
-            # project no longer exists on github.com
-            # consider running "git multi --stale"...
+            # repository no longer exists on GitHub
+            # consider running "git multi --stale"!
           end
         end
       end
@@ -153,13 +153,13 @@ module Git
 
       def system(args = [], multi_repo = nil)
         cmd = args.map!(&:shellescape).join(' ')
-        Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
-          repo.just_do_it(
-            ->(_project) {
+        Git::Multi.cloned_repositories_for(multi_repo).each do |repository|
+          repository.just_do_it(
+            ->(_repo) {
               Kernel.system cmd
             },
-            ->(project) {
-              Kernel.system "#{cmd} 2>&1 | sed -e 's#^##{project.full_name.shellescape}: #'"
+            ->(repo) {
+              Kernel.system "#{cmd} 2>&1 | sed -e 's#^##{repo.full_name.shellescape}: #'"
             },
             in: 'local_path'
           )

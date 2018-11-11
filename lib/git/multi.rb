@@ -161,20 +161,20 @@ module Git
     def repositories
       if File.size?(GITHUB_CACHE)
         # rubocop:disable Security/MarshalLoad
-        @repositories ||= Marshal.load(File.read(GITHUB_CACHE)).tap do |projects|
-          projects.each_with_index do |project, index|
-            # ensure 'project' has handle on an Octokit client
-            project.client = Git::Hub.send(:client)
-            # adorn 'project', which is a Sawyer::Resource
-            project.parent_dir = Pathname.new(File.join(WORKAREA, project.owner.login))
-            project.local_path = Pathname.new(File.join(WORKAREA, project.full_name))
-            project.fractional_index = "#{index + 1}/#{projects.count}"
-            # fix 'project' => https://github.com/octokit/octokit.rb/issues/727
-            project.compliant_ssh_url = 'ssh://' + project.ssh_url.split(':', 2).join('/')
+        @repositories ||= Marshal.load(File.read(GITHUB_CACHE)).tap do |repos|
+          repos.each_with_index do |repo, index|
+            # ensure 'repo' has handle on an Octokit client
+            repo.client = Git::Hub.send(:client)
+            # adorn 'repo', which is a Sawyer::Resource
+            repo.parent_dir = Pathname.new(File.join(WORKAREA, repo.owner.login))
+            repo.local_path = Pathname.new(File.join(WORKAREA, repo.full_name))
+            repo.fractional_index = "#{index + 1}/#{repos.count}"
+            # fix 'repo' => https://github.com/octokit/octokit.rb/issues/727
+            repo.compliant_ssh_url = 'ssh://' + repo.ssh_url.split(':', 2).join('/')
             # remove optional '.git' suffix from 'git@github.com:pvdb/git-multi.git'
-            project.abbreviated_ssh_url = project.ssh_url.chomp('.git')
-            # extend 'project' with 'just do it' capabilities
-            project.extend Nike
+            repo.abbreviated_ssh_url = repo.ssh_url.chomp('.git')
+            # extend 'repo' with 'just do it' capabilities
+            repo.extend Nike
           end
         end
         # rubocop:enable Security/MarshalLoad
@@ -228,41 +228,41 @@ module Git
 
     def excess_repositories_for(multi_repo = nil)
       repository_full_names = repositories_for(multi_repo).map(&:full_name)
-      local_repositories_for(multi_repo).reject { |project|
-        repository_full_names.include? project.full_name
+      local_repositories_for(multi_repo).reject { |repo|
+        repository_full_names.include? repo.full_name
       }
     end
 
     def stale_repositories_for(multi_repo = nil)
       repository_full_names = github_repositories_for(multi_repo).map(&:full_name)
-      repositories_for(multi_repo).reject { |project|
-        repository_full_names.include? project.full_name
+      repositories_for(multi_repo).reject { |repo|
+        repository_full_names.include? repo.full_name
       }
     end
 
     def spurious_repositories_for(multi_repo = nil)
-      cloned_repositories_for(multi_repo).find_all { |project|
-        origin_url = local_option(project.local_path, 'remote.origin.url')
+      cloned_repositories_for(multi_repo).find_all { |repo|
+        origin_url = local_option(repo.local_path, 'remote.origin.url')
 
         ![
-          project.clone_url,
-          project.ssh_url,
-          project.compliant_ssh_url,
-          project.abbreviated_ssh_url,
-          project.git_url,
+          repo.clone_url,
+          repo.ssh_url,
+          repo.compliant_ssh_url,
+          repo.abbreviated_ssh_url,
+          repo.git_url,
         ].include? origin_url
       }
     end
 
     def missing_repositories_for(multi_repo = nil)
-      repositories_for(multi_repo).find_all { |project|
-        !File.directory? project.local_path
+      repositories_for(multi_repo).find_all { |repo|
+        !File.directory? repo.local_path
       }
     end
 
     def cloned_repositories_for(multi_repo = nil)
-      repositories_for(multi_repo).find_all { |project|
-        File.directory? project.local_path
+      repositories_for(multi_repo).find_all { |repo|
+        File.directory? repo.local_path
       }
     end
 
