@@ -44,6 +44,11 @@ module Git
       list.split($RS).map(&:strip)
     end
 
+    def git_local(path, name, default = nil)
+      value = `git -C #{path} config --get #{name}`.chomp.freeze
+      value.empty? && default ? default : value
+    end
+
     def git_option(name, default = nil)
       value = `git config #{name}`.chomp.freeze
       value.empty? && default ? default : value

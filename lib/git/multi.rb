@@ -241,7 +241,8 @@ module Git
 
     def spurious_repositories_for(multi_repo = nil)
       cloned_repositories_for(multi_repo).find_all { |project|
-        origin_url = `git -C #{project.local_path} config --get remote.origin.url`.chomp
+        origin_url = git_local(project.local_path, 'remote.origin.url')
+
         ![
           project.clone_url,
           project.ssh_url,
