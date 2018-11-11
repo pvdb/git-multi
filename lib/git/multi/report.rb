@@ -64,7 +64,7 @@ module Git
         )
       end
 
-      def workarea_status(message, workarea, owner)
+      def owner_status(message, workarea, owner)
         directory_status(
           [
             message,
@@ -126,16 +126,16 @@ module Git
         directory_status(['${HOME}', home], home)
       end
 
-      def main_workarea_status(workarea)
+      def workarea_status(workarea)
         directory_status(['${WORKAREA}', abbreviate(workarea, :home)], workarea)
       end
 
       def for(multi_repo)
         case (user = org = project = multi_repo)
         when *USERS
-          workarea_status("user \"#{user}\"", Git::Multi::WORKAREA, user)
+          owner_status("user \"#{user}\"", Git::Multi::WORKAREA, user)
         when *ORGANIZATIONS
-          workarea_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
+          owner_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
         when *SUPERPROJECTS
           project_status("superproject \"#{project}\"", project)
         else
