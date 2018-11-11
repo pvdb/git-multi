@@ -89,19 +89,20 @@ module Git
 
       def project_status(message, superproject)
         github_count = Git::Multi.repositories_for(superproject).count
-        cloned_count = Git::Multi.cloned_repositories_for(superproject).count
-        missing_count = (github_count - cloned_count)
 
         if github_count.zero?
           setting_status([message, 'listed but not configured'], false, false)
         else
           setting_status([message], true)
-        end
 
-        setting_status(["\tGitHub ", "#{github_count} repositories"])
-        setting_status(["\tcloned ", cloned_count, "(#{missing_count} missing)"])
-        Git::Multi.missing_repositories_for(superproject).each do |missing|
-          setting_status(["\tmissing", missing.full_name], false, false)
+          cloned_count = Git::Multi.cloned_repositories_for(superproject).count
+          missing_count = (github_count - cloned_count)
+
+          setting_status(["\tGitHub ", "#{github_count} repositories"])
+          setting_status(["\tcloned ", cloned_count, "(#{missing_count} missing)"])
+          Git::Multi.missing_repositories_for(superproject).each do |missing|
+            setting_status(["\tmissing", missing.full_name], false, false)
+          end
         end
       end
 
