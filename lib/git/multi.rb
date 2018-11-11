@@ -15,7 +15,6 @@ require 'ext/sawyer/resource'
 
 require 'git/hub'
 
-require 'git/multi/utils'
 require 'git/multi/config'
 require 'git/multi/version'
 require 'git/multi/settings'
