@@ -8,60 +8,12 @@ module Git
 
       module_function
 
-      def describe(token)
-        if token.nil?
-          '(nil)'
-        elsif token.empty?
-          '(empty)'
-        else
-          "#{'*' * 36}#{token[36..-1]}"
-        end
+      def home_status(home)
+        directory_status(['${HOME}', home], home)
       end
 
-      def symbolize(token)
-        case token
-        when Git::Multi.env_var('OCTOKIT_ACCESS_TOKEN')
-          then '${OCTOKIT_ACCESS_TOKEN}'
-        when Git::Multi.global_option('github.token')
-          then 'github.token'
-        else '(unset)'
-        end
-      end
-
-      def abbreviate(directory, root_dir = nil)
-        case root_dir
-        when :home
-          then directory.gsub(Git::Multi::HOME, '${HOME}')
-        when :workarea
-          then directory.gsub(Git::Multi::WORKAREA, '${WORKAREA}')
-        else abbreviate(abbreviate(directory, :workarea), :home)
-        end
-      end
-
-      def setting_status(messages, valid = false, optional = true)
-        fields = messages.compact.join(' - ')
-        icon = valid ? TICK : optional ? ARROW : CROSS
-        puts "#{icon}  #{fields}"
-      end
-
-      def file_status(file, message = 'File')
-        setting_status(
-          [
-            message,
-            abbreviate(file),
-            File.file?(file) ? "#{File.size(file).commify} bytes" : nil,
-          ],
-          file && !file.empty? && File.file?(file),
-          false
-        )
-      end
-
-      def directory_status(messages, directory)
-        setting_status(
-          messages,
-          directory && !directory.empty? && File.directory?(directory),
-          false
-        )
+      def workarea_status(workarea)
+        directory_status(['${WORKAREA}', abbreviate(workarea, :home)], workarea)
       end
 
       def owner_status(message, workarea, owner)
@@ -106,14 +58,6 @@ module Git
         end
       end
 
-      def home_status(home)
-        directory_status(['${HOME}', home], home)
-      end
-
-      def workarea_status(workarea)
-        directory_status(['${WORKAREA}', abbreviate(workarea, :home)], workarea)
-      end
-
       def for(*multi_repos)
         multi_repos.each do |multi_repo|
           case (user = org = project = multi_repo)
@@ -127,6 +71,62 @@ module Git
             raise "Unknown multi repo: #{multi_repo}"
           end
         end
+      end
+
+      private_class_method def describe(token)
+        if token.nil?
+          '(nil)'
+        elsif token.empty?
+          '(empty)'
+        else
+          "#{'*' * 36}#{token[36..-1]}"
+        end
+      end
+
+      private_class_method def symbolize(token)
+        case token
+        when Git::Multi.env_var('OCTOKIT_ACCESS_TOKEN')
+          then '${OCTOKIT_ACCESS_TOKEN}'
+        when Git::Multi.global_option('github.token')
+          then 'github.token'
+        else '(unset)'
+        end
+      end
+
+      private_class_method def abbreviate(directory, root_dir = nil)
+        case root_dir
+        when :home
+          then directory.gsub(Git::Multi::HOME, '${HOME}')
+        when :workarea
+          then directory.gsub(Git::Multi::WORKAREA, '${WORKAREA}')
+        else abbreviate(abbreviate(directory, :workarea), :home)
+        end
+      end
+
+      private_class_method def setting_status(messages, valid = false, optional = true)
+        fields = messages.compact.join(' - ')
+        icon = valid ? TICK : optional ? ARROW : CROSS
+        puts "#{icon}  #{fields}"
+      end
+
+      private_class_method def file_status(file, message = 'File')
+        setting_status(
+          [
+            message,
+            abbreviate(file),
+            File.file?(file) ? "#{File.size(file).commify} bytes" : nil,
+          ],
+          file && !file.empty? && File.file?(file),
+          false
+        )
+      end
+
+      private_class_method def directory_status(messages, directory)
+        setting_status(
+          messages,
+          directory && !directory.empty? && File.directory?(directory),
+          false
+        )
       end
 
     end
