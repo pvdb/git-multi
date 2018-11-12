@@ -106,23 +106,6 @@ module Git
         end
       end
 
-      def user_status(user)
-        setting_status(['User', user], user && !user.empty?)
-      end
-
-      def organization_status(orgs)
-        orgs.each do |org|
-          setting_status(['Organization', org], org && !org.empty?, true)
-          setting_status(['Organization', 'member?'], Git::Hub.orgs.include?(org), !Git::Hub.connected?)
-        end
-      end
-
-      def token_status(token)
-        setting_status(['Token', symbolize(token), describe(token)], !token.nil? && !token.empty?)
-        setting_status(['Token', 'valid?'], !token.nil? && !token.empty? && Git::Hub.login, !Git::Hub.connected?)
-        setting_status(['Token', "owned by #{Git::Multi::USER}?"], Git::Hub.login == Git::Multi::USER, !Git::Hub.connected?)
-      end
-
       def home_status(home)
         directory_status(['${HOME}', home], home)
       end
