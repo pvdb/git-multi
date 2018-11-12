@@ -23,7 +23,7 @@ module Git
     end
 
     def env_var(name, default = nil)
-      value = ENV[name].dup.freeze
+      value = ENV[name]
       (value.nil? || value.empty?) && default ? default : value
     end
 

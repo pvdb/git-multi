@@ -26,37 +26,35 @@ module Git
       )
     end
 
-    class << self
-      private :client
-    end
+    private_class_method :client
 
     def connected?
       @connected ||= begin
-        client.validate_credentials
-        true
-      rescue Faraday::ConnectionFailed
-        false
-      end
+                       client.validate_credentials
+                       true
+                     rescue Faraday::ConnectionFailed
+                       false
+                     end
     end
 
     # FIXME: update login as part of `--refresh`
 
     def login
       @login ||= begin
-        client.user.login
-      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
-        nil
-      end
+                   client.user.login
+                 rescue Octokit::Unauthorized, Faraday::ConnectionFailed
+                   nil
+                 end
     end
 
     # FIXME: update orgs as part of `--refresh`
 
     def orgs
       @orgs ||= begin
-        client.organizations.map(&:login)
-      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
-        []
-      end
+                  client.organizations.map(&:login)
+                rescue Octokit::Unauthorized, Faraday::ConnectionFailed
+                  []
+                end
     end
 
     # pick a (semi-)random repo from GitHub

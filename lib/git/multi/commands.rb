@@ -122,15 +122,17 @@ module Git
       def find(commands, multi_repo = nil)
         Git::Multi.cloned_repositories_for(multi_repo).each do |repository|
           Dir.chdir(repository.local_path) do
-            if repo.instance_eval(commands.join(' && '))
-              repo.just_do_it(
-                ->(_repo) { nil },
-                ->(repo) { puts repo.full_name },
-              )
+            begin
+              if repo.instance_eval(commands.join(' && '))
+                repo.just_do_it(
+                  ->(_repo) { nil },
+                  ->(repo) { puts repo.full_name },
+                )
+              end
+            rescue Octokit::NotFound
+              # repository no longer exists on GitHub
+              # consider running "git multi --stale"!
             end
-          rescue Octokit::NotFound
-            # repository no longer exists on GitHub
-            # consider running "git multi --stale"!
           end
         end
       end
@@ -138,10 +140,12 @@ module Git
       def eval(commands, multi_repo)
         Git::Multi.cloned_repositories_for(multi_repo).each do |repo|
           Dir.chdir(repo.local_path) do
-            repo.instance_eval(commands.join(' ; '))
-          rescue Octokit::NotFound
-            # repository no longer exists on GitHub
-            # consider running "git multi --stale"!
+            begin
+              repo.instance_eval(commands.join(' ; '))
+            rescue Octokit::NotFound
+              # repository no longer exists on GitHub
+              # consider running "git multi --stale"!
+            end
           end
         end
       end
