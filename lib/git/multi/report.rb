@@ -131,16 +131,18 @@ module Git
         directory_status(['${WORKAREA}', abbreviate(workarea, :home)], workarea)
       end
 
-      def for(multi_repo)
-        case (user = org = project = multi_repo)
-        when *USERS
-          owner_status("user \"#{user}\"", Git::Multi::WORKAREA, user)
-        when *ORGANIZATIONS
-          owner_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
-        when *SUPERPROJECTS
-          project_status("superproject \"#{project}\"", project)
-        else
-          raise "Unknown multi repo: #{multi_repo}"
+      def for(*multi_repos)
+        multi_repos.each do |multi_repo|
+          case (user = org = project = multi_repo)
+          when *USERS
+            owner_status("user \"#{user}\"", Git::Multi::WORKAREA, user)
+          when *ORGANIZATIONS
+            owner_status("org \"#{org}\"", Git::Multi::WORKAREA, org)
+          when *SUPERPROJECTS
+            project_status("superproject \"#{project}\"", project)
+          else
+            raise "Unknown multi repo: #{multi_repo}"
+          end
         end
       end
 

@@ -21,7 +21,7 @@ module Git
         when nil
           Report.home_status(Git::Multi::HOME)
           Report.workarea_status(Git::Multi::WORKAREA)
-          MULTI_REPOS.each(&Report.method(:for))
+          Report.for(*MULTI_REPOS)
         when *MULTI_REPOS
           Report.for(multi_repo)
         else
