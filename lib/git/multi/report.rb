@@ -46,14 +46,12 @@ module Git
           setting_status([message, 'listed but not configured'], false, false)
         else
           setting_status([message], true)
-
-          cloned_count = Git::Multi.cloned_repositories_for(superproject).count
-          missing_count = (github_count - cloned_count)
-
-          setting_status(["\tGitHub ", "#{github_count} repositories"])
-          setting_status(["\tcloned ", cloned_count, "(#{missing_count} missing)"])
-          Git::Multi.missing_repositories_for(superproject).each do |missing|
-            setting_status(["\tmissing", missing.full_name], false, false)
+          Git::Multi.repositories_for(superproject).each do |repo|
+            if File.directory? repo.local_path
+              setting_status(["\tcloned ", repo.full_name], true)
+            else
+              setting_status(["\tmissing", repo.full_name], false, false)
+            end
           end
         end
       end
