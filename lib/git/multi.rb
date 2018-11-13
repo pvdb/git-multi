@@ -6,6 +6,8 @@ require 'shellwords'
 
 require 'octokit'
 require 'sawyer'
+require 'faraday'
+require 'addressable'
 
 require 'ext/dir'
 require 'ext/string'

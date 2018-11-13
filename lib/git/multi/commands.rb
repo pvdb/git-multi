@@ -5,7 +5,15 @@ module Git
       module_function
 
       def version
-        puts Git::Multi::LONG_VERSION
+        dependencies = [
+          "octokit.rb v#{Octokit::VERSION}",
+          "sawyer v#{Sawyer::VERSION}",
+          "faraday v#{Faraday::VERSION}",
+          "addressable v#{Addressable::VERSION::STRING}",
+          "#{RUBY_ENGINE} #{RUBY_VERSION}p#{RUBY_PATCHLEVEL}",
+        ].join(', ')
+
+        puts "#{Git::Multi::NAME} v#{Git::Multi::VERSION} (#{dependencies})"
       end
 
       def help
