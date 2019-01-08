@@ -200,7 +200,7 @@ find all projects that have seen activity this calendar year
 
 print out all webhooks
 
- git multi --eval '(hooks = client.hooks(full_name)).any? && begin print full_name ; print "\t" ; puts hooks.map { |hook| ["", hook.name, hook.config.url].join("\t") } ; end'
+ git multi --eval 'puts client.hooks(full_name).map { |hook| [full_name, hook.name, hook.config.url].join("\t") }'
 
 print out all deploy keys
 
