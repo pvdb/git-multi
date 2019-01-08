@@ -202,6 +202,10 @@ print out all webhooks
 
  git multi --eval 'puts client.hooks(full_name).map { |hook| [full_name, hook.name, hook.config.url].join("\t") }'
 
+delete all webhooks with matching URLs (in this case: `notify.travis-ci.org`)
+
+ git multi --eval 'client.hooks(full_name).find_all { |hook| hook.config.url =~ /notify.travis-ci.org/ }.each { |hook| client.remove_hook(full_name, hook.id) }'
+
 print out all deploy keys
 
  git multi --eval '(keys = client.list_deploy_keys(full_name)).any? && begin print full_name ; print "\t" ; puts keys.map(&:title).sort.join("\t") ; end'
