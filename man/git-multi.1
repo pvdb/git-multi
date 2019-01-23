@@ -2,12 +2,12 @@
 .\"     Title: git-multi
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 11/13/2018
+.\"      Date: 01/23/2019
 .\"    Manual: Git Manual
 .\"    Source: Git 2.19.1.542.gc4df23f792.dirty
 .\"  Language: English
 .\"
-.TH "GIT\-MULTI" "1" "11/13/2018" "Git 2\&.19\&.1\&.542\&.gc4df23" "Git Manual"
+.TH "GIT\-MULTI" "1" "01/23/2019" "Git 2\&.19\&.1\&.542\&.gc4df23" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -31,7 +31,7 @@
 git-multi \- execute the same git command in multiple repositories
 .SH "VERSION"
 .sp
-This is \fBv2\&.4\&.0\fR of \fIgit multi\fR \&... hooray!
+This is \fBv2\&.5\&.0\fR of \fIgit multi\fR \&... hooray!
 .SH "SYNOPSIS"
 .sp
 There are some options for \fBgit multi\fR itself, in which case it is invoked as follows:
@@ -412,7 +412,19 @@ print out all webhooks
 .RS 4
 .\}
 .nf
-git multi \-\-eval \*(Aq(hooks = client\&.hooks(full_name))\&.any? && begin print full_name ; print "\et" ; puts hooks\&.map { |hook| ["", hook\&.name, hook\&.config\&.url]\&.join("\et") } ; end\*(Aq
+git multi \-\-eval \*(Aqputs client\&.hooks(full_name)\&.map { |hook| [full_name, hook\&.name, hook\&.config\&.url]\&.join("\et") }\*(Aq
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+delete all webhooks with matching URLs (in this case: \fBnotify\&.travis\-ci\&.org\fR)
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+git multi \-\-eval \*(Aqclient\&.hooks(full_name)\&.find_all { |hook| hook\&.config\&.url =~ /notify\&.travis\-ci\&.org/ }\&.each { |hook| client\&.remove_hook(full_name, hook\&.id) }\*(Aq
 .fi
 .if n \{\
 .RE

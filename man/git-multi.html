@@ -748,7 +748,7 @@ git-multi(1) Manual Page
 <div class="sect1">
 <h2 id="_version">VERSION</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>This is <code>v2.4.0</code> of <em>git multi</em> &#8230; hooray!</p></div>
+<div class="paragraph"><p>This is <code>v2.5.0</code> of <em>git multi</em> &#8230; hooray!</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -1070,7 +1070,12 @@ and cached locally <em>(in binary format)</em> for performance and offline usage
 <div class="paragraph"><p>print out all webhooks</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>git multi --eval '(hooks = client.hooks(full_name)).any? &amp;&amp; begin print full_name ; print "\t" ; puts hooks.map { |hook| ["", hook.name, hook.config.url].join("\t") } ; end'</code></pre>
+<pre><code>git multi --eval 'puts client.hooks(full_name).map { |hook| [full_name, hook.name, hook.config.url].join("\t") }'</code></pre>
+</div></div>
+<div class="paragraph"><p>delete all webhooks with matching URLs (in this case: <code>notify.travis-ci.org</code>)</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>git multi --eval 'client.hooks(full_name).find_all { |hook| hook.config.url =~ /notify.travis-ci.org/ }.each { |hook| client.remove_hook(full_name, hook.id) }'</code></pre>
 </div></div>
 <div class="paragraph"><p>print out all deploy keys</p></div>
 <div class="literalblock">
@@ -1209,7 +1214,7 @@ the <code>jq</code> command-line utility:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-11-13 20:59:28 GMT
+ 2019-01-23 21:22:08 GMT
 </div>
 </div>
 </body>
