@@ -159,6 +159,20 @@ module Git
         end
       end
 
+      def spputs(*args)
+        # split, prefix and puts
+        args.each do |arg|
+          case arg
+          when Array
+            arg.each do |argh| puts("#{full_name}: #{argh}"); end
+          when String
+            spputs(arg.split($RS))
+          else
+            ssputs(arg.to_s)
+          end
+        end
+      end
+
     end
 
     def repositories
