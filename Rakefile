@@ -8,7 +8,7 @@ task :validate_gemspec do
 end
 
 task :version => :validate_gemspec do
-  puts Git::Multi::VERSION
+  puts Git::Multi.version
 end
 
 require 'rubocop/rake_task'
@@ -23,7 +23,7 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/*_test.rb']
 end
 
-task :default => [:rubocop, :test]
+task :default => [:version, :rubocop, :test]
 
 require 'git/multi'
 

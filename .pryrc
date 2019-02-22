@@ -1,9 +1,9 @@
-# this loads all of "git-multi"
+# this loads all of 'git-multi'
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/multi'
 
-# this loads all "git multi" contribs
+# this loads all 'git multi' contribs
 Dir.glob File.join(__dir__, 'contrib', '*', '*.rb'), &method(:require)
 
 # configure a logger

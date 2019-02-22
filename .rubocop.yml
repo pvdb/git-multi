@@ -1,3 +1,9 @@
+AllCops:
+  Exclude:
+    - 'doc/*'
+    - 'tmp/*'
+    - 'pkg/*'
+
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
 Layout/EmptyLinesAroundModuleBody:

@@ -24,6 +24,7 @@ require 'git/multi/commands'
 
 module Git
   module Multi
+    class Error < StandardError; end
 
     HOME             = Dir.home
 
