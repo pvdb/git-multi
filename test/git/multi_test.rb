@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Git
   class MultiTest < Minitest::Test
-    def test_that_it_has_a_name_number
+    def test_that_it_has_a_name
       refute_nil ::Git::Multi::NAME
     end
 
