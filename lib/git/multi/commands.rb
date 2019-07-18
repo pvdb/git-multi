@@ -131,8 +131,8 @@ module Git
         Git::Multi.cloned_repositories_for(multi_repo).each do |repository|
           Dir.chdir(repository.local_path) do
             begin
-              if repo.instance_eval(commands.join(' && '))
-                repo.just_do_it(
+              if repository.instance_eval(commands.join(' && '))
+                repository.just_do_it(
                   ->(_repo) { nil },
                   ->(repo) { puts repo.full_name },
                 )
