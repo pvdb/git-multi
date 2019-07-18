@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    git-multi (2.6.0)
+    git-multi (2.6.1)
       octokit (~> 4.13)
 
 GEM
