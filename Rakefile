@@ -41,8 +41,15 @@ end
 
 task :documentation => git_asciidoc do
   Dir.chdir(documentation) do
-    # use git's documentation framework
-    `make git-multi.1 git-multi.html`
+    brew_prefix = `brew --prefix`.strip
+    xml_catalog = File.join(brew_prefix, 'etc', 'xml', 'catalog')
+    cmd = "XML_CATALOG_FILES=#{xml_catalog} make git-multi.1 git-multi.html"
+
+    # use git's documentation framework to generate our man pages
+    sh(cmd) do |success, _status|
+      raise 'git documentation Makefile failed...' unless success
+    end
+
     FileUtils.cp 'git-multi.1',    Git::Multi::MAN_PAGE
     FileUtils.cp 'git-multi.html', Git::Multi::HTML_PAGE
   end
