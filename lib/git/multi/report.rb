@@ -84,20 +84,22 @@ module Git
       private_class_method def symbolize(token)
         case token
         when Git::Multi.env_var('OCTOKIT_ACCESS_TOKEN')
-          then '${OCTOKIT_ACCESS_TOKEN}'
+          '${OCTOKIT_ACCESS_TOKEN}'
         when Git::Multi.global_option('github.token')
-          then 'github.token'
-        else '(unset)'
+          'github.token'
+        else
+          '(unset)'
         end
       end
 
       private_class_method def abbreviate(directory, root_dir = nil)
         case root_dir
         when :home
-          then directory.gsub(Git::Multi::HOME, '${HOME}')
+          directory.gsub(Git::Multi::HOME, '${HOME}')
         when :workarea
-          then directory.gsub(Git::Multi::WORKAREA, '${WORKAREA}')
-        else abbreviate(abbreviate(directory, :workarea), :home)
+          directory.gsub(Git::Multi::WORKAREA, '${WORKAREA}')
+        else
+          abbreviate(abbreviate(directory, :workarea), :home)
         end
       end
 

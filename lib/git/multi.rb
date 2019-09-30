@@ -161,8 +161,10 @@ module Git
             errors = File.join(ENV['TMPDIR'], "git-multi.#{$PID}")
             captured.call(self, errors)
             unless File.zero?(errors)
+              # rubocop:disable Style/StderrPuts
               STDERR.puts "#{full_name.invert} (#{fractional_index})"
               Kernel.system "cat #{errors} > /dev/tty ;"
+              # rubocop:enable Style/StderrPuts
             end
           else
             pipelined.call(self)
