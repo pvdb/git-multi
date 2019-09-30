@@ -2,7 +2,8 @@ PATH
   remote: .
   specs:
     git-multi (2.6.1)
-      octokit (~> 4.13)
+      faraday (~> 0.15.0)
+      octokit (~> 4)
 
 GEM
   remote: https://rubygems.org/
