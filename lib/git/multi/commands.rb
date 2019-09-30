@@ -94,6 +94,7 @@ module Git
             ->(repo) {
               Kernel.system "git clone -q #{repo.rels[:ssh].href.shellescape}"
             },
+            nil, # captured
             in: 'parent_dir'
           )
         end
@@ -176,7 +177,20 @@ module Git
               Kernel.system cmd
             },
             ->(repo) {
-              Kernel.system "#{cmd} 2>&1 | sed -e 's#^##{repo.full_name.shellescape}: #'"
+              prefix = "sed -e 's#^##{repo.full_name.shellescape}: #'"
+              Kernel.system "#{cmd} 2>&1 | #{prefix} ;"
+            },
+            ->(repo, errors) {
+              #
+              # because `Kernel.system()` uses the standard shell,
+              # which always means "/bin/sh" on Unix-like systems,
+              # the following version using "process substitution"
+              # doesn't work:
+              #
+              # Kernel.system "#{cmd} 2> >(#{prefix}) | #{prefix} ;"
+              #
+              prefix = "sed -e 's#^##{repo.full_name.shellescape}: #'"
+              Kernel.system "#{cmd} 2> #{errors} | #{prefix} ;"
             },
             in: 'local_path'
           )

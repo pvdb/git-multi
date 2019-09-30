@@ -4,6 +4,8 @@ require 'pathname'
 require 'fileutils'
 require 'shellwords'
 
+require 'English'
+
 require 'octokit'
 require 'sawyer'
 require 'faraday'
@@ -11,7 +13,6 @@ require 'addressable'
 
 require 'ext/dir'
 require 'ext/string'
-require 'ext/kernel'
 require 'ext/commify'
 require 'ext/sawyer/resource'
 
@@ -144,21 +145,32 @@ module Git
 
     module Nike
 
-      def just_do_it(interactive, pipeline, options = {})
+      # rubocop:disable Metrics/PerceivedComplexity
+      # rubocop:disable Metrics/CyclomaticComplexity
+      def just_do_it(interactive, pipelined, captured = nil, options = {})
         working_dir = case (options[:in] || '').to_sym
                       when :parent_dir then parent_dir
                       when :local_path then local_path
                       else Dir.pwd
                       end
         Dir.chdir(working_dir) do
-          if interactive?
-            puts "#{full_name.invert} (#{fractional_index})"
+          if STDOUT.tty? && STDERR.tty?
+            STDOUT.puts "#{full_name.invert} (#{fractional_index})"
             interactive.call(self)
+          elsif STDERR.tty?
+            errors = File.join(ENV['TMPDIR'], "git-multi.#{$PID}")
+            captured.call(self, errors)
+            unless File.zero?(errors)
+              STDERR.puts "#{full_name.invert} (#{fractional_index})"
+              Kernel.system "cat #{errors} > /dev/tty ;"
+            end
           else
-            pipeline.call(self)
+            pipelined.call(self)
           end
         end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
+      # rubocop:enable Metrics/PerceivedComplexity
 
       def spputs(*args)
         # split, prefix and puts
