@@ -160,7 +160,7 @@ module Git
           elsif STDERR.tty?
             errors = File.join(ENV['TMPDIR'], "git-multi.#{$PID}")
             captured.call(self, errors)
-            unless File.zero?(errors)
+            if File.exist?(errors) && !File.zero?(errors)
               # rubocop:disable Style/StderrPuts
               STDERR.puts "#{full_name.invert} (#{fractional_index})"
               Kernel.system "cat #{errors} > /dev/tty ;"
