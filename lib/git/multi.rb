@@ -157,7 +157,7 @@ module Git
           if STDOUT.tty? && STDERR.tty?
             STDOUT.puts "#{full_name.invert} (#{fractional_index})"
             interactive.call(self)
-          elsif STDERR.tty?
+          elsif STDERR.tty? && captured
             errors = File.join(ENV['TMPDIR'], "git-multi.#{$PID}")
             captured.call(self, errors)
             if File.exist?(errors) && !File.zero?(errors)
