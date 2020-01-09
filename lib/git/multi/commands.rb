@@ -159,6 +159,11 @@ module Git
         end
       end
 
+      def shell(args, multi_repo)
+        args.unshift [ENV.fetch('SHELL', '/bin/sh'), '-l']
+        system(args.flatten, multi_repo)
+      end
+
       def raw(args, multi_repo = nil)
         args.unshift ['sh', '-c']
         system(args.flatten, multi_repo)
