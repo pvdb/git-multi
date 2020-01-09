@@ -2,12 +2,12 @@
 .\"     Title: git-multi
 .\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/06/2020
+.\"      Date: 01/09/2020
 .\"    Manual: Git Manual
 .\"    Source: Git 2.23.0.606.g08da6496b6.dirty
 .\"  Language: English
 .\"
-.TH "GIT\-MULTI" "1" "01/06/2020" "Git 2\&.23\&.0\&.606\&.g08da64" "Git Manual"
+.TH "GIT\-MULTI" "1" "01/09/2020" "Git 2\&.23\&.0\&.606\&.g08da64" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -31,7 +31,7 @@
 git-multi \- execute the same git command in multiple repositories
 .SH "VERSION"
 .sp
-This is \fBv2\&.9\&.0\fR of \fIgit multi\fR \&... hooray!
+This is \fBv2\&.10\&.0\fR of \fIgit multi\fR \&... hooray!
 .SH "SYNOPSIS"
 .sp
 There are some options for \fBgit multi\fR itself, in which case it is invoked as follows:
@@ -175,6 +175,11 @@ execute the given Ruby code in the context of each repo
 \-\-raw <cmd>
 .RS 4
 execute the given shell command inside each git repository
+.RE
+.PP
+\-\-shell
+.RS 4
+run an interactive login shell inside each git directory
 .RE
 .SH "EXAMPLES"
 .sp
