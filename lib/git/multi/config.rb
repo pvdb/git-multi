@@ -8,8 +8,8 @@ module Git
       value.empty? && default ? default : value
     end
 
-    def local_list(filename, name)
-      list = `git config --file #{filename} --get-all #{name}`
+    def full_names_for(superproject)
+      list = `git config --get-all superproject.#{superproject}.repo`
       list.split($RS).map(&:strip).map(&:freeze)
     end
 

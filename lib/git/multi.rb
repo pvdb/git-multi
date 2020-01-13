@@ -39,8 +39,7 @@ module Git
 
     FileUtils.mkdir_p(GIT_MULTI_DIR) # ensure `~/.git/multi` directory exists
 
-    GITHUB_CACHE         = File.join(GIT_MULTI_DIR, 'repositories.byte')
-    SUPERPROJECTS_CONFIG = File.join(GIT_MULTI_DIR, 'superprojects.config')
+    GITHUB_CACHE     = File.join(GIT_MULTI_DIR, 'repositories.byte')
 
     USERS            = global_list('git.multi.users')
     ORGANIZATIONS    = global_list('git.multi.organizations')
@@ -59,10 +58,6 @@ module Git
 
     def valid?(multi_repo)
       MULTI_REPOS.include? multi_repo
-    end
-
-    def full_names_for(superproject)
-      local_list(SUPERPROJECTS_CONFIG, "superproject.#{superproject}.repo")
     end
 
     #
