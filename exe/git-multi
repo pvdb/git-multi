@@ -7,13 +7,7 @@ require 'git/multi'
 multi_repo = nil
 if (command = ARGV.shift)&.start_with? '++'
   multi_repo = command[2..-1]
-  if Git::Multi.valid?(multi_repo)
-    command = nil
-  else
-    abort \
-      "Unknown multi repo: #{multi_repo}\n\n" \
-      '(use --report to list all known multi repos)'
-  end
+  command = nil
 elsif !STDIN.tty?
   # read list of repo full names from STDIN (~pseudo multi repo)
   multi_repo = STDIN.readlines.map(&:strip).map(&:freeze).freeze
