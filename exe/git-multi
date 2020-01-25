@@ -16,40 +16,46 @@ elsif (command = ARGV.shift)&.start_with? '++'
   command = nil
 end
 
-case (command ||= ARGV.shift)
-when /\A--/
-  case command
-  when '--version' then Git::Multi::Commands.version
-  when '--help'    then Git::Multi::Commands.help
-  when '--html'    then Git::Multi::Commands.html
-  when '--report'  then Git::Multi::Commands.report(multi_repo)
-  when '--count'   then Git::Multi::Commands.count
-  when '--refresh' then Git::Multi::Commands.refresh
-  when '--json'    then Git::Multi::Commands.json(multi_repo)
-  when '--list'    then Git::Multi::Commands.list(multi_repo)
-  when '--archived'then Git::Multi::Commands.archived(multi_repo)
-  when '--forked'  then Git::Multi::Commands.forked(multi_repo)
-  when '--private' then Git::Multi::Commands.private(multi_repo)
-  when '--paths'   then Git::Multi::Commands.paths(multi_repo)
-  when '--missing' then Git::Multi::Commands.missing(multi_repo)
-  when '--clone'   then Git::Multi::Commands.clone(multi_repo)
-  when '--stale'   then Git::Multi::Commands.stale(multi_repo)
-  when '--excess'  then Git::Multi::Commands.excess(multi_repo)
-  when '--spurious'then Git::Multi::Commands.spurious(multi_repo)
-  when '--query'   then Git::Multi::Commands.query(ARGV, multi_repo)
-  when '--find'    then Git::Multi::Commands.find(ARGV, multi_repo)
-  when '--eval'    then Git::Multi::Commands.eval(ARGV, multi_repo)
-  when '--raw'     then Git::Multi::Commands.raw(ARGV, multi_repo)
-  when '--shell'   then Git::Multi::Commands.shell(ARGV, multi_repo)
+begin
+  case (command ||= ARGV.shift)
+  when /\A--/
+    case command
+    when '--version' then Git::Multi::Commands.version
+    when '--help'    then Git::Multi::Commands.help
+    when '--html'    then Git::Multi::Commands.html
+    when '--report'  then Git::Multi::Commands.report(multi_repo)
+    when '--count'   then Git::Multi::Commands.count
+    when '--refresh' then Git::Multi::Commands.refresh
+    when '--json'    then Git::Multi::Commands.json(multi_repo)
+    when '--list'    then Git::Multi::Commands.list(multi_repo)
+    when '--archived'then Git::Multi::Commands.archived(multi_repo)
+    when '--forked'  then Git::Multi::Commands.forked(multi_repo)
+    when '--private' then Git::Multi::Commands.private(multi_repo)
+    when '--paths'   then Git::Multi::Commands.paths(multi_repo)
+    when '--missing' then Git::Multi::Commands.missing(multi_repo)
+    when '--clone'   then Git::Multi::Commands.clone(multi_repo)
+    when '--stale'   then Git::Multi::Commands.stale(multi_repo)
+    when '--excess'  then Git::Multi::Commands.excess(multi_repo)
+    when '--spurious'then Git::Multi::Commands.spurious(multi_repo)
+    when '--query'   then Git::Multi::Commands.query(ARGV, multi_repo)
+    when '--find'    then Git::Multi::Commands.find(ARGV, multi_repo)
+    when '--eval'    then Git::Multi::Commands.eval(ARGV, multi_repo)
+    when '--raw'     then Git::Multi::Commands.raw(ARGV, multi_repo)
+    when '--shell'   then Git::Multi::Commands.shell(ARGV, multi_repo)
+    else
+      abort \
+        "Unknown 'git multi' command: #{command}\n\n" \
+        '(use --help/-h to list all available commands)'
+    end
+  when nil, '', '-h'
+    Git::Multi::Commands.help
   else
-    abort \
-      "Unknown 'git multi' command: #{command}\n\n" \
-      '(use --help/-h to list all available commands)'
+    Git::Multi::Commands.exec(command, ARGV, multi_repo)
   end
-when nil, '', '-h'
-  Git::Multi::Commands.help
-else
-  Git::Multi::Commands.exec(command, ARGV, multi_repo)
+rescue ArgumentError
+  abort \
+    "Unknown multi repo: #{$ERROR_INFO.message}\n\n" \
+    '(use `git multi --report` to list all known multi repos)'
 end
 
 # That's all Folks!
