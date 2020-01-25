@@ -4,15 +4,16 @@ lib = File.expand_path('../lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/multi'
 
-multi_repo = nil
-if (command = ARGV.shift)&.start_with? '++'
-  multi_repo = command[2..-1]
-  command = nil
-elsif !STDIN.tty?
+multi_repo = command = nil
+
+if !STDIN.tty?
   # read list of repo full names from STDIN (~pseudo multi repo)
   multi_repo = STDIN.readlines.map(&:strip).map(&:freeze).freeze
   # reopen STDIN (to ensure all `Kernel.system` based cmds work)
   STDIN.reopen('/dev/tty')
+elsif (command = ARGV.shift)&.start_with? '++'
+  multi_repo = command[2..-1]
+  command = nil
 end
 
 case (command ||= ARGV.shift)
