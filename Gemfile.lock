@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     git-multi (3.0.2)
-      faraday (~> 0.15.0)
+      faraday (>= 0.9)
       octokit (~> 4)
 
 GEM
@@ -12,7 +12,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.0)
     coderay (1.1.2)
-    faraday (0.15.4)
+    faraday (1.0.0)
       multipart-post (>= 1.2, < 3)
     interception (0.5)
     jaro_winkler (1.5.4)

@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
 
   spec.post_install_message = Git::Multi::PIM
 
-  spec.add_dependency 'faraday', '~> 0.15.0'
+  spec.add_dependency 'faraday', '>= 0.9'
   spec.add_dependency 'octokit', '~> 4'
 
   spec.add_development_dependency 'bundler'
