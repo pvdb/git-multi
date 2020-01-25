@@ -33,7 +33,7 @@ module Git
         when *MULTI_REPOS
           Report.for(multi_repo)
         else
-          raise "Unknown multi repo: #{multi_repo}"
+          raise ArgumentError, multi_repo
         end
       end
 

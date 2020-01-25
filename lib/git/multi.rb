@@ -230,7 +230,7 @@ module Git
       when *SUPERPROJECTS
         repositories_for(full_names_for(superproject))
       else
-        raise "Unknown multi repo: #{multi_repo}"
+        raise ArgumentError, multi_repo
       end
     end
 

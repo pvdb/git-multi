@@ -66,7 +66,7 @@ module Git
           when *SUPERPROJECTS
             project_status("superproject \"#{project}\"", project)
           else
-            raise "Unknown multi repo: #{multi_repo}"
+            raise ArgumentError, multi_repo
           end
         end
       end
