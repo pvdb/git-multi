@@ -64,9 +64,11 @@ module Git
     end
 
     def query_args
+      # rubocop:disable Style/FormatStringToken
       repository_fields.sort.each_slice(3).map { |foo, bar, qux|
         format('%-20s %-20s %-20s', foo, bar, qux).rstrip
       }.join("\n    ")
+      # rubocop:enable Style/FormatStringToken
     end
 
     #
