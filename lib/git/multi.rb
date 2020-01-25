@@ -216,18 +216,19 @@ module Git
     #
 
     def repositories_for(multi_repo = nil)
-      case (owner = superproject = multi_repo)
+      case (owner = superproject = full_names = multi_repo)
       when nil
         repositories # all of them
+      when Array
+        repositories.find_all { |repository|
+          full_names.include?(repository.full_name)
+        }
       when *USERS, *ORGANIZATIONS
         repositories.find_all { |repository|
           repository.owner.login == owner
         }
       when *SUPERPROJECTS
-        full_names = full_names_for(superproject)
-        repositories.find_all { |repository|
-          full_names.include?(repository.full_name)
-        }
+        repositories_for(full_names_for(superproject))
       else
         raise "Unknown multi repo: #{multi_repo}"
       end
