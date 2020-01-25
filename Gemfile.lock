@@ -17,7 +17,7 @@ GEM
     interception (0.5)
     jaro_winkler (1.5.4)
     method_source (0.9.2)
-    minitest (5.12.2)
+    minitest (5.14.0)
     multipart-post (2.1.1)
     octokit (4.15.0)
       faraday (>= 0.9)
