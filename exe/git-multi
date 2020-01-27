@@ -7,7 +7,7 @@ require 'git/multi'
 multi_repo = command = nil
 
 if !STDIN.tty?
-  # read list of repo full names from STDIN (~pseudo multi repo)
+  # read list of repo full names from STDIN (~pseudo multi-repo)
   multi_repo = STDIN.readlines.map(&:strip).map(&:freeze).freeze
   # reopen STDIN (to ensure all `Kernel.system` based cmds work)
   STDIN.reopen('/dev/tty')
@@ -54,8 +54,8 @@ begin
   end
 rescue ArgumentError
   abort \
-    "Unknown multi repo: #{$ERROR_INFO.message}\n\n" \
-    '(use `git multi --report` to list all known multi repos)'
+    "Unknown multi-repo: #{$ERROR_INFO.message}\n\n" \
+    '(use `git multi --report` to list all known multi-repos)'
 end
 
 # That's all Folks!
