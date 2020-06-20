@@ -11,8 +11,8 @@ if !STDIN.tty?
   multi_repo = STDIN.readlines.map(&:strip).map(&:freeze).freeze
   # reopen STDIN (to ensure all `Kernel.system` based cmds work)
   STDIN.reopen('/dev/tty')
-elsif (command = ARGV.shift)&.start_with? '++'
-  multi_repo = command[2..-1]
+elsif (command = ARGV.shift)&.start_with?('++')
+  multi_repo = command.delete('++')
   command = nil
 end
 

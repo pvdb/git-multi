@@ -1,7 +1,6 @@
-# rubocop:disable Layout/EmptyLineBetweenDefs
-
 class String
-
+  # rubocop:disable Layout/EmptyLineBetweenDefs
+  # rubocop:disable Style/SingleLineMethods
   def colorize(color_code) "\e[#{color_code}m#{self}\e[0m"; end
 
   def bold()   colorize('1'); end
@@ -12,7 +11,6 @@ class String
   def green() colorize('32'); end
 
   def undent() gsub(/^.{#{slice(/^ +/).length}}/, ''); end
-
+  # rubocop:enable Style/SingleLineMethods
+  # rubocop:enable Layout/EmptyLineBetweenDefs
 end
-
-# rubocop:enable Layout/EmptyLineBetweenDefs

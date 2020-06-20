@@ -139,7 +139,6 @@ module Git
     #
 
     module Nike
-
       # rubocop:disable Metrics/PerceivedComplexity
       # rubocop:disable Metrics/CyclomaticComplexity
       def just_do_it(interactive, pipelined, captured = nil, options = {})
@@ -182,7 +181,6 @@ module Git
           end
         end
       end
-
     end
 
     def repositories
@@ -293,6 +291,5 @@ module Git
         File.directory? repo.local_path
       }
     end
-
   end
 end

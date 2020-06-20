@@ -1,7 +1,6 @@
 module Git
   module Multi
     module Report
-
       TICK  = ['2714'.hex].pack('U*').green.freeze
       CROSS = ['2718'.hex].pack('U*').red.freeze
       ARROW = ['2794'.hex].pack('U*').blue.freeze
@@ -77,7 +76,7 @@ module Git
         elsif token.empty?
           '(empty)'
         else
-          "#{'*' * 36}#{token[36..-1]}"
+          "#{'*' * 36}#{token[36..]}"
         end
       end
 
@@ -128,7 +127,6 @@ module Git
           false
         )
       end
-
     end
   end
 end

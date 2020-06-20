@@ -2,10 +2,10 @@ require 'octokit'
 
 begin
   require 'net/http/persistent'
-  Octokit.middleware.swap(
-    Faraday::Adapter::NetHttp,          # default Faraday adapter
-    Faraday::Adapter::NetHttpPersistent # experimental Faraday adapter
-  )
+  if Octokit.middleware.adapter == Faraday::Adapter::NetHttp
+    adapter = Faraday::RackBuilder::Handler.new(Faraday::Adapter::NetHttpPersistent)
+    Octokit.middleware.instance_variable_set(:'@adapter', adapter)
+  end
 rescue LoadError
   # NOOP  -  `Net::HTTP::Persistent` is optional, so
   # if the gem isn't installed, then we run with the
@@ -16,7 +16,6 @@ end
 
 module Git
   module Hub
-
     module_function
 
     def client
@@ -104,6 +103,5 @@ module Git
       # type can be one of: all, public, private, forks, sources, member
       @org_repositories[[org, type]]
     end
-
   end
 end

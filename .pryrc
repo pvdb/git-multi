@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/multi'
 
 # this loads all 'git multi' contribs
-Dir.glob File.join(__dir__, 'contrib', '*', '*.rb'), &method(:require)
+Dir.glob File.join(__dir__, 'contrib', '**', '*.rb'), &method(:require)
 
 # configure a logger
 require 'logger'
@@ -28,15 +28,21 @@ end
 
 # utility function to set pry context
 # to an instance of <Octokit::Client>
-def client() pry(Git::Hub.send(:client)); end
+def client
+  pry(Git::Hub.send(:client))
+end
 
 # utility function to set pry context
 # to the Array of github repositories
-def repos() pry(Git::Multi.repositories); end
+def repos
+  pry(Git::Multi.repositories)
+end
 
 # utility function to set pry context
 # to the various 'git multi' commands:
-def cmds() pry(Git::Multi::Commands); end
+def cmds
+  pry(Git::Multi::Commands)
+end
 
 # utility function to set context
 # to the named github repository:

@@ -1,7 +1,6 @@
 module Git
   module Multi
     module Commands
-
       module_function
 
       def version
@@ -203,7 +202,6 @@ module Git
       end
 
       private_class_method :system
-
     end
   end
 end

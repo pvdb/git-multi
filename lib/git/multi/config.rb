@@ -1,6 +1,5 @@
 module Git
   module Multi
-
     module_function
 
     def local_option(path, name, default = nil)
@@ -26,6 +25,5 @@ module Git
       value = ENV[name]
       (value.nil? || value.empty?) && default ? default : value
     end
-
   end
 end
