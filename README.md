@@ -35,7 +35,7 @@ There are plenty of other utilities out there that do something similar, but typ
 
 ## Usage
 
-    $ git multi --help
+    $ git-multi --help
 
 ## Known Issues
 
