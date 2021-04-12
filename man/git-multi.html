@@ -1106,7 +1106,7 @@ and cached locally <em>(in binary format)</em> for performance and offline usage
 <pre><code>git multi --graph | ruby -n -e 'parent, children = $_.split(": ") ; puts children.split(" ").map { |child| "\"#{parent}\"-&gt;\"#{child}\";" }' | awk 'BEGIN { print "digraph {\nrankdir=\"LR\";\n" } ; { print ; } END { print "}\n" } ; ' | dot -Tpng &gt; /tmp/ghor.png ; open -a Preview /tmp/ghor.png</code></pre>
 </div></div>
 <div class="paragraph"><p>query only repos that are not archived
- git multi ++multi_repo&#8201;&#8212;&#8201;json | jq -r <em>.[] | select(."archived" == false) | ."full_name"</em> | git multi &#8230;</p></div>
+ git multi ++multi_repo --json | jq -r <em>.[] | select(."archived" == false) | ."full_name"</em> | git multi &#8230;</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -1224,7 +1224,7 @@ the <code>jq</code> command-line utility:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2021-04-12 17:10:42 BST
+ 2021-04-12 17:23:42 BST
 </div>
 </div>
 </body>

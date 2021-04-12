@@ -483,7 +483,7 @@ git multi \-\-graph | ruby \-n \-e \*(Aqparent, children = $_\&.split(": ") ; pu
 .RE
 .\}
 .sp
-query only repos that are not archived git multi ++multi_repo \(em json | jq \-r \fI\&.[] | select(\&."archived" == false) | \&."full_name"\fR | git multi \&...
+query only repos that are not archived git multi ++multi_repo \-\-json | jq \-r \fI\&.[] | select(\&."archived" == false) | \&."full_name"\fR | git multi \&...
 .SH "QUERY ARGUMENTS"
 .sp
 The following is a list of valid arguments for the \fBgit multi \-\-query\fR option:
