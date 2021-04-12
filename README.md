@@ -35,6 +35,8 @@ There are plenty of other utilities out there that do something similar, but typ
 
 ## Usage
 
+Installing the gem installs the `git-multi` executable on your system's `${PATH}`, which means it can be run as a so-called [git subcommand](https://git.github.io/htmldocs/howto/new-command.html#:~:text=Runtime%20environment), as follows: `git multi`; a good starting point is:
+
     $ git multi --help
 
 ## Known Issues
