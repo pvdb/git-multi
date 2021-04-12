@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 9.0.0" />
+<meta name="generator" content="AsciiDoc 9.1.0" />
 <title>git-multi(1)</title>
 <style type="text/css">
 /* Shared CSS for AsciiDoc xhtml11 and html5 backends */
@@ -1105,6 +1105,8 @@ and cached locally <em>(in binary format)</em> for performance and offline usage
 <div class="content">
 <pre><code>git multi --graph | ruby -n -e 'parent, children = $_.split(": ") ; puts children.split(" ").map { |child| "\"#{parent}\"-&gt;\"#{child}\";" }' | awk 'BEGIN { print "digraph {\nrankdir=\"LR\";\n" } ; { print ; } END { print "}\n" } ; ' | dot -Tpng &gt; /tmp/ghor.png ; open -a Preview /tmp/ghor.png</code></pre>
 </div></div>
+<div class="paragraph"><p>query only repos that are not archived
+ git multi ++multi_repo --json | jq -r <em>.[] | select(."archived" == false) | ."full_name"</em> | git multi &#8230;</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -1222,7 +1224,7 @@ the <code>jq</code> command-line utility:
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2020-06-20 07:51:21 BST
+ 2021-04-12 17:23:42 BST
 </div>
 </div>
 </body>

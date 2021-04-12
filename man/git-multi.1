@@ -2,12 +2,12 @@
 .\"     Title: git-multi
 .\"    Author: [FIXME: author] [see http://www.docbook.org/tdg5/en/html/author]
 .\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
-.\"      Date: 06/20/2020
+.\"      Date: 04/12/2021
 .\"    Manual: Git Manual
-.\"    Source: Git 2.27.0.112.g101b3204f3.dirty
+.\"    Source: Git 2.31.1.272.g89b43f80a5.dirty
 .\"  Language: English
 .\"
-.TH "GIT\-MULTI" "1" "06/20/2020" "Git 2\&.27\&.0\&.112\&.g101b32" "Git Manual"
+.TH "GIT\-MULTI" "1" "04/12/2021" "Git 2\&.31\&.1\&.272\&.g89b43f" "Git Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -482,6 +482,8 @@ git multi \-\-graph | ruby \-n \-e \*(Aqparent, children = $_\&.split(": ") ; pu
 .if n \{\
 .RE
 .\}
+.sp
+query only repos that are not archived git multi ++multi_repo \-\-json | jq \-r \fI\&.[] | select(\&."archived" == false) | \&."full_name"\fR | git multi \&...
 .SH "QUERY ARGUMENTS"
 .sp
 The following is a list of valid arguments for the \fBgit multi \-\-query\fR option:
