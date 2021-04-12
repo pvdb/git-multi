@@ -225,9 +225,6 @@ generate a dependency graph of all organization repositories using Graphviz
 
  git multi --graph | ruby -n -e 'parent, children = $_.split(": ") ; puts children.split(" ").map { |child| "\"#{parent}\"->\"#{child}\";" }' | awk 'BEGIN { print "digraph {\nrankdir=\"LR\";\n" } ; { print ; } END { print "}\n" } ; ' | dot -Tpng > /tmp/ghor.png ; open -a Preview /tmp/ghor.png
 
-query only repos that are not archived
- git multi ++multi_repo --json | jq -r '.[] | select(."archived" == false) | ."full_name"' | git multi ...
-
 QUERY ARGUMENTS
 ---------------
 
@@ -248,6 +245,19 @@ are some examples:
 
  # print out the name of all "forked" repositories
  git multi --json | jq -r '.[] | select(.fork == true) | .full_name'
+
+CHAINED INVOCATION
+------------------
+
+When `git multi` gets its input from a Unix pipeline _(as opposed to from a TTY)_, it constructs an "implicit" multi repo comprised of the "full" repo names it reads from `STDIN` _(one full repo name per line)_.
+
+This allows multiple `git multi` invocations to be chained, for example by using the `--json` or `--find` options as follows:
+
+ # run a git query or subcommand on repos that aren't archived (on GitHub)
+ git multi ++<multi_repo> --json | jq -r '.[] | select(."archived" == false) | ."full_name"' | git multi <git_command>
+
+ # run a shell command inside repos that have Ruby as their main language
+ git multi ++<multi_repo> --find 'language == "Ruby"' | git multi --raw 'cat .ruby-version'
 
 FILES
 -----
