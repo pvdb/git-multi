@@ -225,6 +225,9 @@ generate a dependency graph of all organization repositories using Graphviz
 
  git multi --graph | ruby -n -e 'parent, children = $_.split(": ") ; puts children.split(" ").map { |child| "\"#{parent}\"->\"#{child}\";" }' | awk 'BEGIN { print "digraph {\nrankdir=\"LR\";\n" } ; { print ; } END { print "}\n" } ; ' | dot -Tpng > /tmp/ghor.png ; open -a Preview /tmp/ghor.png
 
+query only repos that are not archived
+ git multi ++multi_repo -- json | jq -r '.[] | select(."archived" == false) | ."full_name"' | git multi ...
+
 QUERY ARGUMENTS
 ---------------
 
