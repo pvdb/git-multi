@@ -6,4 +6,7 @@ require 'git/multi'
 require 'pry'
 Pry.start
 
+# require "irb"
+# IRB.start(__FILE__)
+
 # That's all Folks!

@@ -133,7 +133,7 @@ module Git
             begin
               if repository.instance_eval(commands.join(' && '))
                 repository.just_do_it(
-                  ->(_repo) { nil },
+                  ->(_repo) {}, # empty lambda: nil
                   ->(repo) { puts repo.full_name },
                 )
               end

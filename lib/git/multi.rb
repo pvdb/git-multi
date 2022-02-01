@@ -148,15 +148,15 @@ module Git
                       else Dir.pwd
                       end
         Dir.chdir(working_dir) do
-          if STDOUT.tty? && STDERR.tty?
-            STDOUT.puts "#{full_name.invert} (#{fractional_index})"
+          if $stdout.tty? && $stderr.tty?
+            $stdout.puts "#{full_name.invert} (#{fractional_index})"
             interactive.call(self)
-          elsif STDERR.tty? && captured
+          elsif $stderr.tty? && captured
             errors = File.join(ENV['TMPDIR'], "git-multi.#{$PID}")
             captured.call(self, errors)
             if File.exist?(errors) && !File.zero?(errors)
               # rubocop:disable Style/StderrPuts
-              STDERR.puts "#{full_name.invert} (#{fractional_index})"
+              $stderr.puts "#{full_name.invert} (#{fractional_index})"
               Kernel.system "cat #{errors} > /dev/tty ;"
               # rubocop:enable Style/StderrPuts
             end
@@ -195,7 +195,7 @@ module Git
             repo.local_path = Pathname.new(File.join(WORKAREA, repo.full_name))
             repo.fractional_index = "#{index + 1}/#{repos.count}"
             # fix 'repo' => https://github.com/octokit/octokit.rb/issues/727
-            repo.compliant_ssh_url = 'ssh://' + repo.ssh_url.split(':', 2).join('/')
+            repo.compliant_ssh_url = "ssh://#{repo.ssh_url.split(':', 2).join('/')}"
             # remove optional '.git' suffix from 'git@github.com:pvdb/git-multi.git'
             repo.abbreviated_ssh_url = repo.ssh_url.chomp('.git')
             # extend 'repo' with 'just do it' capabilities

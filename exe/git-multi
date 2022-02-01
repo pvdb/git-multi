@@ -6,11 +6,11 @@ require 'git/multi'
 
 multi_repo = command = nil
 
-if !STDIN.tty?
-  # read list of repo full names from STDIN (~pseudo multi-repo)
-  multi_repo = STDIN.readlines.map(&:strip).map(&:freeze).freeze
-  # reopen STDIN (to ensure all `Kernel.system` based cmds work)
-  STDIN.reopen('/dev/tty')
+if !$stdin.tty?
+  # read list of repo full names from $stdin (~pseudo multi-repo)
+  multi_repo = $stdin.readlines.map(&:strip).map(&:freeze).freeze
+  # reopen $stdin (to ensure all `Kernel.system` based cmds work)
+  $stdin.reopen('/dev/tty')
 elsif (command = ARGV.shift)&.start_with?('++')
   multi_repo = command.delete('++')
   command = nil

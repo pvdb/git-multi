@@ -4,11 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'git/multi'
 
 # this loads all 'git multi' contribs
+# rubocop:disable Lint/NonDeterministicRequireOrder
 Dir.glob File.join(__dir__, 'contrib', '**', '*.rb'), &method(:require)
+# rubocop:enable Lint/NonDeterministicRequireOrder
 
 # configure a logger
 require 'logger'
-logger = Logger.new(STDOUT)
+logger = Logger.new($stdout)
 logger.level = Logger::INFO
 
 # configure Octokit middleware with logger

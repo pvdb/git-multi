@@ -1,5 +1,4 @@
 class String
-  # rubocop:disable Layout/EmptyLineBetweenDefs
   # rubocop:disable Style/SingleLineMethods
   def colorize(color_code) "\e[#{color_code}m#{self}\e[0m"; end
 
@@ -12,5 +11,4 @@ class String
 
   def undent() gsub(/^.{#{slice(/^ +/).length}}/, ''); end
   # rubocop:enable Style/SingleLineMethods
-  # rubocop:enable Layout/EmptyLineBetweenDefs
 end

@@ -4,7 +4,7 @@ begin
   require 'net/http/persistent'
   if Octokit.middleware.adapter == Faraday::Adapter::NetHttp
     adapter = Faraday::RackBuilder::Handler.new(Faraday::Adapter::NetHttpPersistent)
-    Octokit.middleware.instance_variable_set(:'@adapter', adapter)
+    Octokit.middleware.instance_variable_set(:@adapter, adapter)
   end
 rescue LoadError
   # NOOP  -  `Net::HTTP::Persistent` is optional, so
@@ -29,31 +29,31 @@ module Git
 
     def connected?
       @connected ||= begin
-                       client.validate_credentials
-                       true
-                     rescue Faraday::ConnectionFailed
-                       false
-                     end
+        client.validate_credentials
+        true
+      rescue Faraday::ConnectionFailed
+        false
+      end
     end
 
     # FIXME: update login as part of `--refresh`
 
     def login
       @login ||= begin
-                   client.user.login
-                 rescue Octokit::Unauthorized, Faraday::ConnectionFailed
-                   nil
-                 end
+        client.user.login
+      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
+        nil
+      end
     end
 
     # FIXME: update orgs as part of `--refresh`
 
     def orgs
       @orgs ||= begin
-                  client.organizations.map(&:login)
-                rescue Octokit::Unauthorized, Faraday::ConnectionFailed
-                  []
-                end
+        client.organizations.map(&:login)
+      rescue Octokit::Unauthorized, Faraday::ConnectionFailed
+        []
+      end
     end
 
     # pick a (semi-)random repo from GitHub
@@ -76,10 +76,10 @@ module Git
 
     @user_repositories = Hash.new { |repos, (user, type)|
       repos[[user, type]] = begin
-                              client
-                                .repositories(user, type: type)
-                                .sort_by { |repo| repo[:name].downcase }
-                            end
+        client
+          .repositories(user, type: type)
+          .sort_by { |repo| repo[:name].downcase }
+      end
     }
 
     def user_repositories(user, type = :owner)
@@ -93,10 +93,10 @@ module Git
 
     @org_repositories = Hash.new { |repos, (org, type)|
       repos[[org, type]] = begin
-                             client
-                               .org_repositories(org, type: type)
-                               .sort_by { |repo| repo[:name].downcase }
-                           end
+        client
+          .org_repositories(org, type: type)
+          .sort_by { |repo| repo[:name].downcase }
+      end
     }
 
     def org_repositories(org, type = :owner)

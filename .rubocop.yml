@@ -6,6 +6,10 @@ AllCops:
     - 'tmp/*'
     - 'pkg/*'
 
+require:
+  - rubocop-minitest
+  - rubocop-rake
+
 Layout/LineLength:
   Enabled: false
 
@@ -17,6 +21,9 @@ Metrics/AbcSize:
 Metrics/MethodLength:
   Enabled: false
 Metrics/ModuleLength:
+  Enabled: false
+
+Rake/Desc:
   Enabled: false
 
 Style/BlockDelimiters:
@@ -37,4 +44,8 @@ Style/TrailingCommaInArguments:
 Style/TrailingCommaInArrayLiteral:
   Enabled: false
 Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+# https://github.com/rubocop/rubocop/issues/10394
+Style/SwapValues:
   Enabled: false

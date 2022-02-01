@@ -33,7 +33,7 @@ module Git
         setting_status(["\tGitHub ", "#{github_count} repositories"])
         setting_status(["\tcloned ", cloned_count, "(#{missing_count} missing)"])
         Git::Multi.missing_repositories_for(owner).each do |missing|
-          setting_status(["\tmissing", missing.full_name], false, false)
+          setting_status(["\tmissing", missing.full_name], valid: false, optional: false)
         end
         setting_status(["\tsubdirs", subdir_count, "(#{surplus_count} surplus)"])
       end
@@ -42,14 +42,14 @@ module Git
         github_count = Git::Multi.repositories_for(superproject).count
 
         if github_count.zero?
-          setting_status([message, 'listed but not configured'], false, false)
+          setting_status([message, 'listed but not configured'], valid: false, optional: false)
         else
           setting_status([message], true)
           Git::Multi.repositories_for(superproject).each do |repo|
             if File.directory? repo.local_path
-              setting_status(["\tcloned ", repo.full_name], true)
+              setting_status(["\tcloned ", repo.full_name], valid: true)
             else
-              setting_status(["\tmissing", repo.full_name], false, false)
+              setting_status(["\tmissing", repo.full_name], valid: false, optional: false)
             end
           end
         end
@@ -102,7 +102,7 @@ module Git
         end
       end
 
-      private_class_method def setting_status(messages, valid = false, optional = true)
+      private_class_method def setting_status(messages, valid: false, optional: true)
         fields = messages.compact.join(' - ')
         icon = valid ? TICK : optional ? ARROW : CROSS
         puts "#{icon}  #{fields}"
@@ -115,16 +115,16 @@ module Git
             abbreviate(file),
             File.file?(file) ? "#{File.size(file).commify} bytes" : nil,
           ],
-          file && !file.empty? && File.file?(file),
-          false
+          valid: file && !file.empty? && File.file?(file),
+          optional: false,
         )
       end
 
       private_class_method def directory_status(messages, directory)
         setting_status(
           messages,
-          directory && !directory.empty? && File.directory?(directory),
-          false
+          valid: directory && !directory.empty? && File.directory?(directory),
+          optional: false,
         )
       end
     end
