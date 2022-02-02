@@ -16,6 +16,13 @@ module Git
 
       \tgit config --global --add \033[1mgit.multi.workarea\033[0m <your_root_workarea>
 
+      You can specify a list of user or organization repositories to ignore:
+
+      \tgit config --global --add \033[1mgit.multi.exclude\033[0m <org_name>/<repo_name>
+      \tgit config --global --add \033[1mgit.multi.exclude\033[0m <user_name>/<repo_name>
+
+      (can be used multiple times to exclude multiple user or organization repositories)
+
       Thanks for using \033[1mgit multi\033[0m ... the ultimate multi-repo utility for git!
 
     PIM

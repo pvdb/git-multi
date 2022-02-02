@@ -35,6 +35,9 @@ module Git
         Git::Multi.missing_repositories_for(owner).each do |missing|
           setting_status(["\tmissing", missing.full_name], valid: false, optional: false)
         end
+        Git::Multi.excluded_repositories_for(owner).each do |excluded|
+          setting_status(["\texcluded", excluded.full_name], valid: false, optional: false)
+        end
         setting_status(["\tsubdirs", subdir_count, "(#{surplus_count} surplus)"])
       end
 
@@ -44,7 +47,7 @@ module Git
         if github_count.zero?
           setting_status([message, 'listed but not configured'], valid: false, optional: false)
         else
-          setting_status([message], true)
+          setting_status([message], valid: true)
           Git::Multi.repositories_for(superproject).each do |repo|
             if File.directory? repo.local_path
               setting_status(["\tcloned ", repo.full_name], valid: true)

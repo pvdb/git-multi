@@ -7,8 +7,8 @@ module Git
       value.empty? && default ? default : value
     end
 
-    def full_names_for(superproject)
-      list = `git config --get-all superproject.#{superproject}.repo`
+    def global_options(name)
+      list = `git config --global --get-all #{name}`
       list.split($RS).map(&:strip).map(&:freeze)
     end
 
@@ -22,8 +22,7 @@ module Git
     end
 
     def env_var(name, default = nil)
-      value = ENV[name]
-      (value.nil? || value.empty?) && default ? default : value
+      ENV.fetch(name, default)
     end
   end
 end

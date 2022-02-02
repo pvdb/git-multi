@@ -36,9 +36,6 @@ module Git
     TOKEN            = global_option('github.token', DEFAULT_TOKEN)
 
     GIT_MULTI_DIR    = File.join(HOME, '.git', 'multi')
-
-    FileUtils.mkdir_p(GIT_MULTI_DIR) # ensure `~/.git/multi` directory exists
-
     GITHUB_CACHE     = File.join(GIT_MULTI_DIR, 'repositories.byte')
 
     USERS            = global_list('git.multi.users')
@@ -46,6 +43,7 @@ module Git
     SUPERPROJECTS    = global_list('git.multi.superprojects')
 
     MULTI_REPOS      = (USERS + ORGANIZATIONS + SUPERPROJECTS)
+    EXCLUDED_REPOS   = global_options('git.multi.exclude')
 
     MAN_PAGE         = File.expand_path('../../man/git-multi.1', __dir__)
     HTML_PAGE        = File.expand_path('../../man/git-multi.html', __dir__)
@@ -129,6 +127,9 @@ module Git
     #
 
     def refresh_repositories
+      # ensure `~/.git/multi` directory exists
+      FileUtils.mkdir_p(GIT_MULTI_DIR)
+
       File.open(GITHUB_CACHE, 'wb') do |file|
         Marshal.dump(github_repositories, file)
       end
@@ -194,6 +195,8 @@ module Git
             repo.parent_dir = Pathname.new(File.join(WORKAREA, repo.owner.login))
             repo.local_path = Pathname.new(File.join(WORKAREA, repo.full_name))
             repo.fractional_index = "#{index + 1}/#{repos.count}"
+            # git multi will "hard ignore" all excluded repos
+            repo.excluded = EXCLUDED_REPOS.include?(repo.full_name)
             # fix 'repo' => https://github.com/octokit/octokit.rb/issues/727
             repo.compliant_ssh_url = "ssh://#{repo.ssh_url.split(':', 2).join('/')}"
             # remove optional '.git' suffix from 'git@github.com:pvdb/git-multi.git'
@@ -213,7 +216,11 @@ module Git
     # lists of repos for a given multi-repo
     #
 
-    def repositories_for(multi_repo = nil)
+    def full_names_for(superproject)
+      global_options("superproject.#{superproject}.repo")
+    end
+
+    def all_repositories_for(multi_repo = nil)
       case (owner = superproject = full_names = multi_repo)
       when nil
         repositories # all of them
@@ -226,10 +233,14 @@ module Git
           repository.owner.login == owner
         }
       when *SUPERPROJECTS
-        repositories_for(full_names_for(superproject))
+        all_repositories_for(full_names_for(superproject))
       else
         raise ArgumentError, multi_repo
       end
+    end
+
+    def repositories_for(multi_repo = nil)
+      all_repositories_for(multi_repo).delete_if(&:excluded)
     end
 
     #
@@ -237,15 +248,19 @@ module Git
     #
 
     def archived_repositories_for(multi_repo = nil)
-      repositories_for(multi_repo).find_all(&:archived)
+      all_repositories_for(multi_repo).find_all(&:archived)
     end
 
     def forked_repositories_for(multi_repo = nil)
-      repositories_for(multi_repo).find_all(&:fork)
+      all_repositories_for(multi_repo).find_all(&:fork)
     end
 
     def private_repositories_for(multi_repo = nil)
-      repositories_for(multi_repo).find_all(&:private)
+      all_repositories_for(multi_repo).find_all(&:private)
+    end
+
+    def excluded_repositories_for(multi_repo = nil)
+      all_repositories_for(multi_repo).find_all(&:excluded)
     end
 
     #
