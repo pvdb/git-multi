@@ -153,7 +153,7 @@ module Git
             $stdout.puts "#{full_name.invert} (#{fractional_index})"
             interactive.call(self)
           elsif $stderr.tty? && captured
-            errors = File.join(ENV['TMPDIR'], "git-multi.#{$PID}")
+            errors = File.join(Dir.tmpdir, "git-multi.#{$PID}")
             captured.call(self, errors)
             if File.exist?(errors) && !File.zero?(errors)
               # rubocop:disable Style/StderrPuts
