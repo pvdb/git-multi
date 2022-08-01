@@ -1,5 +1,6 @@
 require 'etc'
 require 'json'
+require 'tmpdir'
 require 'pathname'
 require 'fileutils'
 require 'shellwords'

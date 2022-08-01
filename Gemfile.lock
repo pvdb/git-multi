@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    git-multi (8.0.0)
+    git-multi (8.0.1)
       faraday (~> 1)
       octokit (~> 4)
 
