@@ -10,6 +10,30 @@ There are plenty of other utilities out there that do something similar, but typ
 
 `git-multi` only concerns itself with iterating over the set of related repos; what it executes in each of them is completely up to you.
 
+## Example
+
+The man page shows other uses and options for `git multi` but its main purpose is to iterate over a list of related git repositories _(known as a "multi-repo")_ and execute the same git command in each and every one:
+
+![git-multi screenshot](git-multi.png)
+
+A typical `git multi` invocation has the following anatomy:
+
+```
+$ git multi ++pvdb status --short
+ └─┬───────┘
+   └─► invoke the custom "git-multi" subcommand
+
+$ git multi ++pvdb status --short
+           └──┬───┘
+              └─► specify the name of a multi-repo (optional)
+
+$ git multi ++pvdb status --short
+                  └──────┬───────┘
+                         └─► regular git command or alias, incl. options
+```
+
+In the above example, the `git status --short` command is executed in each git repository in the `++pvdb` multi-repo; the name of the multi-repo (`++pvdb` in the above example) is optional: without it `git multi` will iterate over *all* git repos in *all* configured multi-repos.
+
 ## Features
 
 * execute any `git` command, extension and alias in multiple repositories _(not just a limited set of pre-packaged commands)_
