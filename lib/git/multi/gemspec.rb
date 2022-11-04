@@ -6,8 +6,12 @@ module Git
 
       \tgit config --global --add \033[1mgithub.token\033[0m <your_github_oauth_token>
 
-      The following settings for \033[1mgit multi\33[0m are
-      optional, and take 0, 1 or more values:
+      You can re-use an existing one, or else generate a new token on GitHub.com:
+
+      \thttps://github.com/settings/tokens
+
+      The following settings for \033[1mgit multi\33[0m are optional,
+      and take 0, 1 or more comma-separated values:
 
       \tgit config --global --add \033[1mgit.multi.users\033[0m <list_of_github_users>
       \tgit config --global --add \033[1mgit.multi.organizations\033[0m <list_of_github_orgs>
@@ -21,7 +25,7 @@ module Git
       \tgit config --global --add \033[1mgit.multi.exclude\033[0m <org_name>/<repo_name>
       \tgit config --global --add \033[1mgit.multi.exclude\033[0m <user_name>/<repo_name>
 
-      (can be used multiple times to exclude multiple user or organization repositories)
+      (can be used multiple times to exclude multiple user or org repos)
 
       Thanks for using \033[1mgit multi\033[0m ... the ultimate multi-repo utility for git!
 
