@@ -71,6 +71,41 @@ A good starting point is the `git-multi` man page:
 
     $ git multi --html
 
+## Using the "full name" convention
+
+On your local filesystem, git repositories need to use paths that follow the "full name" convention used by `github.com` _(as well as other websites like `gitlab.com`)_, ie. the last two path components for the `pvdb/git-multi` repository should be `pvdb` and `git-multi` respectively, as illustrated on this table:
+
+|           | full name        | owner  | name        | URL / path                          |
+|-----------|------------------|--------|-------------|-------------------------------------|
+|           | `pvdb/git-multi` | `pvdb` | `git-multi` |                                     |
+| GitHub    |                  |        |             | `https://github.com/pvdb/git-multi` |
+| filesytem |                  |        |             | `${HOME}/Workarea/pvdb/git-multi`   |
+
+Put differently: if you typically create your git repositories in `${HOME}/Workarea`, and you have the following three git repos...
+
+    pvdb/git-multi
+    pvdb/git-semaphore
+    pvdb/git-switcher
+
+... then their respective paths should be:
+
+    ${HOME}/Workarea/pvdb/git-multi
+    ${HOME}/Workarea/pvdb/git-semaphore
+    ${HOME}/Workarea/pvdb/git-switcher
+
+... and the directory tree should look like:
+
+    ${HOME}/Workarea
+    └── pvdb
+        ├── git-multi
+        │   └── .git
+        ├── git-semaphore
+        │   └── .git
+        └── git-switcher
+            └── .git
+
+So first you have a directory corresponding to the repository owner (`pvdb`) and one level down you have a directory corresponding to the repository name (`git-multi`, `git-semaphore` and `git-switcher` respectively).
+
 ## Known Issues
 
 1. it probably doesn't work on Windows
